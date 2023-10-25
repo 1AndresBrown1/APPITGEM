@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group">
                     <label for="nombre_a">Nombre del Año Académico:</label>
                     <br>
-                    <input type="text" class="form-control" id="nombre_a" name="nombre_a" required>
+                    <input type="text" class="form-control" id="nombre_a" name="nombre_a" required maxlength="6">
                 </div>
                 <br>
                 <button style="background-color: #2970a0; color: white;" type="submit" class="btn btn-primary">Crear Año Académico</button>
@@ -222,10 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="codigo_materia">Código de la Materia:</label>
                     <input type="text" class="form-control" id="codigo_materia" name="codigo_materia" required>
                 </div>
-                <div class="form-group">
-                    <label for="creditos">Créditos de la Materia:</label>
-                    <input type="number" class="form-control" id="creditos" name="creditos" required>
-                </div>
+                <br>
                 <button type="submit" class="btn btn-primary">Registrar Materia</button>
             </form>
             <br><br>
@@ -271,49 +268,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group">
                     <label for="id_año">Año Académico:</label>
                     <select class="form-control" id="id_año" name="id_año" required>
-                        <option value="1">2023-2024</option>
-                        <option value="2">2024-2025</option>
-                        <!-- Agrega más opciones de años académicos según sea necesario -->
+                        <?php
+                        // Consulta para obtener los años académicos desde la tabla "gestion_a"
+                        $sql = "SELECT id, nombre_a FROM gestion_a";
+                        $result = $conexion->query($sql);
+
+                        if ($result) {
+                            while ($row = $result->fetch_assoc()) {
+                                $id_año = $row["id"];
+                                $nombre_año = $row["nombre_a"];
+                                echo "<option value='$id_año'>$nombre_año</option>";
+                            }
+                            $result->free();
+                        }
+                        ?>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="id_materia">Materia:</label>
-                    <select class="form-control" id="id_materia" name="id_materia" required>
-                        <option value="1">Matemáticas</option>
-                        <option value="2">Ciencias</option>
-                        <!-- Agrega más opciones de materias según sea necesario -->
-                    </select>
-                </div>
+                <br>
                 <button type="submit" class="btn btn-primary">Registrar Grupo</button>
             </form>
+
+            <script>
+                function confirmarEliminacion(id) {
+                    if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
+                        window.location.href = 'eliminar_grupo.php?id=' + id;
+                    }
+                }
+            </script>
+
+
             <br><br>
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Nombre del Grupo</th>
+                        <th scope="col">Año Académico</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    <?php
+                    // Consulta para obtener los datos de los grupos
+                    $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, a.nombre_a FROM grupos g INNER JOIN gestion_a a ON g.id_año = a.id";
+                    $result = $conexion->query($sql);
+
+                    if ($result) {
+                        $i = 1;
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<th scope='row'>$i</th>";
+                            echo "<td>" . $row['nombre_grupo'] . "</td>";
+                            echo "<td>" . $row['nombre_a'] . "</td>";
+                            echo "<td><a href='editar_grupo.php?id=" . $row['grupo_id'] . "'>Editar</a> | <a href='javascript:confirmarEliminacion(" . $row['grupo_id'] . ")'>Eliminar</a></td>";
+
+                            echo "</tr>";
+                            $i++;
+                        }
+                        $result->free();
+                    } else {
+                        echo '<tr><td colspan="4">No hay datos de grupos disponibles.</td></tr>';
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
