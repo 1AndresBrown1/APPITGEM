@@ -40,7 +40,7 @@ include_once("./header.php");
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p style="font-size: 17px !important;" class="mb-0 txt-card-custom">Matricular Estudiante</p>
+                                <p style="font-size: 17px !important;" class="mb-0 txt-card-custom">Editar Estudiante</p>
                                 <a style="color: #fee6ff;" href="#" id="mostrarFormulario2" class="text-blue-500 hover:underline">Click aqui</a>
                             </div>
                             <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
@@ -54,59 +54,52 @@ include_once("./header.php");
         </div>
         <!--end row-->
 
-
         <div id="formulario1" class="container">
-            <h2 class="my-4">Registro de Estudiantes</h2>
+
             <form action="procesar_registro_estudiante.php" method="POST">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="nombre">Nombre:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="apellido">Apellido:</label>
-                            <input type="text" class="form-control" id="apellido" name="apellido" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tipo_documento">Tipo de Documento:</label>
-                            <select class="form-control" id="tipo_documento" name="tipo_documento" required>
-                                <option value="cedula">Cédula</option>
-                                <option value="pasaporte">Pasaporte</option>
-                                <option value="otro">Otro</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="documento_identidad">Documento de Identidad:</label>
-                            <input type="text" class="form-control" id="documento_identidad" name="documento_identidad" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="direccion">Dirección:</label>
-                            <input type="text" class="form-control" id="direccion" name "direccion" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-                            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Correo Electrónico:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                </div>
+                <div class="form-group">
+                    <label for="genero">Género:</label>
+                    <select class="form-control" id="genero" name="genero" required>
+                        <option value="">Selecciona un género</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="grupo">Grupo de Estudios:</label>
+                    <select class="form-control" id="grupo" name="grupo" required>
+                        <?php
+                        include("../bd.php"); // Incluye el archivo de conexión a la base de datos
+
+                        // Realiza una consulta para obtener los grupos
+                        $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, a.nombre_a FROM grupos g INNER JOIN gestion_a a ON g.id_año = a.id";
+                        $result = $conexion->query($sql);
+
+                        if ($result) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['grupo_id'] . "'>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</option>";
+                            }
+
+                            $result->free();
+                        } else {
+                            echo "<option value=''>No hay grupos disponibles</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
                 <br>
                 <button type="submit" class="btn btn-primary">Registrar Estudiante</button>
@@ -114,43 +107,58 @@ include_once("./header.php");
         </div>
 
 
-        <div style="display: none;" id="formulario2" class="container">
-            <h2 class="my-4">Matrícula de Estudiantes</h2>
-            <form action="procesar_matricula_estudiante.php" method="POST">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="id_grupo">Grupo:</label>
-                            <select class="form-control" id="id_grupo" name="id_grupo" required>
-                                <option value="1">Grupo 1</option>
-                                <option value="2">Grupo 2</option>
-                                <!-- Agrega más opciones de grupos según sea necesario -->
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="id_estudiante">Estudiante:</label>
-                            <select class="form-control" id="id_estudiante" name="id_estudiante" required>
-                                <option value="1">Estudiante 1</option>
-                                <option value="2">Estudiante 2</option>
-                                <!-- Agrega más opciones de estudiantes según sea necesario -->
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="fecha_matricula">Fecha de Matrícula:</label>
-                            <input type="date" class="form-control" id="fecha_matricula" name="fecha_matricula" required>
-                        </div>
-                    </div>
 
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary">Matricular Estudiante</button>
-            </form>
+        <div style="display: none;" id="formulario2" class="container">
+            <h2 class="my-4">Editar Estudiantes</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Fecha de Nacimiento</th>
+                        <th scope="col">Género</th>
+                        <th scope="col">Grupo de Estudios</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Consulta para obtener los datos de los estudiantes y sus grupos
+                    $sql = "SELECT e.id, e.nombre, e.apellido, e.fecha_nacimiento, e.genero, g.nombre_grupo, a.nombre_a 
+                FROM estudiantes e
+                INNER JOIN grupos g ON e.grupo_id = g.id
+                INNER JOIN gestion_a a ON g.id_año = a.id";
+
+                    $result = $conexion->query($sql);
+
+                    if ($result) {
+                        $i = 1;
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<th scope='row'>$i</th>";
+                            echo "<td>" . $row['nombre'] . "</td>";
+                            echo "<td>" . $row['apellido'] . "</td>";
+                            echo "<td>" . $row['fecha_nacimiento'] . "</td>";
+                            echo "<td>" . $row['genero'] . "</td>";
+                            echo "<td>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</td>";
+                            echo "<td>
+                        <a href='editar_estudiante.php?id=" . $row['id'] . "'>Editar</a> | 
+                        <a href='eliminar_estudiante.php?id=" . $row['id'] . "'>Eliminar</a>
+                    </td>";
+                            echo "</tr>";
+                            $i++;
+                        }
+                        $result->free();
+                    } else {
+                        echo '<tr><td colspan="7">No hay datos de estudiantes disponibles.</td></tr>';
+                    }
+                    ?>
+                </tbody>
+            </table>
+
+
+
         </div>
 
 

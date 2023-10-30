@@ -1,36 +1,37 @@
 <?php
 include_once("./header.php");
+include_once("../bd.php");
+
 ?>
+
+
+
 
 <div class="page-wrapper">
     <div class="page-content">
 
-    <div class="container">
-    <h2 class="my-4">Calificaciones de Estudiantes</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Estudiante</th>
-                <th>Curso</th>
-                <th>Nota</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Estudiante 1</td>
-                <td>Curso 1</td>
-                <td>90</td>
-                <td>
-                    <a href="editar_nota.php">Editar</a> |
-                    <a href="borrar_nota.php">Borrar</a>
-                </td>
-            </tr>
-            <!-- Agrega más filas para otros estudiantes y cursos -->
-        </tbody>
-    </table>
-</div>
+    <form action="calificar_estudiantes.php" method="POST">
+    <div class="form-group">
+        <label for="grupo_id">Selecciona un grupo:</label>
+        <select class="form-control" name="grupo_id">
+            <?php
+            // Consultar y listar los grupos disponibles en la base de datos
+            $sql_grupos = "SELECT id, nombre_grupo FROM grupos";
+            $result_grupos = $conexion->query($sql_grupos);
 
+            if ($result_grupos) {
+                while ($row = $result_grupos->fetch_assoc()) {
+                    echo "<option value='" . $row['id'] . "'>" . $row['nombre_grupo'] . "</option>";
+                }
+                $result_grupos->free();
+            }
+            ?>
+        </select>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Mostrar Estudiantes</button>
+</form>
 
+   
     </div>
 </div>

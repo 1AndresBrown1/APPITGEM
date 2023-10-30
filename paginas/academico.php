@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
             <div class="col">
                 <div style="background: #235c81;" class="card radius-10 p-2">
                     <div class="card-body">
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <p class="mb-0 txt-card-custom">Crear Materia</p>
+                                <p style="font-size: 16px;" class="mb-0 txt-card-custom">Crear Materia</p>
                                 <a style="color: #fee6ff;" href="#" id="mostrarFormulario2" class="text-blue-500 hover:underline">Click aqui</a>
                             </div>
                             <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
@@ -112,6 +112,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
+
+            <div class="col">
+                <div style="background: #152a3c;" class="card radius-10 p-2">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <p class="mb-0 txt-card-custom">Ver Grupos</p>
+                                <a style="color: #fee6ff;" href="./listar_estudiantes.php" id="mostrarFormulario3" class="text-blue-500 hover:underline">Click aqui</a>
+                            </div>
+                            <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto">
+                                <i class='bx bxs-group'></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <!--end row-->
 
@@ -222,39 +239,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="codigo_materia">Código de la Materia:</label>
                     <input type="text" class="form-control" id="codigo_materia" name="codigo_materia" required>
                 </div>
+                <div class="form-group">
+                    <label for="id_grupo">Grupo/Curso:</label>
+                    <select class="form-control" id="id_grupo" name="id_grupo" required>
+                        <?php
+                        // Conecta a la base de datos y recupera los grupos
+                        include("../bd.php");
+                        $sql = "SELECT id, nombre_grupo FROM grupos";
+                        $result = $conexion->query($sql);
+
+                        if ($result) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['id'] . '">' . $row['nombre_grupo'] . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
                 <br>
                 <button type="submit" class="btn btn-primary">Registrar Materia</button>
             </form>
+
+
+
+
             <br><br>
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Código de Materia</th>
+                        <th scope="col">Nombre de la Materia</th>
+                        <th scope="col">Grupo</th>
+                        <th scope="col">Año Académico</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    <?php
+                    // Consulta para obtener los datos de las materias, grupos y años académicos
+                    $sql = "SELECT m.id AS materia_id, m.codigo_materia, m.nombre_materia, g.nombre_grupo, a.nombre_a 
+                FROM materias m 
+                INNER JOIN grupos g ON m.id_grupo = g.id
+                INNER JOIN gestion_a a ON g.id_año = a.id";
+                    $result = $conexion->query($sql);
+
+                    if ($result) {
+                        $i = 1;
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<th scope='row'>$i</th>";
+                            echo "<td>" . $row['codigo_materia'] . "</td>";
+                            echo "<td>" . $row['nombre_materia'] . "</td>";
+                            echo "<td>" . $row['nombre_grupo'] . "</td>";
+                            echo "<td>" . $row['nombre_a'] . "</td>";
+                            echo "<td><a href='editar_materia.php?id=" . $row['materia_id'] . "'>Editar</a> | <a href='#' onclick='confirmDelete(" . $row['materia_id'] . ");'>Eliminar</a></td>";
+                            echo "</tr>";
+                            $i++;
+                        }
+                        $result->free();
+                    } else {
+                        echo '<tr><td colspan="6">No hay datos de materias disponibles.</td></tr>';
+                    }
+                    ?>
                 </tbody>
             </table>
+
+            <script>
+function confirmDelete(id) {
+    var result = confirm("¿Estás seguro de que deseas eliminar esta materia?");
+    if (result) {
+        // Si el usuario hace clic en "Aceptar", redirige a la página de eliminación
+        window.location.href = "eliminar_materia.php?id=" + id;
+    }
+    // Si hace clic en "Cancelar", no se realizará ninguna acción
+}
+</script>
+
+
+
         </div>
 
 
