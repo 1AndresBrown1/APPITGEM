@@ -5,9 +5,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera los datos del formulario
     $nombre_grupo = $_POST["nombre_grupo"];
     $id_año = $_POST["id_año"];
-
+    $id_docente = $_POST["id_docente"];
     // Prepara la consulta SQL para insertar un nuevo grupo
-    $sql = "INSERT INTO grupos (nombre_grupo, id_año) VALUES (?, ?)";
+    $sql = "INSERT INTO grupos (nombre_grupo, id_año, id_docente) VALUES (?, ?, ?)";
 
     // Verifica si la conexión está abierta antes de preparar la consulta
     if (!$conexion->connect_error) {
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt) {
             // Asocia los parámetros
-            $stmt->bind_param("si", $nombre_grupo, $id_año);
+            $stmt->bind_param("sii", $nombre_grupo, $id_año, $id_docente);
 
             // Ejecuta la sentencia
             if ($stmt->execute()) {

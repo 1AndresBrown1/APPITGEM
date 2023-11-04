@@ -46,6 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+
 ?>
 
 
@@ -240,6 +242,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" class="form-control" id="codigo_materia" name="codigo_materia" required>
                 </div>
                 <div class="form-group">
+                    <label for="id_docente">Docente:</label>
+                    <select class="form-control" id="id_docente" name="id_docente" required>
+                        <?php
+                        // Conecta a la base de datos y recupera los grupos
+                        include("../bd.php");
+                        $sql = "SELECT id, nombre FROM docentes";
+                        $result = $conexion->query($sql);
+
+                        if ($result) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="id_grupo">Grupo/Curso:</label>
                     <select class="form-control" id="id_grupo" name="id_grupo" required>
                         <?php
@@ -271,17 +290,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th scope="col">Código de Materia</th>
                         <th scope="col">Nombre de la Materia</th>
                         <th scope="col">Grupo</th>
+                        <th scope="col">Docente</th>
                         <th scope="col">Año Académico</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    // Consulta para obtener los datos de las materias, grupos y años académicos
-                    $sql = "SELECT m.id AS materia_id, m.codigo_materia, m.nombre_materia, g.nombre_grupo, a.nombre_a 
-                FROM materias m 
-                INNER JOIN grupos g ON m.id_grupo = g.id
-                INNER JOIN gestion_a a ON g.id_año = a.id";
+                    // Consulta para obtener los datos de las materias, grupos y años académicos con el nombre completo del docente
+                    $sql = "SELECT m.id AS materia_id, m.codigo_materia, m.nombre_materia, g.id_docente, g.nombre_grupo, a.nombre_a, d.nombre
+                    FROM materias m 
+                    INNER JOIN grupos g ON m.id_grupo = g.id
+                    INNER JOIN gestion_a a ON g.id_año = a.id
+                    INNER JOIN docentes d ON g.id_docente = d.id";
                     $result = $conexion->query($sql);
 
                     if ($result) {
@@ -292,6 +313,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             echo "<td>" . $row['codigo_materia'] . "</td>";
                             echo "<td>" . $row['nombre_materia'] . "</td>";
                             echo "<td>" . $row['nombre_grupo'] . "</td>";
+                            echo "<td>" . $row['nombre'] . "</td>"; // Aquí se muestra el nombre completo del docente
                             echo "<td>" . $row['nombre_a'] . "</td>";
                             echo "<td><a href='editar_materia.php?id=" . $row['materia_id'] . "'>Editar</a> | <a href='#' onclick='confirmDelete(" . $row['materia_id'] . ");'>Eliminar</a></td>";
                             echo "</tr>";
@@ -347,6 +369,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         ?>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="id_docente">Docente:</label>
+                    <select class="form-control" id="id_docente" name="id_docente" required>
+                        <?php
+                        // Conecta a la base de datos y recupera los grupos
+                        include("../bd.php");
+                        $sql = "SELECT id, nombre FROM docentes";
+                        $result = $conexion->query($sql);
+
+                        if ($result) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
                 <br>
                 <button type="submit" class="btn btn-primary">Registrar Grupo</button>
             </form>
@@ -367,13 +406,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th scope="col">#</th>
                         <th scope="col">Nombre del Grupo</th>
                         <th scope="col">Año Académico</th>
+                        <th scope="col">Docente</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     // Consulta para obtener los datos de los grupos
-                    $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, a.nombre_a FROM grupos g INNER JOIN gestion_a a ON g.id_año = a.id";
+                    $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, g.id_docente, a.nombre_a, d.nombre FROM grupos g 
+                    INNER JOIN gestion_a a ON g.id_año = a.id
+                    INNER JOIN docentes d ON g.id_docente = d.id
+                    ";
                     $result = $conexion->query($sql);
 
                     if ($result) {
@@ -383,6 +426,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             echo "<th scope='row'>$i</th>";
                             echo "<td>" . $row['nombre_grupo'] . "</td>";
                             echo "<td>" . $row['nombre_a'] . "</td>";
+                            echo "<td>" . $row['nombre'] . "</td>";
                             echo "<td><a href='editar_grupo.php?id=" . $row['grupo_id'] . "'>Editar</a> | <a href='javascript:confirmarEliminacion(" . $row['grupo_id'] . ")'>Eliminar</a></td>";
 
                             echo "</tr>";

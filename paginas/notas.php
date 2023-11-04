@@ -65,12 +65,49 @@ if ($result_grupos) {
     $result_grupos->free();
 }
 ?>
+<script>
+    const notasForm = document.getElementById('notasForm');
 
+    // Asegúrate de que el formulario esté definido antes de adjuntar el evento
+    if (notasForm) {
+        notasForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(notasForm);
+            const notasData = {};
+
+            for (let pair of formData.entries()) {
+                const [key, value] = pair;
+                const [estudianteId, materiaId] = key.split('][');
+                const id = estudianteId.substring(6);
+                if (!notasData[id]) {
+                    notasData[id] = {};
+                }
+                notasData[id][materiaId] = value;
+            }
+
+            console.log(notasData);
+
+            const finalFormData = new FormData();
+            finalFormData.append('notas', JSON.stringify(notasData));
+
+            try {
+                const response = await fetch('procesar_notas.php', {
+                    method: 'POST',
+                    body: finalFormData
+                });
+                const data = await response.json();
+                console.log(data); // Verifica la respuesta desde procesar_notas.php
+            } catch (error) {
+                console.error('Error al enviar los datos', error);
+            }
+        });
+    }
+</script>
 <div class="page-wrapper">
     <div class="page-content">
         <div class="container">
             <h2 class="mt-5">Notas de Estudiantes</h2>
-            <form action="notas.php" method="POST">
+            <form action="notas.php" method="POST" id="seleccionGrupoForm"> <!-- Cambiado a un nuevo ID -->
                 <div class="form-group">
                     <label for="grupo_id">Selecciona un grupo:</label>
                     <select class="form-control" name="grupo_id">
@@ -88,35 +125,42 @@ if ($result_grupos) {
 
             <!-- Mostrar la lista de estudiantes asociados al grupo seleccionado -->
             <?php
-            if (!empty($estudiantes) && !empty($materias)) {
-                echo "<h3>Estudiantes asociados al grupo seleccionado:</h3>";
-                echo "<table class='table mt-4'>";
-                echo "<thead class='thead-dark'>";
-                echo "<tr>";
-                echo "<th>Estudiante</th>";
-                foreach ($materias as $materia) {
-                    echo "<th>{$materia['nombre']}</th>";
-                }
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
+    if (!empty($estudiantes) && !empty($materias)) {
+        echo "<h3>Estudiantes asociados al grupo seleccionado:</h3>";
+        echo "<form id='notasForm'>"; 
+        echo "<table class='table mt-4'>";
+        echo "<thead class='thead-dark'>";
+        echo "<tr>";
+        echo "<th>Estudiante</th>";
+        foreach ($materias as $materia) {
+            echo "<th>{$materia['nombre']}</th>";
+        }
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
 
-                foreach ($estudiantes as $estudiante) {
-                    echo "<tr>";
-                    echo "<td>{$estudiante['nombre']} {$estudiante['apellido']}</td>";
+        foreach ($estudiantes as $estudiante) {
+            echo "<tr>";
+            echo "<td>{$estudiante['nombre']} {$estudiante['apellido']}</td>";
 
-                    foreach ($materias as $materia) {
-                        echo "<td><input type='number' name='nota[{$estudiante['id']}][{$materia['id']}]' step='0.01'></td>";
-                    }
-
-                    echo "</tr>";
-                }
-                echo "</tbody>";
-                echo "</table>";
+            foreach ($materias as $materia) {
+                echo "<td>";
+                echo "<input type='number' name='nota[{$estudiante['id']}][{$materia['id']}]' step='0.1' class='nota-input'>";
+                echo "</td>";
             }
-            ?>
+
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+        echo "<button type='submit' class='btn btn-primary'>Guardar Notas</button>";
+        echo "</form>";
+    }
+?>
         </div>
     </div>
 </div>
 
-<!-- Resto de tu código HTML ... -->
+
+
+
