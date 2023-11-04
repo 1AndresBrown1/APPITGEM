@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 05, 2023 at 12:41 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.2.33
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 04-11-2023 a las 03:27:08
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `academico`
+-- Base de datos: `academico`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `docentes`
+-- Estructura de tabla para la tabla `docentes`
 --
 
 CREATE TABLE `docentes` (
@@ -37,19 +37,12 @@ CREATE TABLE `docentes` (
   `titulo` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `fecha_nacimiento` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `docentes`
---
-
-INSERT INTO `docentes` (`id`, `nombre`, `apellido`, `tipo_documento`, `documento_identidad`, `direccion`, `titulo`, `email`, `fecha_nacimiento`) VALUES
-(1, 'Juan Camilo', 'Gonzalias Aponza', 'cedula', '1060419059', 'cra 6 # 5  - 31', 'ingeniero de sistemas', 'juancamilo8756@hotmail.es', '2023-11-07');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `estudiantes`
+-- Estructura de tabla para la tabla `estudiantes`
 --
 
 CREATE TABLE `estudiantes` (
@@ -59,10 +52,10 @@ CREATE TABLE `estudiantes` (
   `fecha_nacimiento` date NOT NULL,
   `genero` varchar(50) DEFAULT NULL,
   `grupo_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `estudiantes`
+-- Volcado de datos para la tabla `estudiantes`
 --
 
 INSERT INTO `estudiantes` (`id`, `nombre`, `apellido`, `fecha_nacimiento`, `genero`, `grupo_id`) VALUES
@@ -76,17 +69,17 @@ INSERT INTO `estudiantes` (`id`, `nombre`, `apellido`, `fecha_nacimiento`, `gene
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gestion_a`
+-- Estructura de tabla para la tabla `gestion_a`
 --
 
 CREATE TABLE `gestion_a` (
   `id` int(11) NOT NULL,
   `nombre_a` varchar(255) NOT NULL,
   `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `gestion_a`
+-- Volcado de datos para la tabla `gestion_a`
 --
 
 INSERT INTO `gestion_a` (`id`, `nombre_a`, `fecha_creacion`) VALUES
@@ -97,53 +90,52 @@ INSERT INTO `gestion_a` (`id`, `nombre_a`, `fecha_creacion`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grupos`
+-- Estructura de tabla para la tabla `grupos`
 --
 
 CREATE TABLE `grupos` (
   `id` int(11) NOT NULL,
   `nombre_grupo` varchar(255) NOT NULL,
-  `id_año` int(11) NOT NULL,
-  `id_docente` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id_año` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `grupos`
+-- Volcado de datos para la tabla `grupos`
 --
 
-INSERT INTO `grupos` (`id`, `nombre_grupo`, `id_año`, `id_docente`) VALUES
-(1, 'Tecnico en sistemas', 1, 1),
-(2, 'Tecnico en deporte', 2, 1),
-(8, 'Sistemas', 1, 1);
+INSERT INTO `grupos` (`id`, `nombre_grupo`, `id_año`) VALUES
+(1, 'Tecnico en deporte', 1),
+(2, 'Tecnico en sistemas', 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `materias`
+-- Estructura de tabla para la tabla `materias`
 --
 
 CREATE TABLE `materias` (
   `id` int(11) NOT NULL,
   `nombre_materia` varchar(255) NOT NULL,
   `codigo_materia` varchar(20) NOT NULL,
-  `id_docente` int(11) NOT NULL,
   `id_grupo` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `materias`
+-- Volcado de datos para la tabla `materias`
 --
 
-INSERT INTO `materias` (`id`, `nombre_materia`, `codigo_materia`, `id_docente`, `id_grupo`) VALUES
-(1, 'Anatomia', 'ANA2023A', 1, 1),
-(2, 'Sistemas Basico', 'SBDEPORTE2023', 1, 2),
-(7, 'Mantenimiento de Software', 'MFSISTEMAS2023', 1, 2),
-(10, 'quimica', '55sd', 1, 8);
+INSERT INTO `materias` (`id`, `nombre_materia`, `codigo_materia`, `id_grupo`) VALUES
+(1, 'Anatomia', 'ANA2023A', 1),
+(2, 'Sistemas Basico', 'SBDEPORTE2023', 1),
+(6, 'Sistemas Basico', 'SBSISTEMAS2023', 2),
+(7, 'Mantenimiento de Software', 'MFSISTEMAS2023', 2),
+(8, 'Redes', 'RSISTEMAS2023', 2),
+(9, 'ETICA', 'ET2024', 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notas`
+-- Estructura de tabla para la tabla `notas`
 --
 
 CREATE TABLE `notas` (
@@ -151,64 +143,48 @@ CREATE TABLE `notas` (
   `estudiante_id` int(11) NOT NULL,
   `materia_id` int(11) NOT NULL,
   `nota` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `notas`
---
-
-INSERT INTO `notas` (`id`, `estudiante_id`, `materia_id`, `nota`) VALUES
-(25, 2, 2, 1),
-(26, 2, 7, 0),
-(27, 4, 2, 2),
-(28, 4, 7, 0),
-(29, 5, 2, 0),
-(30, 5, 7, 0),
-(31, 6, 2, 4.5),
-(32, 6, 7, 5);
-
---
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `docentes`
+-- Indices de la tabla `docentes`
 --
 ALTER TABLE `docentes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `estudiantes`
+-- Indices de la tabla `estudiantes`
 --
 ALTER TABLE `estudiantes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `grupo_id` (`grupo_id`);
 
 --
--- Indexes for table `gestion_a`
+-- Indices de la tabla `gestion_a`
 --
 ALTER TABLE `gestion_a`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `grupos`
+-- Indices de la tabla `grupos`
 --
 ALTER TABLE `grupos`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_año` (`id_año`),
-  ADD KEY `g_d1` (`id_docente`);
+  ADD KEY `id_año` (`id_año`);
 
 --
--- Indexes for table `materias`
+-- Indices de la tabla `materias`
 --
 ALTER TABLE `materias`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `codigo_materia` (`codigo_materia`),
-  ADD KEY `id_grupo` (`id_grupo`),
-  ADD KEY `id_docente` (`id_docente`);
+  ADD KEY `id_grupo` (`id_grupo`);
 
 --
--- Indexes for table `notas`
+-- Indices de la tabla `notas`
 --
 ALTER TABLE `notas`
   ADD PRIMARY KEY (`id`),
@@ -216,71 +192,69 @@ ALTER TABLE `notas`
   ADD KEY `materia_id` (`materia_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `docentes`
+-- AUTO_INCREMENT de la tabla `docentes`
 --
 ALTER TABLE `docentes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `estudiantes`
+-- AUTO_INCREMENT de la tabla `estudiantes`
 --
 ALTER TABLE `estudiantes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `gestion_a`
+-- AUTO_INCREMENT de la tabla `gestion_a`
 --
 ALTER TABLE `gestion_a`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `grupos`
+-- AUTO_INCREMENT de la tabla `grupos`
 --
 ALTER TABLE `grupos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `materias`
+-- AUTO_INCREMENT de la tabla `materias`
 --
 ALTER TABLE `materias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `notas`
+-- AUTO_INCREMENT de la tabla `notas`
 --
 ALTER TABLE `notas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `estudiantes`
+-- Filtros para la tabla `estudiantes`
 --
 ALTER TABLE `estudiantes`
   ADD CONSTRAINT `estudiantes_ibfk_1` FOREIGN KEY (`grupo_id`) REFERENCES `grupos` (`id`);
 
 --
--- Constraints for table `grupos`
+-- Filtros para la tabla `grupos`
 --
 ALTER TABLE `grupos`
-  ADD CONSTRAINT `g_d1` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id`),
   ADD CONSTRAINT `grupos_ibfk_1` FOREIGN KEY (`id_año`) REFERENCES `gestion_a` (`id`);
 
 --
--- Constraints for table `materias`
+-- Filtros para la tabla `materias`
 --
 ALTER TABLE `materias`
-  ADD CONSTRAINT `materias_ibfk_1` FOREIGN KEY (`id_grupo`) REFERENCES `grupos` (`id`),
-  ADD CONSTRAINT `materias_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id`);
+  ADD CONSTRAINT `materias_ibfk_1` FOREIGN KEY (`id_grupo`) REFERENCES `grupos` (`id`);
 
 --
--- Constraints for table `notas`
+-- Filtros para la tabla `notas`
 --
 ALTER TABLE `notas`
   ADD CONSTRAINT `notas_ibfk_1` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`),
