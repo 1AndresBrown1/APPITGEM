@@ -306,15 +306,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </table>
 
             <script>
-function confirmDelete(id) {
-    var result = confirm("¿Estás seguro de que deseas eliminar esta materia?");
-    if (result) {
-        // Si el usuario hace clic en "Aceptar", redirige a la página de eliminación
-        window.location.href = "eliminar_materia.php?id=" + id;
-    }
-    // Si hace clic en "Cancelar", no se realizará ninguna acción
-}
-</script>
+                function confirmDelete(id) {
+                    var result = confirm("¿Estás seguro de que deseas eliminar esta materia?");
+                    if (result) {
+                        // Si el usuario hace clic en "Aceptar", redirige a la página de eliminación
+                        window.location.href = "eliminar_materia.php?id=" + id;
+                    }
+                    // Si hace clic en "Cancelar", no se realizará ninguna acción
+                }
+            </script>
 
 
 
