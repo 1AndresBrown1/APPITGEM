@@ -1,3 +1,18 @@
+<?php
+session_start();
+// Desactivar la visualización de errores
+error_reporting(0);
+// if (isset($_SESSION['usuario'])) {
+//     if ($_SESSION['permiso'] == 2) {
+//         header("Location: attendance_report.php");
+//     }
+
+// }else{
+//     header('Location: login.php');
+// }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,20 +103,49 @@
       </div>
       <!--navigation-->
       <ul class="metismenu" id="menu">
-        <li>
-          <a href="../index.php">
-            <div class="parent-icon"><i class='bx bx-home-circle'></i>
-            </div>
-            <div class="menu-title">Dashboard</div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:;" class="has-arrow">
+
+    <?php  if ($_SESSION['docente'] == "docente") {
+    ?>
+    <li>
+      <a href="../index_docentes.php">
+        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+        </div>
+        <div class="menu-title">Dashboard</div>
+      </a>
+    </li>
+    <?php
+} else if ($_SESSION['estudiante'] == "estudiante") {
+    ?>
+    <li>
+      <a href="../index_estudiantes.php">
+        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+        </div>
+        <div class="menu-title">Dashboard</div>
+      </a>
+    </li>
+    <?php
+}else if (($_SESSION['estudiante'] !== "estudiante")&&($_SESSION['docente'] !== "docente")) {
+    ?>
+    <li>
+      <a href="../index.php">
+        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+        </div>
+        <div class="menu-title">Dashboard</div>
+      </a>
+    </li>
+    <?php 
+    }
+?>
+
+
+
+        <!-- <li>
+         <a href="javascript:;" class="has-arrow">
             <div class="parent-icon"><i class="bx bx-category"></i>
             </div>
             <div class="menu-title">Application</div>
           </a>
-          <ul>
+           <ul>
             <li> <a href="app-emailbox.html"><i class="bx bx-right-arrow-alt"></i>Email</a>
             </li>
             <li> <a href="app-chat-box.html"><i class="bx bx-right-arrow-alt"></i>Chat Box</a>
@@ -115,7 +159,7 @@
             </div>
             <div class="menu-title">Widgets</div>
           </a>
-        </li>
+        </li> -->
       </ul>
       <!--end navigation-->
     </div>

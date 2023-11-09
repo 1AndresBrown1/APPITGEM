@@ -1,31 +1,18 @@
 <?php
-// Desactivar la visualización de errores
-error_reporting(0);
 session_start();
-require 'bd.php';
+include_once("./bd.php");
 
-// Verifica si ya hay una sesión activa
 if (isset($_SESSION['nombre_usuario'])) {
-    // Verifica si el usuario es un administrador
-    if ($_SESSION['admin'] == "admin") {
-        // Si el usuario es un administrador, rediríjalo al index.php
-        header("Location: index.php");
-        exit(); // Es importante detener la ejecución adicional
-    } else {
-        // Si el usuario no es un administrador, rediríjalo a la página correspondiente según el tipo de usuario
-        if ($_SESSION['docente'] === 'docente') {
-            header("Location: index_docentes.php");
-            exit();
-        } elseif ($_SESSION['estudiante'] === 'estudiante') {
-            header("Location: index_estudiantes.php");
-            exit();
-        }
+    if ($_SESSION['estudiante'] == "estudiante") {
+      header('Location: index_estudiantes.php');
     }
-} else {
-    // Si no hay una sesión activa, redirigir al usuario a la página de inicio de sesión
+
+}else{
     header('Location: login.php');
-    exit();
 }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +70,7 @@ if (isset($_SESSION['nombre_usuario'])) {
       <!--navigation-->
       <ul class="metismenu" id="menu">
         <li>
-          <a href="./index.php">
+          <a href="./index_docentes.php">
             <div class="parent-icon"><i class='bx bx-home-circle'></i>
             </div>
             <div class="menu-title">Dashboard</div>
@@ -120,37 +107,6 @@ if (isset($_SESSION['nombre_usuario'])) {
     <!--start page wrapper -->
     <div class="page-wrapper">
       <div class="page-content">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-          <div class="col">
-            <div style="background: #235c81;" class="card radius-10 p-2">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div>
-                    <a class="txt-card-custom mb-0">Docentes</a>
-                    <br>
-                    <a style="color: #fee6ff;" href="./paginas/docentes.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
-                  </div>
-                  <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
-                    <i class='bx bxs-cart'></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div style="background: #204d6c;" class="card radius-10 p-2">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div>
-                    <p class="mb-0 txt-card-custom">Estudiantes</p>
-                    <a style="color: #fee6ff;" href="./paginas/estudiantes.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
-                  </div>
-                  <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto"><i class='bx bxs-wallet'></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="col">
             <div style="background: #20425a;" class="card radius-10 p-2">
               <div class="card-body">
@@ -180,6 +136,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
         <!--end row-->
