@@ -2,9 +2,10 @@
 session_start();
 include_once("./bd.php");
 
-if (isset($_SESSION['nombre_usuario'])) {
+if (!empty($_SESSION['nombre_usuario'])) {
     if ($_SESSION['docente'] == "docente") {
-      header('Location: index_docentes.php');
+      header('Location: index_estudiantes.php');
+      exit(); // Important to prevent further execution
     }
 
 }else{
@@ -70,19 +71,19 @@ if (isset($_SESSION['nombre_usuario'])) {
       <!--navigation-->
       <ul class="metismenu" id="menu">
         <li>
-          <a href="./index_estudiantes">
+          <a href="./index_estudiantes.php">
             <div class="parent-icon"><i class='bx bx-home-circle'></i>
             </div>
             <div class="menu-title">Dashboard</div>
           </a>
         </li>
-        <li>
+        <!-- <li>
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon"><i class="bx bx-category"></i>
             </div>
             <div class="menu-title">Application</div>
-          </a>
-          <ul>
+          </a> -->
+          <!-- <ul>
             <li> <a href="app-emailbox.html"><i class="bx bx-right-arrow-alt"></i>Email</a>
             </li>
             <li> <a href="app-chat-box.html"><i class="bx bx-right-arrow-alt"></i>Chat Box</a>
@@ -97,7 +98,7 @@ if (isset($_SESSION['nombre_usuario'])) {
             <div class="menu-title">Widgets</div>
           </a>
         </li>
-      </ul>
+      </ul> -->
       <!--end navigation-->
     </div>
     <!--end sidebar wrapper -->
@@ -113,7 +114,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                 <div class="d-flex align-items-center">
                   <div>
                     <p class="mb-0 txt-card-custom">Academico</p>
-                    <a style="color: #fee6ff;" href="./paginas/academico.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
+                    <a style="color: #fee6ff;" href="./Estudiantes/comprobar.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
                   </div>
                   <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto">
                     <i class='bx bxs-group'></i>

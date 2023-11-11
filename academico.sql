@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2023 at 12:41 AM
+-- Generation Time: Nov 11, 2023 at 09:43 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.33
 
@@ -36,15 +36,17 @@ CREATE TABLE `docentes` (
   `direccion` varchar(255) NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `fecha_nacimiento` date NOT NULL
+  `fecha_nacimiento` date NOT NULL,
+  `contrasena` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `docentes`
 --
 
-INSERT INTO `docentes` (`id`, `nombre`, `apellido`, `tipo_documento`, `documento_identidad`, `direccion`, `titulo`, `email`, `fecha_nacimiento`) VALUES
-(1, 'Juan Camilo', 'Gonzalias Aponza', 'cedula', '1060419059', 'cra 6 # 5  - 31', 'ingeniero de sistemas', 'juancamilo8756@hotmail.es', '2023-11-07');
+INSERT INTO `docentes` (`id`, `nombre`, `apellido`, `tipo_documento`, `documento_identidad`, `direccion`, `titulo`, `email`, `fecha_nacimiento`, `contrasena`) VALUES
+(1, 'Juan Camilo', 'Gonzalias Aponza', 'cedulas', '1060419059', 'cra 6 # 5  - 31', 'ingeniero de sistemas', 'juancamilo8756@hotmail.es', '2023-11-07', ''),
+(2, 'Alisson', 'Becker', 'CC', '123456789', 'jumm', 'Fuerza armada del peru :v', 'alison@necesitoquemepaguen.com', '2023-11-02', '');
 
 -- --------------------------------------------------------
 
@@ -58,20 +60,23 @@ CREATE TABLE `estudiantes` (
   `apellido` varchar(255) NOT NULL,
   `fecha_nacimiento` date NOT NULL,
   `genero` varchar(50) DEFAULT NULL,
-  `grupo_id` int(11) DEFAULT NULL
+  `grupo_id` int(11) DEFAULT NULL,
+  `documento_identidad` int(11) NOT NULL,
+  `contrasena` varchar(25) NOT NULL,
+  `estado_matricula` enum('pagado','sin_saldar') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `estudiantes`
 --
 
-INSERT INTO `estudiantes` (`id`, `nombre`, `apellido`, `fecha_nacimiento`, `genero`, `grupo_id`) VALUES
-(1, 'Andres', 'Bolaños', '2023-10-01', 'Masculino', 1),
-(2, 'Kevin', 'Duran', '2023-10-30', 'Masculino', 2),
-(3, 'felipe', 'Brown', '2023-10-30', 'Masculino', 1),
-(4, 'User', 'Admin', '2023-10-30', 'Femenino', 2),
-(5, 'Andres', 'Bolaños Palacios', '2023-11-02', 'Masculino', 2),
-(6, 'Camilo', 'Gon', '2023-10-31', 'Masculino', 2);
+INSERT INTO `estudiantes` (`id`, `nombre`, `apellido`, `fecha_nacimiento`, `genero`, `grupo_id`, `documento_identidad`, `contrasena`, `estado_matricula`) VALUES
+(1, 'Andres', 'Bolaños', '2023-10-01', 'Masculino', 1, 11, '', 'pagado'),
+(2, 'Kevin', 'Duran', '2023-10-30', 'Masculino', 2, 12, '', 'pagado'),
+(3, 'felipe', 'Brown', '2023-10-30', 'Masculino', 1, 123, '', ''),
+(4, 'User', 'Admin', '2023-10-30', 'Femenino', 2, 1234, '', ''),
+(5, 'Andres', 'Bolaños Palacios', '2023-11-02', 'Masculino', 2, 12345, '', 'pagado'),
+(6, 'Camilo', 'Gon', '2023-10-31', 'Masculino', 2, 123456, '', '');
 
 -- --------------------------------------------------------
 
@@ -112,9 +117,9 @@ CREATE TABLE `grupos` (
 --
 
 INSERT INTO `grupos` (`id`, `nombre_grupo`, `id_año`, `id_docente`) VALUES
-(1, 'Tecnico en sistemas', 1, 1),
-(2, 'Tecnico en deporte', 2, 1),
-(8, 'Sistemas', 1, 1);
+(1, 'Ciencias Humanas', 1, 1),
+(2, 'Sistemas', 2, 1),
+(8, 'Ciencias Sociales', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -138,7 +143,8 @@ INSERT INTO `materias` (`id`, `nombre_materia`, `codigo_materia`, `id_docente`, 
 (1, 'Anatomia', 'ANA2023A', 1, 1),
 (2, 'Sistemas Basico', 'SBDEPORTE2023', 1, 2),
 (7, 'Mantenimiento de Software', 'MFSISTEMAS2023', 1, 2),
-(10, 'quimica', '55sd', 1, 8);
+(10, 'quimica', '55sd', 1, 8),
+(11, 'Religion', 'tydda', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -165,7 +171,51 @@ INSERT INTO `notas` (`id`, `estudiante_id`, `materia_id`, `nota`) VALUES
 (29, 5, 2, 0),
 (30, 5, 7, 0),
 (31, 6, 2, 4.5),
-(32, 6, 7, 5);
+(32, 6, 7, 5),
+(33, 1, 1, 5),
+(34, 3, 1, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id_rol` bigint(20) NOT NULL,
+  `tipo_rol` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `descripcion` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id_rol`, `tipo_rol`, `descripcion`) VALUES
+(1, 'Admin', 'Este rol generalmente tiene acceso completo al sistema y tiene la capacidad de gestionar usuarios, cursos, asignación de roles, y otros aspectos de la plataforma. Los administradores son responsables de administrar y mantener la plataforma en su totalidad.'),
+(2, 'Docente', 'Los docentes tienen acceso a las funciones relacionadas con la enseñanza y la interacción con los estudiantes. Pueden crear cursos, cargar materiales de estudio, evaluar a los estudiantes y proporcionar retroalimentación. Los docentes pueden tener ciertos privilegios de gestión limitados en relación con los cursos y materiales de enseñanza.'),
+(3, 'Estudiante', 'Los estudiantes tienen acceso a los cursos en los que están inscritos. Pueden ver el contenido del curso, realizar tareas, participar en discusiones y tomar exámenes. En general, tienen acceso limitado en comparación con los docentes y los administradores, centrándose principalmente en la participación y el aprendizaje en el curso.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id_usuario` bigint(10) NOT NULL,
+  `contrasena` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `id_rol` bigint(20) NOT NULL,
+  `email` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(25) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `contrasena`, `id_rol`, `email`, `name`) VALUES
+(1, '$2y$10$krOzKCdEO5iUu0ZcZdIxdOAkUZ5V56LZwmCLUxu.qX8yQLJ1VCWmG', 1, 'camolo2013@gmail.com', 'Camilo Gonzalias Aponza');
 
 --
 -- Indexes for dumped tables
@@ -216,6 +266,19 @@ ALTER TABLE `notas`
   ADD KEY `materia_id` (`materia_id`);
 
 --
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id_rol`);
+
+--
+-- Indexes for table `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD KEY `id_rol` (`id_rol`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -247,13 +310,13 @@ ALTER TABLE `grupos`
 -- AUTO_INCREMENT for table `materias`
 --
 ALTER TABLE `materias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `notas`
 --
 ALTER TABLE `notas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Constraints for dumped tables
@@ -285,6 +348,12 @@ ALTER TABLE `materias`
 ALTER TABLE `notas`
   ADD CONSTRAINT `notas_ibfk_1` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`),
   ADD CONSTRAINT `notas_ibfk_2` FOREIGN KEY (`materia_id`) REFERENCES `materias` (`id`);
+
+--
+-- Constraints for table `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

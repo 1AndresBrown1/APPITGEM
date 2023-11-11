@@ -68,15 +68,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="page-content">
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
             <div class="col">
-                <div style="background: #235c81;" class="card radius-10 p-2">
+                <div style="background: #a7a7a7;" class="card radius-10 p-2">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center" >
                             <div>
-                                <a class="txt-card-custom mb-0">Crear Año</a>
+                                <a class="txt-card-custom mb-0"style="color: #838383;">Crear Año</a>
                                 <br>
-                                <a style="color: #fee6ff;" href="#" id="mostrarFormulario1" class="text-blue-500 hover:underline">Click aqui</a>
+                                <a style="color: #838383;" href="#" id="mostrarFormulario1" >Click aquí</a>
                             </div>
-                            <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
+                            <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto disabled-icon">
                                 <i class='bx bxs-cart'></i>
                             </div>
                         </div>
@@ -243,11 +243,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                     <label for="id_docente">Docente:</label>
-                    <select class="form-control" id="id_docente" name="id_docente" required>
+                    <select class="form-control" id="id_docente" name="id_docente" required disabled>
                         <?php
-                        // Conecta a la base de datos y recupera los grupos
+                        // Conecta a la base de datos y recupera el nombre del docente activo
                         include("../bd.php");
-                        $sql = "SELECT id, nombre FROM docentes";
+
+                        // Obtén el ID del docente activo desde la sesión
+                        $idDocenteActivo = $_SESSION['id_docente'];
+
+                        // Consulta para obtener el nombre del docente activo
+                        $sql = "SELECT id, nombre FROM docentes WHERE id = $idDocenteActivo";
                         $result = $conexion->query($sql);
 
                         if ($result) {
@@ -257,6 +262,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         }
                         ?>
                     </select>
+
                 </div>
                 <div class="form-group">
                     <label for="id_grupo">Grupo/Curso:</label>
@@ -286,7 +292,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col"># <?php echo $_SESSION['id_docente'];?></th>
                         <th scope="col">Código de Materia</th>
                         <th scope="col">Nombre de la Materia</th>
                         <th scope="col">Grupo</th>
@@ -295,36 +301,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-                    // Consulta para obtener los datos de las materias, grupos y años académicos con el nombre completo del docente
-                    $sql = "SELECT m.id AS materia_id, m.codigo_materia, m.nombre_materia, m.id_docente, g.nombre_grupo, a.nombre_a, d.nombre
-                    FROM materias m 
-                    INNER JOIN grupos g ON m.id_grupo = g.id
-                    INNER JOIN gestion_a a ON g.id_año = a.id
-                    INNER JOIN docentes d ON m.id_docente = d.id";
-                    $result = $conexion->query($sql);
+                    <tbody>
+                        <?php
+                        // Obtén el ID del docente activo desde la sesión
+                        $idDocenteActivo = $_SESSION['id_docente'];
 
-                    if ($result) {
-                        $i = 1;
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<th scope='row'>$i</th>";
-                            echo "<td>" . $row['codigo_materia'] . "</td>";
-                            echo "<td>" . $row['nombre_materia'] . "</td>";
-                            echo "<td>" . $row['nombre_grupo'] . "</td>";
-                            echo "<td>" . $row['nombre'] . "</td>"; // Aquí se muestra el nombre completo del docente
-                            echo "<td>" . $row['nombre_a'] . "</td>";
-                            echo "<td><a href='editar_materia.php?id=" . $row['materia_id'] . "'>Editar</a> | <a href='#' onclick='confirmDelete(" . $row['materia_id'] . ");'>Eliminar</a></td>";
-                            echo "</tr>";
-                            $i++;
+                        // Consulta para obtener los datos de las materias, grupos y años académicos con el nombre completo del docente
+                        $sql = "SELECT m.id AS materia_id, m.codigo_materia, m.nombre_materia, m.id_docente, g.nombre_grupo, a.nombre_a, d.nombre
+                        FROM materias m 
+                        INNER JOIN grupos g ON m.id_grupo = g.id
+                        INNER JOIN gestion_a a ON g.id_año = a.id
+                        INNER JOIN docentes d ON m.id_docente = d.id
+                        WHERE d.id = $idDocenteActivo"; // Agrega la condición para el docente activo
+
+                        $result = $conexion->query($sql);
+
+                        if ($result) {
+                            $i = 1;
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<th scope='row'>$i</th>";
+                                echo "<td>" . $row['codigo_materia'] . "</td>";
+                                echo "<td>" . $row['nombre_materia'] . "</td>";
+                                echo "<td>" . $row['nombre_grupo'] . "</td>";
+                                echo "<td>" . $row['nombre'] . "</td>"; // Ahora se muestra el nombre completo del docente
+                                echo "<td>" . $row['nombre_a'] . "</td>";
+                                echo "<td><a href='editar_materia.php?id=" . $row['materia_id'] . "'>Editar</a> | <a href='#' onclick='confirmDelete(" . $row['materia_id'] . ");'>Eliminar</a></td>";
+                                echo "</tr>";
+                                $i++;
+                            }
+                            $result->free();
+                        } else {
+                            echo '<tr><td colspan="6">No hay datos de materias disponibles.</td></tr>';
                         }
-                        $result->free();
-                    } else {
-                        echo '<tr><td colspan="6">No hay datos de materias disponibles.</td></tr>';
-                    }
-                    ?>
-                </tbody>
+                        ?>
+                    </tbody>
             </table>
 
             <script>
@@ -371,11 +382,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                     <label for="id_docente">Docente:</label>
-                    <select class="form-control" id="id_docente" name="id_docente" required>
+                    <select class="form-control" id="id_docente" name="id_docente" required disabled>
                         <?php
-                        // Conecta a la base de datos y recupera los grupos
+                        // Conecta a la base de datos y recupera el nombre del docente activo
                         include("../bd.php");
-                        $sql = "SELECT id, nombre FROM docentes";
+
+                        // Obtén el ID del docente activo desde la sesión
+                        $idDocenteActivo = $_SESSION['id_docente'];
+
+                        // Consulta para obtener el nombre del docente activo
+                        $sql = "SELECT id, nombre FROM docentes WHERE id = $idDocenteActivo";
                         $result = $conexion->query($sql);
 
                         if ($result) {
@@ -385,6 +401,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         }
                         ?>
                     </select>
+
                 </div>
                 <br>
                 <button type="submit" class="btn btn-primary">Registrar Grupo</button>
@@ -411,12 +428,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    // Consulta para obtener los datos de los grupos
-                    $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, g.id_docente, a.nombre_a, d.nombre FROM grupos g 
-                    INNER JOIN gestion_a a ON g.id_año = a.id
-                    INNER JOIN docentes d ON g.id_docente = d.id
-                    ";
+                <?php
+                    // Obtén el ID del docente activo desde la sesión
+                    $idDocenteActivo = $_SESSION['id_docente'];
+
+                    // Consulta para obtener los datos de los grupos filtrados por el docente activo
+                            $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, g.id_docente, a.nombre_a, d.nombre FROM grupos g 
+                            INNER JOIN gestion_a a ON g.id_año = a.id
+                            INNER JOIN docentes d ON g.id_docente = d.id
+                            WHERE g.id_docente = $idDocenteActivo";
+
                     $result = $conexion->query($sql);
 
                     if ($result) {
@@ -428,7 +449,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             echo "<td>" . $row['nombre_a'] . "</td>";
                             echo "<td>" . $row['nombre'] . "</td>";
                             echo "<td><a href='editar_grupo.php?id=" . $row['grupo_id'] . "'>Editar</a> | <a href='javascript:confirmarEliminacion(" . $row['grupo_id'] . ")'>Eliminar</a></td>";
-
                             echo "</tr>";
                             $i++;
                         }
@@ -443,7 +463,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <script>
             document.getElementById("mostrarFormulario1").addEventListener("click", function() {
-                document.getElementById("formulario1").style.display = "block";
+                document.getElementById("formulario1").style.display = "none";
                 document.getElementById("formulario2").style.display = "none";
                 document.getElementById("formulario3").style.display = "none";
 

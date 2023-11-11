@@ -12,4 +12,5 @@ $conexion = new mysqli($nombre_de_host, $nombre_de_usuario, $contraseña, $nombr
 if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
+
 ?>

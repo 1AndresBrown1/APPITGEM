@@ -2,9 +2,10 @@
 session_start();
 include_once("./bd.php");
 
-if (isset($_SESSION['nombre_usuario'])) {
+if (!empty($_SESSION['nombre_usuario'])) {
     if ($_SESSION['estudiante'] == "estudiante") {
-      header('Location: index_estudiantes.php');
+      header('Location: index_docentes.php');
+      exit(); // Important to prevent further execution
     }
 
 }else{
@@ -113,7 +114,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                 <div class="d-flex align-items-center">
                   <div>
                     <p class="mb-0 txt-card-custom">Notas</p>
-                    <a style="color: #fee6ff;" href="./paginas/notas.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
+                    <a style="color: #fee6ff;" href="./Docentes/notas.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
                   </div>
                   <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
                     <i class='bx bxs-bar-chart-alt-2'></i>
@@ -128,7 +129,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                 <div class="d-flex align-items-center">
                   <div>
                     <p class="mb-0 txt-card-custom">Academico</p>
-                    <a style="color: #fee6ff;" href="./paginas/academico.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
+                    <a style="color: #fee6ff;" href="./Docentes/academico.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
                   </div>
                   <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto">
                     <i class='bx bxs-group'></i>

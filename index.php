@@ -1,11 +1,13 @@
 <?php
-// Desactivar la visualización de errores
-error_reporting(0);
-session_start();
 require 'bd.php';
+// Desactivar la visualización de errores
+session_start();
+error_reporting(0);
+
+
 
 // Verifica si ya hay una sesión activa
-if (isset($_SESSION['nombre_usuario'])) {
+if (!empty($_SESSION['nombre_usuario'])) {
     // Verifica si el usuario es un administrador
     if ($_SESSION['admin'] == "admin") {
         // Si el usuario es un administrador, rediríjalo al index.php

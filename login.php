@@ -4,19 +4,23 @@ require 'bd.php';
 
 // Función para obtener el nombre de usuario a partir de la identificación y el tipo de usuario
 function obtenerNombreUsuario($identificacion, $tipo_usuario, $conexion) {
-  $nombre = "";
+  $resultado = array('nombre' => '', 'id' => '');
+
   if ($tipo_usuario === 'docente') {
-      $query = "SELECT nombre FROM docentes WHERE documento_identidad = '$identificacion'";
-      $result = mysqli_query($conexion, $query);
-      $row = mysqli_fetch_assoc($result);
-      $nombre = $row['nombre'];
+      $query = "SELECT id, nombre FROM docentes WHERE documento_identidad = '$identificacion'";
   } elseif ($tipo_usuario === 'estudiante') {
-      $query = "SELECT nombre FROM estudiantes WHERE documento_identidad = '$identificacion'";
-      $result = mysqli_query($conexion, $query);
-      $row = mysqli_fetch_assoc($result);
-      $nombre = $row['nombre'];
+      $query = "SELECT id, nombre FROM estudiantes WHERE documento_identidad = '$identificacion'";
   }
-  return $nombre;
+
+  $result = mysqli_query($conexion, $query);
+
+  if ($result && mysqli_num_rows($result) > 0) {
+      $row = mysqli_fetch_assoc($result);
+      $resultado['nombre'] = $row['nombre'];
+      $resultado['id'] = $row['id'];
+  }
+
+  return $resultado;
 }
 // Declara las variables globales
 $_SESSION['nombre_usuario'] = "";
@@ -37,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['nombre_usuario'] = $nombre_usuario;
         $_SESSION['identificacion_usuario'] = $identificacion;
         $_SESSION['docente'] = "docente";
+        $_SESSION['id_docente'] = $nombre_usuario['id'];
         header('Location: index_docentes.php');
     } elseif ($tipo_usuario === 'estudiante') {
         // Verifica las credenciales para estudiantes en la base de datos 'estudiantes'
@@ -46,10 +51,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['nombre_usuario'] = $nombre_usuario;
         $_SESSION['identificacion_usuario'] = $identificacion;
         $_SESSION['estudiante'] = "estudiante";
+        $_SESSION['id_estudiante'] = $nombre_usuario['id']; 
         header('Location: index_estudiantes.php');
     } else {
         // Tipo de usuario no válido
         echo "Tipo de usuario no válido";
+        $_SESSION['estudiante'] = "0";
+        $_SESSION['docente'] = "0";
     }
 }
 ?>
