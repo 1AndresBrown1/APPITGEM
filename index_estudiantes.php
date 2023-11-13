@@ -1,18 +1,30 @@
 <?php
 session_start();
-include_once("./bd.php");
+require 'bd.php';
+// error_reporting(0);
 
-if (!empty($_SESSION['nombre_usuario'])) {
-    if ($_SESSION['docente'] == "docente") {
-      header('Location: index_estudiantes.php');
-      exit(); // Important to prevent further execution
-    }
+// Verifica si ya hay una sesión activa
+if (isset($_SESSION['nombre_usuario'])) {
+  // Verifica si el usuario es un administrador
+  if ($_SESSION['estudiante'] === "estudiante") {
+        // Si el usuario es un administrador, rediríjalo al index.php
+        $message ='Estudiante';
 
-}else{
+  } else {
+      // Si el usuario no es un administrador, rediríjalo a la página correspondiente según el tipo de usuario
+      if ($_SESSION['docente'] == 'docente') {
+        header('Location: index_docentes.php');
+          exit();
+      } elseif ($_SESSION['admin'] === "admin") {
+          header("Location: index.php");
+          exit();
+      }
+  }
+} else {
+  // Si no hay una sesión activa, redirigir al usuario a la página de inicio de sesión
     header('Location: login.php');
+    exit();
 }
-
-
 
 ?>
 
@@ -82,23 +94,25 @@ if (!empty($_SESSION['nombre_usuario'])) {
             <div class="parent-icon"><i class="bx bx-category"></i>
             </div>
             <div class="menu-title">Application</div>
-          </a> -->
-          <!-- <ul>
+          </a>
+          <ul>
             <li> <a href="app-emailbox.html"><i class="bx bx-right-arrow-alt"></i>Email</a>
             </li>
             <li> <a href="app-chat-box.html"><i class="bx bx-right-arrow-alt"></i>Chat Box</a>
             </li>
           </ul>
-        </li>
+        </li> -->
         <li class="menu-label">UI Elements</li>
         <li>
-          <a href="widgets.html">
+          <a href="#">
             <div class="parent-icon"><i class='bx bx-cookie'></i>
             </div>
-            <div class="menu-title">Widgets</div>
+            <?php if (isset($message)): ?>
+              <p style="color: red;"><?php echo $message; // mensaje de administrador  ?></p> 
+            <?php endif; ?>
           </a>
         </li>
-      </ul> -->
+      </ul>
       <!--end navigation-->
     </div>
     <!--end sidebar wrapper -->

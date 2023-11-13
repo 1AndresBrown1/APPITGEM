@@ -7,7 +7,9 @@
           <div class="search-bar flex-grow-1">
             <div class="position-relative">
               <br>
-              <h2 style="color:#3a0035;     font-weight: 600;">ITGEM</h2>
+              <h2 style="color:#3a0035;     font-weight: 600;">  <?php
+              echo $_SESSION['nombre_usuario'];
+              ?></h2>
             </div>
           </div>
           <div class="user-box dropdown">

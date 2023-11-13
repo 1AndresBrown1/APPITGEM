@@ -12,5 +12,6 @@ $conexion = new mysqli($nombre_de_host, $nombre_de_usuario, $contraseña, $nombr
 if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
-
+// // forma 2
+// $conn = new PDO("mysql:host=$nombre_de_host ;dbname=$nombre_de_base_de_datos;", $nombre_de_usuario, $contraseña);
 ?>

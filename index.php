@@ -1,18 +1,16 @@
 <?php
-require 'bd.php';
-// Desactivar la visualización de errores
 session_start();
-error_reporting(0);
-
+require 'bd.php';
+// error_reporting(0);
 
 
 // Verifica si ya hay una sesión activa
-if (!empty($_SESSION['nombre_usuario'])) {
+if (isset($_SESSION['nombre_usuario'])) {
     // Verifica si el usuario es un administrador
-    if ($_SESSION['admin'] == "admin") {
-        // Si el usuario es un administrador, rediríjalo al index.php
-        header("Location: index.php");
-        exit(); // Es importante detener la ejecución adicional
+    if ($_SESSION['admin'] == 'admin') {
+          // Si el usuario es un administrador, rediríjalo al index.php
+          $message ='Administrador';
+
     } else {
         // Si el usuario no es un administrador, rediríjalo a la página correspondiente según el tipo de usuario
         if ($_SESSION['docente'] === 'docente') {
@@ -106,10 +104,12 @@ if (!empty($_SESSION['nombre_usuario'])) {
         </li>
         <li class="menu-label">UI Elements</li>
         <li>
-          <a href="widgets.html">
+          <a href="#">
             <div class="parent-icon"><i class='bx bx-cookie'></i>
             </div>
-            <div class="menu-title">Widgets</div>
+            <?php if (isset($message)): ?>
+              <p style="color: red;"><?php echo $message; // mensaje de administrador  ?></p> 
+            <?php endif; ?>
           </a>
         </li>
       </ul>
@@ -119,6 +119,7 @@ if (!empty($_SESSION['nombre_usuario'])) {
  <?php
  include_once("./Header.php");
  ?>
+
     <!--start page wrapper -->
     <div class="page-wrapper">
       <div class="page-content">
