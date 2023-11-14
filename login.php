@@ -2,26 +2,10 @@
 session_start();
 require 'bd.php';
 
-// Función para obtener el nombre de usuario a partir de la identificación y el tipo de usuario
-function obtenerNombreUsuario($identificacion, $tipo_usuario, $conexion) {
-    $resultado = array('nombre' => '', 'id' => '');
-
-    if ($tipo_usuario === 'docente') {
-        $query = "SELECT id, nombre FROM docentes WHERE documento_identidad = '$identificacion'";
-    } elseif ($tipo_usuario === 'estudiante') {
-        $query = "SELECT id, nombre FROM estudiantes WHERE documento_identidad = '$identificacion'";
-    }
-
-    $result = mysqli_query($conexion, $query);
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $resultado['nombre'] = $row['nombre'];
-        $resultado['id'] = $row['id'];
-        $_SESSION['nombre_usuario'] = $resultado['nombre'];
-    }
-
-    return $resultado;
+// Redirigir si ya hay una sesión activa
+if (!empty($_SESSION['nombre_usuario'])) {
+    header('Location: index.php');
+    exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -31,56 +15,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Realiza la consulta en la base de datos para verificar las credenciales
     if ($tipo_usuario === 'docente') {
-        $query = "SELECT * FROM docentes WHERE documento_identidad = '$identificacion'";
-        $result = mysqli_query($conexion, $query);
-
-        if ($result && mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-
-            // Verifica la contraseña
-            if (password_verify($contrasena, $row['contrasena'])) {
-                // Credenciales correctas
-                $nombre_usuario = obtenerNombreUsuario($identificacion, $tipo_usuario, $conexion);
-                $_SESSION['identificacion_usuario'] = $identificacion;
-                $_SESSION['docente'] = 'docente';
-                $_SESSION['id_docente'] = $nombre_usuario['id'];
-                header('Location: index_docentes.php');
-                exit(); // Importante para evitar ejecución adicional
-            } else {
-                $error_message = 'Contraseña incorrecta';
-            }
-        } else {
-            $error_message = 'Usuario no encontrado';
-        }
+        $query = "SELECT id, nombre, contrasena FROM docentes WHERE documento_identidad = ?";
     } elseif ($tipo_usuario === 'estudiante') {
-        $query = "SELECT * FROM estudiantes WHERE documento_identidad = '$identificacion'";
-        $result = mysqli_query($conexion, $query);
-
-        if ($result && mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-
-            // Verifica la contraseña
-            if (password_verify($contrasena, $row['contrasena'])) {
-                // Credenciales correctas
-                $nombre_usuario = obtenerNombreUsuario($identificacion, $tipo_usuario, $conexion);
-                $_SESSION['identificacion_usuario'] = $identificacion;
-                $_SESSION['estudiante'] = 'estudiante';
-                $_SESSION['id_estudiante'] = $nombre_usuario['id'];
-                header('Location: index_estudiantes.php');
-                exit(); // Importante para evitar ejecución adicional
-            } else {
-                $error_message = 'Contraseña incorrecta';
-            }
-        } else {
-            $error_message = 'Usuario no encontrado';
-        }
+        $query = "SELECT id, nombre, contrasena FROM estudiantes WHERE documento_identidad = ?";
     } else {
         $error_message = 'Tipo de usuario no válido';
+        exit();
     }
 
-    // Si llegamos aquí, significa que hay un error
-    // Puedes mostrar el mensaje de error en tu formulario
-    // y utilizar $error_message en el lugar adecuado en tu HTML
+    // Evitar la inyección de SQL utilizando sentencias preparadas
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param('s', $identificacion); // 's' indica que el parámetro es de tipo string
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if (password_verify($contrasena, $row['contrasena'])) {
+            $_SESSION['id_usuario'] = $row['id'];
+            $_SESSION['identificacion_usuario'] = $identificacion;
+
+            if ($tipo_usuario === 'docente') {
+                $_SESSION['nombre_usuario'] = $row['nombre'];
+                $_SESSION['docente'] = 'docente';
+                $_SESSION['id_docente'] = $_SESSION['id_usuario'];
+                $_SESSION['identificacion_usuario'] = $identificacion;
+                header('Location: index_docentes.php');
+                
+            } elseif ($tipo_usuario === 'estudiante') {
+                $_SESSION['nombre_usuario'] = $row['nombre'];
+                $_SESSION['estudiante'] = 'estudiante';
+                $_SESSION['id_estudiante'] = $_SESSION['id_usuario'];
+                $_SESSION['identificacion_usuario'] = $identificacion;
+                header('Location: index_estudiantes.php');
+            }
+
+            exit(); // Importante para evitar ejecución adicional
+        } else {
+            $error_message = 'Contraseña incorrecta';
+        }
+    } else {
+        $error_message = 'Usuario no encontrado';
+    }
+
+    $stmt->close();
+} else {
+    $error_message = 'Por favor, complete los campos requeridos.';
 }
 ?>
 

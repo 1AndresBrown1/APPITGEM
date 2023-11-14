@@ -2,6 +2,8 @@
 include_once("./header.php");
 include("../bd.php");
 
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera los datos del formulario
     $nombre = $_POST["nombre"];
@@ -9,38 +11,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fechaNacimiento = $_POST["fecha_nacimiento"];
     $genero = $_POST["genero"];
     $grupoId = $_POST["grupo"];
+    $documento_identidad = $_POST["documento_identidad"];
+    $contrasena = $_POST["contrasena"];
+    $verificarContrasena = $_POST["verificarContrasena"];
+    $estadoMatricula = $_POST["estado_matricula"];
 
-    // Prepara la consulta SQL para insertar un nuevo estudiante
-    $sql = "INSERT INTO estudiantes (nombre, apellido, fecha_nacimiento, genero, grupo_id) VALUES (?, ?, ?, ?, ?)";
+    // Verifica si las contraseñas coinciden
+    if ($contrasena != $verificarContrasena) {
+        echo '<div class="alert alert-danger" role="alert">Las contraseñas no coinciden.</div>';
+        exit;
+    }
+    function hashPassword($password) {
+        // Hash de la contraseña
+        $options = [
+            'cost' => 12,
+        ];
+        $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
+        return $password_hash;
+    }
+    if ($contrasena !== $verificarContrasena) {
+        echo "Las contraseñas no coinciden. Por favor, verifica.";
+    } else {
+        // Hash de la contraseña
+        $hashedContrasena = hashPassword($contrasena);
 
-    // Verifica si la conexión está abierta antes de preparar la consulta
+        echo "Contraseña original: " . $contrasena . "<br>";
+        echo "Contraseña hash: " . $hashedContrasena. "<br>";
+
+        // Verificación usando password_verify
+        if (password_verify($contrasena, $hashedContrasena)) {
+            echo "Contraseña verificada con éxito.<br>";
+        } else {
+            echo "Error en la verificación de contraseña.<br>";
+        }
+    // Hash de la contraseña utilizando la función personalizada
+    // $hashedContrasena = hashPassword($contrasena);
+
+    // Preparar y ejecutar la consulta de inserción
+    $sql = "INSERT INTO estudiantes (nombre, apellido, fecha_nacimiento, genero, grupo_id, documento_identidad, contrasena, estado_matricula) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    // Verificar si la conexión está abierta antes de preparar la consulta
     if (!$conexion->connect_error) {
-        // Prepara la sentencia
+        // Preparar la sentencia
         $stmt = $conexion->prepare($sql);
 
         if ($stmt) {
-            // Asocia los parámetros
-            $stmt->bind_param("ssssi", $nombre, $apellido, $fechaNacimiento, $genero, $grupoId);
+            // Asociar los parámetros
+            $stmt->bind_param("ssssiiss", $nombre, $apellido, $fechaNacimiento, $genero, $grupoId, $documento_identidad, $hashedContrasena, $estadoMatricula);
 
-            // Ejecuta la sentencia
+            // Ejecutar la sentencia
             if ($stmt->execute()) {
-                // Redirige a la página de estudiantes o a otra página
-                echo '<script>alert("El grupo se ha creado con éxito.");</script>';
-
+                // Redirigir a la página de estudiantes o a otra página
+                echo '<script>alert("El estudiante se ha registrado con éxito.");</script>';
                 echo '<script>window.location.href = "./estudiantes.php";</script>';
                 exit;
             } else {
                 echo '<div class="alert alert-danger" role="alert">Error al guardar el estudiante: ' . $stmt->error . '</div>';
             }
 
-            // Cierra la sentencia
+            // Cerrar la sentencia
             $stmt->close();
         } else {
             echo '<div class="alert alert-danger" role="alert">Error al preparar la sentencia: ' . $conexion->error . '</div>';
         }
     }
 }
-
-// A continuación, muestra el formulario de estudiantes.
-// Aquí debe ir el código HTML del formulario que muestran en la página para ingresar datos de estudiantes.
+}
 ?>

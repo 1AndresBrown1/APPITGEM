@@ -3,6 +3,33 @@ include_once("./header.php");
 
 ?>
 
+<script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var contrasenaInput = document.getElementById("contrasena");
+                var verificarContrasenaInput = document.getElementById("verificarContrasena");
+
+                function validarContrasenas() {
+                    var contrasena = contrasenaInput.value;
+                    var verificarContrasena = verificarContrasenaInput.value;
+
+                    if (contrasena === verificarContrasena) {
+                        // Contraseñas coinciden, aplicar estilo verde
+                        verificarContrasenaInput.style.borderColor = "green";
+                    } else {
+                        // Contraseñas no coinciden, aplicar estilo rojo
+                        verificarContrasenaInput.style.borderColor = "red";
+                    }
+                }
+
+                contrasenaInput.addEventListener("input", validarContrasenas);
+                verificarContrasenaInput.addEventListener("input", validarContrasenas);
+
+                // Evento para reiniciar el estilo cuando se enfoca en el campo
+                verificarContrasenaInput.addEventListener("focus", function () {
+                    verificarContrasenaInput.style.borderColor = "";
+                });
+            });
+            </script>
 <style>
     input[type="text"],
     input[type="email"],
@@ -115,6 +142,20 @@ include_once("./header.php");
                         <div class="form-group mb-3">
                             <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
                             <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="contrasena">Contraseña:</label>
+                            <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="verificarContrasena">Verificar contraseña:</label>
+                            <input type="password" class="form-control" id="verificarContrasena" name="verificarContrasena" required>
                         </div>
                     </div>
                 </div>

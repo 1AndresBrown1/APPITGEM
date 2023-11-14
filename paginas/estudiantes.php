@@ -13,7 +13,33 @@ include_once("./header.php");
         border-radius: 10px;
     }
 </style>
+<script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var contrasenaInput = document.getElementById("contrasena");
+                var verificarContrasenaInput = document.getElementById("verificarContrasena");
 
+                function validarContrasenas() {
+                    var contrasena = contrasenaInput.value;
+                    var verificarContrasena = verificarContrasenaInput.value;
+
+                    if (contrasena === verificarContrasena) {
+                        // Contraseñas coinciden, aplicar estilo verde
+                        verificarContrasenaInput.style.borderColor = "green";
+                    } else {
+                        // Contraseñas no coinciden, aplicar estilo rojo
+                        verificarContrasenaInput.style.borderColor = "red";
+                    }
+                }
+
+                contrasenaInput.addEventListener("input", validarContrasenas);
+                verificarContrasenaInput.addEventListener("input", validarContrasenas);
+
+                // Evento para reiniciar el estilo cuando se enfoca en el campo
+                verificarContrasenaInput.addEventListener("focus", function () {
+                    verificarContrasenaInput.style.borderColor = "";
+                });
+            });
+            </script>
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
@@ -101,6 +127,32 @@ include_once("./header.php");
                         ?>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="documento_identidad">Documento de Identidad:</label>
+                    <input type="number" class="form-control" id="documento_identidad" name="documento_identidad" required>
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="contrasena">Contraseña:</label>
+                            <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="verificarContrasena">Verificar contraseña:</label>
+                            <input type="password" class="form-control" id="verificarContrasena" name="verificarContrasena" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="estado_matricula">Estado de Matrícula:</label>
+                    <select class="form-control" id="estado_matricula" name="estado_matricula" required>
+                        <option value="pagado">Pagado</option>
+                        <option value="sin_saldar">Sin saldar</option>
+                    </select>
+                </div>
+
                 <br>
                 <button type="submit" class="btn btn-primary">Registrar Estudiante</button>
             </form>
