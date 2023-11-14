@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2023 at 09:43 AM
+-- Generation Time: Nov 14, 2023 at 01:19 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.33
 
@@ -37,7 +37,7 @@ CREATE TABLE `docentes` (
   `titulo` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `fecha_nacimiento` date NOT NULL,
-  `contrasena` varchar(25) NOT NULL
+  `contrasena` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -45,8 +45,8 @@ CREATE TABLE `docentes` (
 --
 
 INSERT INTO `docentes` (`id`, `nombre`, `apellido`, `tipo_documento`, `documento_identidad`, `direccion`, `titulo`, `email`, `fecha_nacimiento`, `contrasena`) VALUES
-(1, 'Juan Camilo', 'Gonzalias Aponza', 'cedulas', '1060419059', 'cra 6 # 5  - 31', 'ingeniero de sistemas', 'juancamilo8756@hotmail.es', '2023-11-07', ''),
-(2, 'Alisson', 'Becker', 'CC', '123456789', 'jumm', 'Fuerza armada del peru :v', 'alison@necesitoquemepaguen.com', '2023-11-02', '');
+(1, 'Juan Camilo', 'Gonzalias Aponza', 'cedulas', '1060419059', 'cra 6 # 5  - 31', 'ingeniero de sistemas', 'juancamilo8756@hotmail.es', '2023-11-07', '$2y$10$krOzKCdEO5iUu0ZcZdIxdOAkUZ5V56LZwmCLUxu.qX8yQLJ1VCWmG'),
+(2, 'Alisson', 'Becker', 'CC', '123456789', 'jumm', 'Fuerza armada del peru :v', 'alison@necesitoquemepaguen.com', '2023-11-02', '$2y$12$xsB8U2P2xhc3MYWCclPl6uRtUDojFHT2ztoNIzaIOv09isBcC3pv.');
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,7 @@ CREATE TABLE `estudiantes` (
   `genero` varchar(50) DEFAULT NULL,
   `grupo_id` int(11) DEFAULT NULL,
   `documento_identidad` int(11) NOT NULL,
-  `contrasena` varchar(25) NOT NULL,
+  `contrasena` mediumtext NOT NULL,
   `estado_matricula` enum('pagado','sin_saldar') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -71,12 +71,11 @@ CREATE TABLE `estudiantes` (
 --
 
 INSERT INTO `estudiantes` (`id`, `nombre`, `apellido`, `fecha_nacimiento`, `genero`, `grupo_id`, `documento_identidad`, `contrasena`, `estado_matricula`) VALUES
-(1, 'Andres', 'Bolaños', '2023-10-01', 'Masculino', 1, 11, '', 'pagado'),
+(1, 'Andres', 'Bolaños', '2023-10-01', 'Masculino', 1, 11, '$2y$10$krOzKCdEO5iUu0ZcZdIxdOAkUZ5V56LZwmCLUxu.qX8yQLJ1VCWmG', 'pagado'),
 (2, 'Kevin', 'Duran', '2023-10-30', 'Masculino', 2, 12, '', 'pagado'),
-(3, 'felipe', 'Brown', '2023-10-30', 'Masculino', 1, 123, '', ''),
-(4, 'User', 'Admin', '2023-10-30', 'Femenino', 2, 1234, '', ''),
+(3, 'felipe', 'Brown', '2023-10-30', 'Masculino', 1, 123, '$2y$10$krOzKCdEO5iUu0ZcZdIxdOAkUZ5V56LZwmCLUxu.qX8yQLJ1VCWmG', ''),
 (5, 'Andres', 'Bolaños Palacios', '2023-11-02', 'Masculino', 2, 12345, '', 'pagado'),
-(6, 'Camilo', 'Gon', '2023-10-31', 'Masculino', 2, 123456, '', '');
+(6, 'Camilo', 'Gonzalias', '2023-10-31', 'Masculino', 2, 123455, '\0$2y$10$PVsP.6WRDfU6eM0G3awhp.1KkvfYnoQNyTdwrHRchhvkc0p/mtF6', 'pagado');
 
 -- --------------------------------------------------------
 
@@ -286,13 +285,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT for table `docentes`
 --
 ALTER TABLE `docentes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `estudiantes`
 --
 ALTER TABLE `estudiantes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `gestion_a`
