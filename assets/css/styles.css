@@ -1,0 +1,39 @@
+
+body{
+    font-family: 'Rubik', sans-serif !important; 
+}
+
+.p-custom{
+font-size: 22px !important;
+width: 60%; 
+margin: auto;
+}
+
+.inputdiv{
+    width: 50% !important; 
+    margin: auto !important;
+}
+
+.btn-custom{
+    background-color: #fde047 !important;
+    color: #172554 !important;
+}
+
+.cardcustom{
+    width: 70% !important;
+    margin: auto;
+    background-color: #fcd34d !important;
+    border-radius: 15px;
+}
+
+@media screen and (max-width: 872px){
+    .p-custom{
+        width: 100%; 
+        font-size: 20px !important;
+    }
+
+    .inputdiv{
+        width: 95% !important; 
+        margin: auto !important;
+    }
+}
