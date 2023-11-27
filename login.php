@@ -86,7 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Bootstrap -->
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
     <!-- Bootstrap -->
-
 </head>
 
 <body>

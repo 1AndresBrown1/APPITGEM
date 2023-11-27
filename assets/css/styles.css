@@ -1,39 +1,104 @@
-
-body{
-    font-family: 'Rubik', sans-serif !important; 
+body {
+    font-family: 'Rubik', sans-serif !important;
 }
 
-.p-custom{
-font-size: 22px !important;
-width: 60%; 
-margin: auto;
+a {
+    color: #000 !important;
 }
 
-.inputdiv{
-    width: 50% !important; 
+.p-custom {
+    font-size: 22px !important;
+    width: 60%;
+    margin: auto;
+}
+
+.inputdiv {
+    width: 50% !important;
     margin: auto !important;
 }
 
-.btn-custom{
+.btn-custom {
     background-color: #fde047 !important;
     color: #172554 !important;
+    border-radius: 10px;
 }
 
-.cardcustom{
-    width: 70% !important;
+.btn-custom-nav {
+    background-color: #fde047 !important;
+    color: #172554 !important;
+    border-radius: 10px;
+    margin-left: 1.5rem !important;
+}
+
+
+.cardcustom {
+    width: 85% !important;
     margin: auto;
-    background-color: #fcd34d !important;
+    background-color: #fef9c3 !important;
     border-radius: 15px;
 }
 
-@media screen and (max-width: 872px){
-    .p-custom{
-        width: 100%; 
+.bg-gradient-scooter {
+    background: #272727;
+    background: -webkit-linear-gradient(45deg, #272727, #272727) !important;
+    background: linear-gradient(45deg, #272727, #272727) !important;
+}
+
+.widgets-icons-2 {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ededed;
+    font-size: 27px;
+    border-radius: 10px;
+}
+
+.div-info{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    height:  50vh;
+	background-color: #6b98c5;
+	border-radius: 20px;
+}
+
+.div-info1{
+    display: flex;
+	align-items: center;
+	justify-content: center;
+    height:  50vh;
+	background-color: #366293;
+	border-radius: 20px;
+}
+
+
+@media screen and (max-width: 872px) {
+    .p-custom {
+        width: 100%;
         font-size: 20px !important;
     }
 
-    .inputdiv{
-        width: 95% !important; 
+    .inputdiv {
+        width: 95% !important;
         margin: auto !important;
     }
+
+    .cardcustom {
+        width: 90% !important;
+        margin: auto !important;
+        background-color: #fef9c3 !important;
+        border-radius: 15px;
+    }
+
+    .btn-custom-nav {
+        background-color: #fef9c3 !important;
+        color: #172554 !important;
+        border-radius: 10px;
+        padding: 10px !important;
+        margin-left: .1rem !important;
+    }
+
+
 }

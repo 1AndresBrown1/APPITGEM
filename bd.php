@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Define las credenciales de la base de datos
 $nombre_de_host = "localhost";
 $nombre_de_usuario = "root";
@@ -17,7 +20,5 @@ try {
       die('Connection Failed: ' . $e->getMessage());
       }
   }
-
-
-
 ?>
+
