@@ -101,10 +101,10 @@ if (isset($_SESSION['nombre_usuario'])) {
         </li>
 
         <li>
-          <a href="./Docentes/academico.php">
+          <a href="./Docentes/listar_estudiantes.php">
             <div class="parent-icon"><i class="fa-solid fa-book"></i>
             </div>
-            <div class="menu-title">Academico</div>
+            <div class="menu-title">Ver grupos</div>
           </a>
         </li>
 
@@ -201,8 +201,8 @@ if (isset($_SESSION['nombre_usuario'])) {
             <div class="card-body">
               <div class="d-flex align-items-center">
                 <div>
-                  <p class="mb-0 txt-card-custom">Academico</p>
-                  <a style="color: #fee6ff;" href="./Docentes/academico.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
+                  <p class="mb-0 txt-card-custom">Ver Grupos</p>
+                  <a style="color: #fee6ff;" href="./Docentes/listar_estudiantes.php" id="toggleTableLink" class="text-blue-500 hover:underline">Click aqui</a>
                 </div>
                 <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto">
                   <i class='bx bxs-group'></i>
