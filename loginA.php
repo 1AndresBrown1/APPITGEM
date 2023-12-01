@@ -73,7 +73,6 @@ if (!empty($_POST['name']) && !empty($_POST['contrasena'])) {
           <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-lock"></i></span>
           <input name="contrasena" type="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1" required>
         </div>
-
         <div class="d-grid gap-2 inputdiv mt-4">
           <button type="submit" class="btn btn-custom fw-bolder" type="button">iniciar sección</button>
         </div>

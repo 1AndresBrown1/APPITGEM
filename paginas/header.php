@@ -45,6 +45,8 @@ error_reporting(0);
   <link rel="stylesheet" href="../assets/css/semi-dark.css" />
   <link rel="stylesheet" href="../assets/css/header-colors.css" />
   <title>Rocker - Bootstrap 5 Admin Dashboard Template</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
   <!-- <script type="module">
     // Import the functions you need from the SDKs you need
@@ -104,42 +106,101 @@ error_reporting(0);
       <!--navigation-->
       <ul class="metismenu" id="menu">
 
-    <?php  if ($_SESSION['docente'] == "docente") {
-    ?>
-    <li>
-      <a href="../index_docentes.php">
-        <div class="parent-icon"><i class='bx bx-home-circle'></i>
-        </div>
-        <div class="menu-title">Dashboard</div>
-      </a>
-    </li>
-    <?php
-} else if ($_SESSION['estudiante'] == "estudiante") {
-    ?>
-    <li>
-      <a href="../index_estudiantes.php">
-        <div class="parent-icon"><i class='bx bx-home-circle'></i>
-        </div>
-        <div class="menu-title">Dashboard</div>
-      </a>
-    </li>
-    <?php
-}else if (($_SESSION['estudiante'] !== "estudiante")&&($_SESSION['docente'] !== "docente")) {
-    ?>
-    <li>
-      <a href="../index.php">
-        <div class="parent-icon"><i class='bx bx-home-circle'></i>
-        </div>
-        <div class="menu-title">Dashboard</div>
-      </a>
-    </li>
-    <?php 
-    }
-?>
+
+        <!--wrapper-->
+        <div class="wrapper">
+          <!--sidebar wrapper -->
+          <div style="background: white;" class="sidebar-wrapper" data-simplebar="true">
+            <div class="sidebar-header">
+              <div>
+                <br>
+                <img src="../assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" class="logo-icon" alt="logo icon">
+              </div>
+              <div>
+                <br>
+                <h4 class="logo-text">Sistema Académico</h4>
+              </div>
+              <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
+              </div>
+            </div>
+            <!--navigation-->
+            <ul class="metismenu" id="menu">
+              <li>
+                <a href="../index.php">
+                  <div class="parent-icon"><i class='bx bx-home-circle'></i>
+                  </div>
+                  <div class="menu-title">Dashboard</div>
+                </a>
+              </li>
+
+              <li>
+                <a href="../paginas/docentes.php">
+                  <div class="parent-icon"><i class="fa-solid fa-user-tie"></i>
+                  </div>
+                  <div class="menu-title">Docentes</div>
+                </a>
+              </li>
+
+              <li>
+                <a href="../paginas/estudiantes.php">
+                  <div class="parent-icon"><i class="fa-solid fa-user"></i>
+                  </div>
+                  <div class="menu-title">Estudiantes</div>
+                </a>
+              </li>
+
+              <li>
+                <a href="../paginas/notas.php">
+                  <div class="parent-icon"><i class="fa-solid fa-file-invoice"></i>
+                  </div>
+                  <div class="menu-title">Notas</div>
+                </a>
+              </li>
+
+              <li>
+                <a href="../paginas/notas.php">
+                  <div class="parent-icon"><i class="fa-solid fa-book"></i>
+                  </div>
+                  <div class="menu-title">Academico</div>
+                </a>
+              </li>
+
+              <li>
+                <a href="../cartera/index.php">
+                  <div class="parent-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i>
+                  </div>
+                  <div class="menu-title">Cartera</div>
+                </a>
+              </li>
 
 
+              <li class="menu-label">
+                <hr>
+              </li>
+              <li>
+                <a href="../paginas/notas.php">
+                  <div class="parent-icon"><i class="fa-solid fa-right-from-bracket"></i>
+                  </div>
+                  <div class="menu-title">Cerrar Seccion</div>
+                </a>
+              </li>
+              <!-- <li>
+          <a href="#">
+            <div class="parent-icon"><i class='bx bx-cookie'></i>
+            </div>
+            <?php if (isset($message)) : ?>
+              <p class="designattion mb-0" style="color: red;"><?php echo $message; // mensaje de administrador  
+                                                                ?></p>
+            <?php endif; ?>
+          </a>
+        </li> -->
+            </ul>
+            <!--end navigation-->
+          </div>
+          <!--end sidebar wrapper -->
 
-        <!-- <li>
+
+          <!-- <li>
          <a href="javascript:;" class="has-arrow">
             <div class="parent-icon"><i class="bx bx-category"></i>
             </div>
@@ -173,15 +234,22 @@ error_reporting(0);
           <div class="search-bar flex-grow-1">
             <div class="position-relative">
               <br>
-              <h2 style="color:#3a0035;     font-weight: 600;">ITGEM</h2>
+              <h2 style="color:#3a0035;     font-weight: 600;"> <?php
+                                                                echo $_SESSION['nombre_usuario'];
+                                                                ?></h2>
             </div>
           </div>
           <div class="user-box dropdown">
             <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+              <img src="../assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
               <div class="user-info ps-3">
-                <p class="user-name mb-0">Maria Torres</p>
-                <p class="designattion mb-0">Saldo: <strong>$1000</strong></p>
+                <p class="user-name mb-0"><strong><?php
+                                                  echo $_SESSION['nombre_usuario'];
+                                                  ?></strong></p>
+                <?php if (isset($message)) : ?>
+                  <p class="designattion mb-0" style="color: red;"><?php echo $message; // mensaje de administrador  
+                                                                    ?></p>
+                <?php endif; ?>
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -190,7 +258,7 @@ error_reporting(0);
               <li>
                 <div class="dropdown-divider mb-0"></div>
               </li>
-              <li><a class="dropdown-item" href="javascript:;"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+              <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
               </li>
             </ul>
           </div>
@@ -198,31 +266,31 @@ error_reporting(0);
       </div>
     </header>
     <!--end header -->
-   
 
 
 
-        <footer class="page-footer p-4">
-          <p class="mb-0">Copyright © 2021. All right reserved.</p>
-        </footer>
+
+    <footer class="page-footer p-4">
+      <p class="mb-0">Copyright © 2021. All right reserved.</p>
+    </footer>
 
 
 
-        <!--end switcher-->
-        <!-- Bootstrap JS -->
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <!--plugins-->
-        <script src="../assets/js/jquery.min.js"></script>
-        <script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
-        <script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
-        <script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-        <script src="../assets/plugins/chartjs/js/Chart.min.js"></script>
-        <script src="../assets/plugins/chartjs/js/Chart.extension.js"></script>
-        <script src="../assets/js/index.js"></script>
-        <!--app JS-->
-        <script src="../assets/js/app.js"></script>  
+    <!--end switcher-->
+    <!-- Bootstrap JS -->
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <!--plugins-->
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="../assets/plugins/chartjs/js/Chart.min.js"></script>
+    <script src="../assets/plugins/chartjs/js/Chart.extension.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <!--app JS-->
+    <script src="../assets/js/app.js"></script>
 
-        
+
 
 </body>
 

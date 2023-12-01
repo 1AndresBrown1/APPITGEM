@@ -55,22 +55,22 @@ a {
     border-radius: 10px;
 }
 
-.div-info{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-    height:  50vh;
-	background-color: #6b98c5;
-	border-radius: 20px;
+.div-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    background-color: #6b98c5;
+    border-radius: 20px;
 }
 
-.div-info1{
+.div-info1 {
     display: flex;
-	align-items: center;
-	justify-content: center;
-    height:  50vh;
-	background-color: #366293;
-	border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    background-color: #366293;
+    border-radius: 20px;
 }
 
 
