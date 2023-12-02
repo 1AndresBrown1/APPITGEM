@@ -2,6 +2,7 @@
 <?php
 session_start();
 require 'bd.php';
+
 include_once "./navegacion.php";
 // error_reporting(0);
 // Verifica si ya hay una sesión activa

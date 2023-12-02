@@ -2,6 +2,7 @@
 <?php
 session_start();
 require '../bd.php';
+
 // error_reporting(0);
 // Verifica si ya hay una sesión activa
 if (isset($_SESSION['nombre_usuario'])) {
@@ -25,6 +26,9 @@ if (isset($_SESSION['nombre_usuario'])) {
     exit();
 }
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -315,6 +319,32 @@ if (isset($_SESSION['nombre_usuario'])) {
                             <label for="documento_identidad">Documento de Identidad:</label>
                             <input type="number" class="form-control" id="documento_identidad" name="documento_identidad" required>
                         </div>
+
+                        <div class="form-group">
+                            <label for="direccion">Dirección:</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono">Teléfono:</label>
+                            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo_documento">Tipo de Documento:</label>
+                            <select class="form-control" id="tipo_documento" name="tipo_documento" required>
+                                <option value="">Selecciona un tipo de documento</option>
+                                <option value="DNI">DNI</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="correo">Correo:</label>
+                            <input type="email" class="form-control" id="correo" name="correo" required>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
