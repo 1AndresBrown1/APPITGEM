@@ -66,6 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST["contrasena"];
     $verificarContrasena = $_POST["verificarContrasena"];
     $estadoMatricula = $_POST["estado_matricula"];
+    
 
     // Validaciones básicas (puedes agregar más según tus necesidades)
     if (empty($nombre) || empty($apellido) || empty($fechaNacimiento) || empty($genero) || empty($grupoId) || empty($documento_identidad) || empty($direccion) || empty($telefono) || empty($tipo_documento) || empty($correo) || empty($contrasena) || empty($verificarContrasena) || empty($estadoMatricula)) {

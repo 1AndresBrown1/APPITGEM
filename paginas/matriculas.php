@@ -1,32 +1,34 @@
-<title>ITGEM</title>
+<title>ITGEM - MATRICULAS</title>
 <?php
 session_start();
-require 'bd.php';
+require '../bd.php';
 
-include_once "./navegacion.php";
 // error_reporting(0);
 // Verifica si ya hay una sesión activa
 if (isset($_SESSION['nombre_usuario'])) {
-  // Verifica si el usuario es un administrador
-  if ($_SESSION['admin'] == 'admin') {
-    // Si el usuario es un administrador, rediríjalo al index.php
-    $message = 'Administrador';
-  } else {
-    // Si el usuario no es un administrador, rediríjalo a la página correspondiente según el tipo de usuario
-    if ($_SESSION['docente'] === 'docente') {
-      header("Location: index_docentes.php");
-      exit();
-    } elseif ($_SESSION['estudiante'] === 'estudiante') {
-      header("Location: index_estudiantes.php");
-      exit();
+    // Verifica si el usuario es un administrador
+    if ($_SESSION['admin'] == 'admin') {
+        // Si el usuario es un administrador, rediríjalo al index.php
+        $message = 'Administrador';
+    } else {
+        // Si el usuario no es un administrador, rediríjalo a la página correspondiente según el tipo de usuario
+        if ($_SESSION['docente'] === 'docente') {
+            header("Location: index_docentes.php");
+            exit();
+        } elseif ($_SESSION['estudiante'] === 'estudiante') {
+            header("Location: index_estudiantes.php");
+            exit();
+        }
     }
-  }
 } else {
-  // Si no hay una sesión activa, redirigir al usuario a la página de inicio de sesión
-  header('Location: login.php');
-  exit();
+    // Si no hay una sesión activa, redirigir al usuario a la página de inicio de sesión
+    header('Location: login.php');
+    exit();
 }
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,24 +40,24 @@ if (isset($_SESSION['nombre_usuario'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-    <link rel="icon" href="./assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" type="image/png" />
-    <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-    <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-    <link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link rel="icon" href="../assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" type="image/png" />
+    <link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
     <!-- loader-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="assets/css/pace.min.css" rel="stylesheet" />
-    <script src="assets/js/pace.min.js"></script>
+    <link href="../assets/css/pace.min.css" rel="stylesheet" />
+    <script src="../assets/js/pace.min.js"></script>
     <!-- Bootstrap CSS -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/bootstrap-extended.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap-extended.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link href="assets/css/app.css" rel="stylesheet">
-    <link href="assets/css/icons.css" rel="stylesheet">
+    <link href="../assets/css/app.css" rel="stylesheet">
+    <link href="../assets/css/icons.css" rel="stylesheet">
     <!-- Theme Style CSS -->
-    <link rel="stylesheet" href="assets/css/dark-theme.css" />
-    <link rel="stylesheet" href="assets/css/semi-dark.css" />
-    <link rel="stylesheet" href="assets/css/header-colors.css" />
+    <link rel="stylesheet" href="../assets/css/dark-theme.css" />
+    <link rel="stylesheet" href="../assets/css/semi-dark.css" />
+    <link rel="stylesheet" href="../assets/css/header-colors.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
@@ -76,7 +78,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                 </div>
                 <div class="user-box dropdown">
                     <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+                        <img src="../assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
                         <div class="user-info ps-3">
                             <p class="user-name mb-0"><strong><?php
                                                                 echo $_SESSION['nombre_usuario'];
@@ -109,7 +111,7 @@ if (isset($_SESSION['nombre_usuario'])) {
             <div class="sidebar-header">
                 <div>
                     <br>
-                    <img src="./assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" class="logo-icon" alt="logo icon">
+                    <img src="../assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" class="logo-icon" alt="logo icon">
                 </div>
                 <div>
                     <br>
@@ -121,42 +123,42 @@ if (isset($_SESSION['nombre_usuario'])) {
             <!--navigation-->
             <ul class="metismenu" id="menu">
                 <li>
-                    <a href="./index.php">
+                    <a href="../index.php">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>
                         </div>
                         <div class="menu-title">Dashboard</div>
                     </a>
                 </li>
                 <li>
-                    <a href="./paginas/docentes.php">
+                    <a href="../paginas/docentes.php">
                         <div class="parent-icon"><i class="fa-solid fa-user-tie"></i>
                         </div>
                         <div class="menu-title">Docentes</div>
                     </a>
                 </li>
                 <li>
-                    <a href="./paginas/estudiantes.php">
+                    <a href="javascript:;">
                         <div class="parent-icon"><i class="fa-solid fa-user"></i>
                         </div>
                         <div class="menu-title">Estudiantes</div>
                     </a>
                 </li>
                 <li>
-                    <a href="./paginas/notas.php">
+                    <a href="../paginas/notas.php">
                         <div class="parent-icon"><i class="fa-solid fa-file-invoice"></i>
                         </div>
                         <div class="menu-title">Notas</div>
                     </a>
                 </li>
                 <li>
-                    <a href="./paginas/notas.php">
+                    <a href="../paginas/notas.php">
                         <div class="parent-icon"><i class="fa-solid fa-book"></i>
                         </div>
                         <div class="menu-title">Academico</div>
                     </a>
                 </li>
                 <li>
-                    <a href="./cartera/index.php" target="_blank">
+                    <a href="../paginas/notas.php">
                         <div class="parent-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i>
                         </div>
                         <div class="menu-title">Cartera</div>
@@ -166,7 +168,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                     <hr>
                 </li>
                 <li>
-                    <a href="./paginas/notas.php">
+                    <a href="../logout.php">
                         <div class="parent-icon"><i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <div class="menu-title">Cerrar Seccion</div>
@@ -187,27 +189,82 @@ if (isset($_SESSION['nombre_usuario'])) {
         </div>
         <!--end sidebar wrapper -->
 
+        <div class="page-wrapper">
+            <div class="page-content">
+
+                <div class="container mt-4">
+                    <h2>Tabla de Estudiantes</h2>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Documento de Identidad</th>
+                                    <th>Correo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <?php
+                                // Realizar la consulta
+                                $consulta = "SELECT * FROM estudiantes";
+                                $resultado = mysqli_query($conn, $consulta);
+
+                                // Comprobar si hay resultados
+                                if (mysqli_num_rows($resultado) > 0) {
+                                    // Imprimir los datos de la tabla
+                                    while ($fila = mysqli_fetch_assoc($resultado)) {
+                                        echo "<tr>";
+                                        echo "<td>{$fila['id']}</td>";
+                                        echo "<td>{$fila['nombre']} {$fila['apellido']}</td>";
+                                        echo "<td>{$fila['documento_identidad']}</td>";
+                                        echo "<td>{$fila['correo']}</td>";
+                                        echo "<td><a href='matriculas_estudiantes.php?id={$fila['id']}' class='btn btn-info'>Detalles</a></td>";
+                                        echo "</tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='6'>No hay datos en la tabla</td></tr>";
+                                }
+
+                                // Liberar el resultado
+                                mysqli_free_result($resultado);
+
+                                // Cerrar la conexión
+                                mysqli_close($conn);
+                                ?>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
         <footer class="page-footer">
             <p class="mb-0">Copyright © 2021. All right reserved.</p>
         </footer>
 
 
-
         <!--end switcher-->
         <!-- Bootstrap JS -->
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        
-
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <!--plugins-->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-        <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-        <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-        <script src="assets/plugins/chartjs/js/Chart.min.js"></script>
-        <script src="assets/plugins/chartjs/js/Chart.extension.js"></script>
-        <script src="assets/js/index.js"></script>
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
+        <script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
+        <script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+        <script src="../assets/plugins/chartjs/js/Chart.min.js"></script>
+        <script src="../assets/plugins/chartjs/js/Chart.extension.js"></script>
+        <script src="../assets/js/index.js"></script>
         <!--app JS-->
-        <script src="assets/js/app.js"></script>
+        <script src="../assets/js/app.js"></script>
 </body>
+
 </html>

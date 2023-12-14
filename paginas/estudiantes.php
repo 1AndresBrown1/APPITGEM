@@ -344,6 +344,8 @@ if (isset($_SESSION['nombre_usuario'])) {
                             <label for="correo">Correo:</label>
                             <input type="email" class="form-control" id="correo" name="correo" required>
                         </div>
+                        
+                        
 
                         <div class="row">
                             <div class="col-md-6">
@@ -374,55 +376,83 @@ if (isset($_SESSION['nombre_usuario'])) {
 
 
 
-                <div style="display: none;" id="formulario2" class="container">
-                    <h2 class="my-4">Editar Estudiantes</h2>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Apellido</th>
-                                <th scope="col">Fecha de Nacimiento</th>
-                                <th scope="col">Género</th>
-                                <th scope="col">Grupo de Estudios</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            // Consulta para obtener los datos de los estudiantes y sus grupos
-                            $sql = "SELECT e.id, e.nombre, e.apellido, e.fecha_nacimiento, e.genero, g.nombre_grupo, a.nombre_a 
+                <div id="formulario2" class="container">
+    <h2 class="my-4">Editar Estudiantes</h2>
+    
+    <!-- Agrega un formulario para filtrar por grupo -->
+    <form method="GET" action="">
+        <label for="filtro_grupo">Filtrar por Grupo:</label>
+        <select name="filtro_grupo" id="filtro_grupo">
+            <option value="">Todos los Grupos</option>
+            <?php
+            // Consulta para obtener los nombres de los grupos
+            $sql_grupos = "SELECT id, nombre_grupo FROM grupos";
+            $result_grupos = $conexion->query($sql_grupos);
+
+            if ($result_grupos) {
+                while ($row_grupo = $result_grupos->fetch_assoc()) {
+                    $selected = ($_GET['filtro_grupo'] == $row_grupo['id']) ? 'selected' : '';
+                    echo "<option value='" . $row_grupo['id'] . "' $selected>" . $row_grupo['nombre_grupo'] . "</option>";
+                }
+                $result_grupos->free();
+            }
+            ?>
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Fecha de Nacimiento</th>
+                <th scope="col">Género</th>
+                <th scope="col">Grupo de Estudios</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Construye la parte de la consulta SQL para el filtro por grupo
+            $filtro_grupo = isset($_GET['filtro_grupo']) ? $_GET['filtro_grupo'] : '';
+            $filtro_sql = ($filtro_grupo != '') ? " WHERE g.id = $filtro_grupo" : '';
+
+            // Consulta para obtener los datos de los estudiantes y sus grupos con el filtro aplicado
+            $sql = "SELECT e.id, e.nombre, e.apellido, e.fecha_nacimiento, e.genero, g.nombre_grupo, a.nombre_a 
                 FROM estudiantes e
                 INNER JOIN grupos g ON e.grupo_id = g.id
-                INNER JOIN gestion_a a ON g.id_año = a.id";
+                INNER JOIN gestion_a a ON g.id_año = a.id" . $filtro_sql;
 
-                            $result = $conexion->query($sql);
+            $result = $conexion->query($sql);
 
-                            if ($result) {
-                                $i = 1;
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<tr>";
-                                    echo "<th scope='row'>$i</th>";
-                                    echo "<td>" . $row['nombre'] . "</td>";
-                                    echo "<td>" . $row['apellido'] . "</td>";
-                                    echo "<td>" . $row['fecha_nacimiento'] . "</td>";
-                                    echo "<td>" . $row['genero'] . "</td>";
-                                    echo "<td>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</td>";
-                                    echo "<td>
+            if ($result) {
+                $i = 1;
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<th scope='row'>$i</th>";
+                    echo "<td>" . $row['nombre'] . "</td>";
+                    echo "<td>" . $row['apellido'] . "</td>";
+                    echo "<td>" . $row['fecha_nacimiento'] . "</td>";
+                    echo "<td>" . $row['genero'] . "</td>";
+                    echo "<td>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</td>";
+                    echo "<td>
                         <a href='editar_estudiante.php?id=" . $row['id'] . "'>Editar</a> | 
                         <a href='eliminar_estudiante.php?id=" . $row['id'] . "'>Eliminar</a>
                     </td>";
-                                    echo "</tr>";
-                                    $i++;
-                                }
-                                $result->free();
-                            } else {
-                                echo '<tr><td colspan="7">No hay datos de estudiantes disponibles.</td></tr>';
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
+                    echo "</tr>";
+                    $i++;
+                }
+                $result->free();
+            } else {
+                echo '<tr><td colspan="7">No hay datos de estudiantes disponibles.</td></tr>';
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
                 <br><br><br>
 
                 <script>
