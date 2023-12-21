@@ -220,6 +220,11 @@ if (isset($_SESSION['nombre_usuario'])) {
                     // Directorio del estudiante
                     $directorio_estudiante = $directorio_base . $nombre_estudiante . '/';
 
+                    // Añadir la ruta al directorio en la base de datos
+                    $ruta_directorio_estudiante = $directorio_estudiante;
+                    $query_actualizar_ruta = "UPDATE estudiantes SET ruta_documentos = '$ruta_directorio_estudiante' WHERE id = $estudiante_id";
+                    $conexion->query($query_actualizar_ruta);
+
                     // Crear el directorio del estudiante si no existe
                     if (!file_exists($directorio_estudiante)) {
                         mkdir($directorio_estudiante, 0777, true);
@@ -258,6 +263,20 @@ if (isset($_SESSION['nombre_usuario'])) {
                 // Mensaje de error si no se proporcionó un ID válido
                 $mensaje_error = "Error: ID de estudiante no válido.";
             }
+
+
+
+            // Limpiar los campos del formulario después de procesar el formulario
+            echo "<script>
+            setTimeout(function() {
+                document.getElementById('cedula').value = '';
+                document.getElementById('diploma').value = '';
+                document.getElementById('eps').value = '';
+                document.getElementById('recibo').value = '';
+                // Recargar la página después de 2 segundos
+                window.location.href = window.location.href;
+            }, 2000); // 2000 milisegundos = 2 segundos
+          </script>";
         }
         ?>
 
@@ -272,7 +291,7 @@ if (isset($_SESSION['nombre_usuario'])) {
 
 
                 <div class="container mt-4">
-                    <h2>Formulario de Carga de Documentos</h2>
+                    <h2 style="font-weight: bold;">Formulario de Carga de Documentos</h2>
 
                     <?php
                     // Mostrar mensajes de éxito o error
@@ -283,25 +302,44 @@ if (isset($_SESSION['nombre_usuario'])) {
                     }
                     ?>
 
-                    <form action="matriculas_estudiantes.php?id=<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="cedula">Cargar Cédula (PDF):</label>
-                            <input type="file" name="cedula" id="cedula" accept=".pdf" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="diploma">Cargar Diploma (PDF):</label>
-                            <input type="file" name="diploma" id="diploma" accept=".pdf" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="eps">Cargar EPS (PDF):</label>
-                            <input type="file" name="eps" id="eps" accept=".pdf" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="recibo">Cargar Recibo (PDF):</label>
-                            <input type="file" name="recibo" id="recibo" accept=".pdf" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Guardar Documentos</button>
-                    </form>
+                    <div class="container mt-4">
+                        <form action="matriculas_estudiantes.php?id=<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>" method="post" enctype="multipart/form-data">
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cedula">Cargar Cédula (PDF):</label>
+                                        <input type="file" name="cedula" id="cedula" accept=".pdf" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="diploma">Cargar Diploma (PDF):</label>
+                                        <input type="file" name="diploma" id="diploma" accept=".pdf" required class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="eps">Cargar EPS (PDF):</label>
+                                        <input type="file" name="eps" id="eps" accept=".pdf" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="recibo">Cargar Recibo (PDF):</label>
+                                        <input type="file" name="recibo" id="recibo" accept=".pdf" required class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary">Guardar Documentos</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
 
 

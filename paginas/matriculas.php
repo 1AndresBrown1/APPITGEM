@@ -192,6 +192,7 @@ if (isset($_SESSION['nombre_usuario'])) {
         <div class="page-wrapper">
             <div class="page-content">
 
+       
                 <div class="container mt-4">
                     <h2>Tabla de Estudiantes</h2>
 
@@ -204,6 +205,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                                     <th>Documento de Identidad</th>
                                     <th>Correo</th>
                                     <th>Acciones</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -222,8 +224,10 @@ if (isset($_SESSION['nombre_usuario'])) {
                                         echo "<td>{$fila['nombre']} {$fila['apellido']}</td>";
                                         echo "<td>{$fila['documento_identidad']}</td>";
                                         echo "<td>{$fila['correo']}</td>";
-                                        echo "<td><a href='matriculas_estudiantes.php?id={$fila['id']}' class='btn btn-info'>Detalles</a></td>";
-                                        echo "</tr>";
+                                        echo "<td>";
+                                        echo "<a href='matriculas_estudiantes.php?id={$fila['id']}' class='btn btn-info me-2'>Matricular</a>";
+                                        echo "<a href='ver_matricula.php?id={$fila['id']}' class='btn btn-primary'>Ver Documentos</a>";
+                                        echo "</td>";                                        echo "</tr>";
                                     }
                                 } else {
                                     echo "<tr><td colspan='6'>No hay datos en la tabla</td></tr>";

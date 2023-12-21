@@ -249,13 +249,14 @@ if (isset($_SESSION['nombre_usuario'])) {
                         </div>
                     </div>
 
+                 
                     <div class="col">
                         <div style="background: #20425a;" class="card radius-10 p-2">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div>
-                                        <p style="font-size: 17px !important;" class="mb-0 txt-card-custom">Editar Estudiante</p>
-                                        <a style="color: #fee6ff;" href="#" id="mostrarFormulario2" class="text-blue-500 hover:underline">Click aqui</a>
+                                        <p style="font-size: 17px !important;" class="mb-0 txt-card-custom">Subir Documentos</p>
+                                        <a style="color: #fee6ff;" href="./matriculas.php" class="text-blue-500 hover:underline">Click aqui</a>
                                     </div>
                                     <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
                                         <i class='bx bxs-bar-chart-alt-2'></i>
@@ -268,205 +269,238 @@ if (isset($_SESSION['nombre_usuario'])) {
                 </div>
                 <!--end row-->
 
-                <div id="formulario1" class="container">
+                <div id="formulario1" style="background-color: #eff6ff !important;" class="cardcustom p-4 mt-4">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
+                        <div class="col mb-4">
+                            <div class="container">
+                                <form action="procesar_registro_estudiante.php" method="POST">
+                                    <h1 style="font-weight: bold;" class="my-4">Registro de Estudiantes</h1>
 
-                    <form action="procesar_registro_estudiante.php" method="POST">
-                        <div class="form-group">
-                            <label for="nombre">Nombre:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="apellido">Apellido:</label>
-                            <input type="text" class="form-control" id="apellido" name="apellido" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-                            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="genero">Género:</label>
-                            <select class="form-control" id="genero" name="genero" required>
-                                <option value="">Selecciona un género</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Femenino">Femenino</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="nombre">Nombre:</label>
+                                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="apellido">Apellido:</label>
+                                                <input type="text" class="form-control" id="apellido" name="apellido" required>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group">
-                            <label for="grupo">Grupo de Estudios:</label>
-                            <select class="form-control" id="grupo" name="grupo" required>
-                                <?php
-                                include("../bd.php"); // Incluye el archivo de conexión a la base de datos
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                                                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="genero">Género:</label>
+                                                <select class="form-control" id="genero" name="genero" required>
+                                                    <option value="">Selecciona un género</option>
+                                                    <option value="Masculino">Masculino</option>
+                                                    <option value="Femenino">Femenino</option>
+                                                    <option value="Otro">Otro</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                // Realiza una consulta para obtener los grupos
-                                $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, a.nombre_a FROM grupos g INNER JOIN gestion_a a ON g.id_año = a.id";
-                                $result = $conexion->query($sql);
+                                    <div class="form-group mb-3">
+                                        <label for="grupo">Grupo de Estudios:</label>
+                                        <select class="form-control" id="grupo" name="grupo" required>
+                                            <?php
+                                            include("../bd.php"); // Incluye el archivo de conexión a la base de datos
 
-                                if ($result) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<option value='" . $row['grupo_id'] . "'>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</option>";
-                                    }
+                                            // Realiza una consulta para obtener los grupos
+                                            $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, a.nombre_a FROM grupos g INNER JOIN gestion_a a ON g.id_año = a.id";
+                                            $result = $conexion->query($sql);
 
-                                    $result->free();
-                                } else {
-                                    echo "<option value=''>No hay grupos disponibles</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="documento_identidad">Documento de Identidad:</label>
-                            <input type="number" class="form-control" id="documento_identidad" name="documento_identidad" required>
-                        </div>
+                                            if ($result) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "<option value='" . $row['grupo_id'] . "'>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</option>";
+                                                }
 
-                        <div class="form-group">
-                            <label for="direccion">Dirección:</label>
-                            <input type="text" class="form-control" id="direccion" name="direccion" required>
-                        </div>
+                                                $result->free();
+                                            } else {
+                                                echo "<option value=''>No hay grupos disponibles</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
 
-                        <div class="form-group">
-                            <label for="telefono">Teléfono:</label>
-                            <input type="tel" class="form-control" id="telefono" name="telefono" required>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="tipo_documento">Tipo de Documento:</label>
-                            <select class="form-control" id="tipo_documento" name="tipo_documento" required>
-                                <option value="">Selecciona un tipo de documento</option>
-                                <option value="DNI">DNI</option>
-                                <option value="Pasaporte">Pasaporte</option>
-                                <!-- Add more options as needed -->
-                            </select>
-                        </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="tipo_documento">Tipo de Documento:</label>
+                                                <select class="form-control" id="tipo_documento" name="tipo_documento" required>
+                                                    <option value="">Selecciona un tipo de documento</option>
+                                                    <option value="DNI">DNI</option>
+                                                    <option value="Pasaporte">Pasaporte</option>
+                                                    <!-- Add more options as needed -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="documento_identidad">Documento de Identidad:</label>
+                                                <input type="number" class="form-control" id="documento_identidad" name="documento_identidad" required>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group">
-                            <label for="correo">Correo:</label>
-                            <input type="email" class="form-control" id="correo" name="correo" required>
-                        </div>
-                        
-                        
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="contrasena">Contraseña:</label>
-                                    <input type="password" class="form-control" id="contrasena" name="contrasena" required>
-                                </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="direccion">Dirección:</label>
+                                                <input type="text" class="form-control" id="direccion" name="direccion" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="telefono">Teléfono:</label>
+                                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    <div class="form-group mb-3">
+                                        <label for="correo">Correo:</label>
+                                        <input type="email" class="form-control" id="correo" name="correo" required>
+                                    </div>
+
+
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="contrasena">Contraseña:</label>
+                                                <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="verificarContrasena">Verificar contraseña:</label>
+                                                <input type="password" class="form-control" id="verificarContrasena" name="verificarContrasena" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="estado_matricula">Estado de Matrícula:</label>
+                                        <select class="form-control" id="estado_matricula" name="estado_matricula" required>
+                                            <option value="pagado">Pagado</option>
+                                            <option value="sin_saldar">Sin saldar</option>
+                                        </select>
+                                    </div>
+
+                                    <br>
+                                    <button type="submit" class="btn btn-primary">Registrar Estudiante</button>
+                                </form>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="verificarContrasena">Verificar contraseña:</label>
-                                    <input type="password" class="form-control" id="verificarContrasena" name="verificarContrasena" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="estado_matricula">Estado de Matrícula:</label>
-                            <select class="form-control" id="estado_matricula" name="estado_matricula" required>
-                                <option value="pagado">Pagado</option>
-                                <option value="sin_saldar">Sin saldar</option>
-                            </select>
                         </div>
 
-                        <br>
-                        <button type="submit" class="btn btn-primary">Registrar Estudiante</button>
-                    </form>
+                        <div class="col mb-4 ps-5 d-flex align-items-center">
+                            <img width="500" class="img-fluid" src="../assets/images/pagina/2undraw_certificate_re_yadi.svg" alt="">
+                        </div>
+                    </div>
                 </div>
 
 
 
-                <div id="formulario2" class="container">
-    <h2 class="my-4">Editar Estudiantes</h2>
-    
-    <!-- Agrega un formulario para filtrar por grupo -->
-    <form method="GET" action="">
-        <label for="filtro_grupo">Filtrar por Grupo:</label>
-        <select name="filtro_grupo" id="filtro_grupo">
-            <option value="">Todos los Grupos</option>
-            <?php
-            // Consulta para obtener los nombres de los grupos
-            $sql_grupos = "SELECT id, nombre_grupo FROM grupos";
-            $result_grupos = $conexion->query($sql_grupos);
+                <div id="formulario2" style="background-color: #eff6ff !important;" class="cardcustom p-4 mt-4">
+                    <h2 style="font-weight: bold;" class="my-4">Editar Estudiantes</h2>
 
-            if ($result_grupos) {
-                while ($row_grupo = $result_grupos->fetch_assoc()) {
-                    $selected = ($_GET['filtro_grupo'] == $row_grupo['id']) ? 'selected' : '';
-                    echo "<option value='" . $row_grupo['id'] . "' $selected>" . $row_grupo['nombre_grupo'] . "</option>";
-                }
-                $result_grupos->free();
-            }
-            ?>
-        </select>
-        <button type="submit">Filtrar</button>
-    </form>
+                    <!-- Agrega un formulario para filtrar por grupo -->
+                    <form method="GET" action="">
+                        <label class="mb-3" for="filtro_grupo">Filtrar por Grupo:</label>
+                        <select style="width: 50%;" class="form-select form-select-lg" name="filtro_grupo" id="filtro_grupo">
+                            <option value="">Todos los Grupos</option>
+                            <?php
+                            // Consulta para obtener los nombres de los grupos
+                            $sql_grupos = "SELECT id, nombre_grupo FROM grupos";
+                            $result_grupos = $conexion->query($sql_grupos);
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Fecha de Nacimiento</th>
-                <th scope="col">Género</th>
-                <th scope="col">Grupo de Estudios</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            // Construye la parte de la consulta SQL para el filtro por grupo
-            $filtro_grupo = isset($_GET['filtro_grupo']) ? $_GET['filtro_grupo'] : '';
-            $filtro_sql = ($filtro_grupo != '') ? " WHERE g.id = $filtro_grupo" : '';
+                            if ($result_grupos) {
+                                while ($row_grupo = $result_grupos->fetch_assoc()) {
+                                    $selected = ($_GET['filtro_grupo'] == $row_grupo['id']) ? 'selected' : '';
+                                    echo "<option value='" . $row_grupo['id'] . "' $selected>" . $row_grupo['nombre_grupo'] . "</option>";
+                                }
+                                $result_grupos->free();
+                            }
+                            ?>
+                        </select>
+                        <button class="btn btn-primary mt-3" type="submit">Filtrar</button>
+                    </form>
 
-            // Consulta para obtener los datos de los estudiantes y sus grupos con el filtro aplicado
-            $sql = "SELECT e.id, e.nombre, e.apellido, e.fecha_nacimiento, e.genero, g.nombre_grupo, a.nombre_a 
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Fecha de Nacimiento</th>
+                                <th scope="col">Género</th>
+                                <th scope="col">Grupo de Estudios</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // Construye la parte de la consulta SQL para el filtro por grupo
+                            $filtro_grupo = isset($_GET['filtro_grupo']) ? $_GET['filtro_grupo'] : '';
+                            $filtro_sql = ($filtro_grupo != '') ? " WHERE g.id = $filtro_grupo" : '';
+
+                            // Consulta para obtener los datos de los estudiantes y sus grupos con el filtro aplicado
+                            $sql = "SELECT e.id, e.nombre, e.apellido, e.fecha_nacimiento, e.genero, g.nombre_grupo, a.nombre_a 
                 FROM estudiantes e
                 INNER JOIN grupos g ON e.grupo_id = g.id
                 INNER JOIN gestion_a a ON g.id_año = a.id" . $filtro_sql;
 
-            $result = $conexion->query($sql);
+                            $result = $conexion->query($sql);
 
-            if ($result) {
-                $i = 1;
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<th scope='row'>$i</th>";
-                    echo "<td>" . $row['nombre'] . "</td>";
-                    echo "<td>" . $row['apellido'] . "</td>";
-                    echo "<td>" . $row['fecha_nacimiento'] . "</td>";
-                    echo "<td>" . $row['genero'] . "</td>";
-                    echo "<td>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</td>";
-                    echo "<td>
+                            if ($result) {
+                                $i = 1;
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<th scope='row'>$i</th>";
+                                    echo "<td>" . $row['nombre'] . "</td>";
+                                    echo "<td>" . $row['apellido'] . "</td>";
+                                    echo "<td>" . $row['fecha_nacimiento'] . "</td>";
+                                    echo "<td>" . $row['genero'] . "</td>";
+                                    echo "<td>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</td>";
+                                    echo "<td>
                         <a href='editar_estudiante.php?id=" . $row['id'] . "'>Editar</a> | 
                         <a href='eliminar_estudiante.php?id=" . $row['id'] . "'>Eliminar</a>
                     </td>";
-                    echo "</tr>";
-                    $i++;
-                }
-                $result->free();
-            } else {
-                echo '<tr><td colspan="7">No hay datos de estudiantes disponibles.</td></tr>';
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
+                                    echo "</tr>";
+                                    $i++;
+                                }
+                                $result->free();
+                            } else {
+                                echo '<tr><td colspan="7">No hay datos de estudiantes disponibles.</td></tr>';
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
 
                 <br><br><br>
 
-                <script>
-                    document.getElementById("mostrarFormulario1").addEventListener("click", function() {
-                        document.getElementById("formulario1").style.display = "block";
-                        document.getElementById("formulario2").style.display = "none";
-
-                    });
-
-                    document.getElementById("mostrarFormulario2").addEventListener("click", function() {
-                        document.getElementById("formulario1").style.display = "none";
-                        document.getElementById("formulario2").style.display = "block";
-                    });
-                </script>
+              
 
                 <footer class="page-footer">
                     <p class="mb-0">Copyright © 2021. All right reserved.</p>

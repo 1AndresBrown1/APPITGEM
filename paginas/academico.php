@@ -254,7 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
             <div class="col">
                 <div style="background: #235c81;" class="card radius-10 p-2">
                     <div class="card-body">
@@ -266,6 +266,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
                                 <i class='bx bxs-cart'></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div style="background: #152a3c;" class="card radius-10 p-2">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <p class="mb-0 txt-card-custom">Crear Grupo</p>
+                                <a style="color: #fee6ff;" href="#" id="mostrarFormulario3" class="text-blue-500 hover:underline">Click aqui</a>
+                            </div>
+                            <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto">
+                                <i class='bx bxs-group'></i>
                             </div>
                         </div>
                     </div>
@@ -287,23 +303,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div style="background: #152a3c;" class="card radius-10 p-2">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 txt-card-custom">Crear Grupo</p>
-                                <a style="color: #fee6ff;" href="#" id="mostrarFormulario3" class="text-blue-500 hover:underline">Click aqui</a>
-                            </div>
-                            <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto">
-                                <i class='bx bxs-group'></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          
 
-            <div class="col">
+            <!-- <div class="col">
                 <div style="background: #152a3c;" class="card radius-10 p-2">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -317,7 +319,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
         <!--end row-->
