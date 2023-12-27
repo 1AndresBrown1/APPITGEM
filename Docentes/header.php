@@ -1,17 +1,31 @@
 <?php
 session_start();
-// Desactivar la visualización de errores
-error_reporting(0);
-// if (isset($_SESSION['usuario'])) {
-//     if ($_SESSION['permiso'] == 2) {
-//         header("Location: attendance_report.php");
-//     }
+require '../bd.php';
+// error_reporting(0);
 
-// }else{
-//     header('Location: login.php');
-// }
+// Verifica si ya hay una sesión activa
+if (isset($_SESSION['nombre_usuario'])) {
+  // Verifica si el usuario es un administrador
+  if ($_SESSION['docente'] == 'docente') {
+    // Si el usuario es un administrador, rediríjalo al index.php
+    $message = 'Docente';
+  } else {
+    // Si el usuario no es un administrador, rediríjalo a la página correspondiente según el tipo de usuario
+    if ($_SESSION['estudiante'] === "estudiante") {
+      header('Location: index_estudiantes.php');
+      exit();
+    } elseif ($_SESSION['admin'] === "admin") {
+      header("Location: index.php");
+      exit();
+    }
+  }
+} else {
+  // Si no hay una sesión activa, redirigir al usuario a la página de inicio de sesión
+  header('Location: login.php');
+  exit();
+}
+
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -173,15 +187,25 @@ error_reporting(0);
           <div class="search-bar flex-grow-1">
             <div class="position-relative">
               <br>
-              <h2 style="color:#3a0035;     font-weight: 600;">ITGEM</h2>
+              <h2 style="color:#3a0035;     font-weight: 600;"> <?php
+                                                                echo $_SESSION['nombre_usuario'];
+                                                                ?></h2>
             </div>
           </div>
           <div class="user-box dropdown">
             <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
               <div class="user-info ps-3">
-                <p class="user-name mb-0">Maria Torres</p>
-                <p class="designattion mb-0">Saldo: <strong>$1000</strong></p>
+                <p class="user-name mb-0"><strong><?php
+                                                  echo $_SESSION['nombre_usuario'];
+                                                  ?></strong></p>
+                <?php if (isset($message)) : ?>
+                  <p class="designattion mb-0" style="background-color: #fef08a;
+    color: black;
+    padding: 2px;
+    border-radius: 10px; border: solid black 1px"><?php echo $message; // mensaje de administrador  
+                                                  ?></p>
+                <?php endif; ?>
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -190,13 +214,14 @@ error_reporting(0);
               <li>
                 <div class="dropdown-divider mb-0"></div>
               </li>
-              <li><a class="dropdown-item" href="javascript:;"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+              <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
               </li>
             </ul>
           </div>
         </nav>
       </div>
     </header>
+    <!--end header -->
     <!--end header -->
    
 

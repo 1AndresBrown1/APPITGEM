@@ -19,8 +19,7 @@ if ($conn2->connect_error) {
     die("Error de conexión: " . $conn2->connect_error);
 } else {
     echo "<script>
-            alert('Conexión exitosa a la base de datos');
-            console.log('Conexión exitosa a la base de datos');
+          
           </script>";
 }
 
@@ -33,6 +32,34 @@ $correo = $_POST['correo'];
 $direccion = $_POST['direccion'];
 $fecha = $_POST['fecha_nacimiento'];
 
+//Verificar si el correo ya existe
+$sql_verificar_correo = "SELECT COUNT(*) FROM clientes WHERE correo = ?";
+$stmt_verificar_correo = $conn2->prepare($sql_verificar_correo);
+$stmt_verificar_correo->bind_param("s", $correo);
+$stmt_verificar_correo->execute();
+$stmt_verificar_correo->bind_result($correo_existente);
+$stmt_verificar_correo->fetch();
+$stmt_verificar_correo->close();
+
+if ($correo_existente > 0) {
+    echo '<script>alert("Ya existe un cliente con este correo electrónico. Por favor, elige otro.");</script>';
+    exit;
+}
+
+// Verificar si el documento de identidad ya existe
+$sql_verificar_identidad = "SELECT COUNT(*) FROM clientes WHERE num_identidad = ?";
+$stmt_verificar_identidad = $conn2->prepare($sql_verificar_identidad);
+$stmt_verificar_identidad->bind_param("s", $num_identidad);
+$stmt_verificar_identidad->execute();
+$stmt_verificar_identidad->bind_result($identidad_existente);
+$stmt_verificar_identidad->fetch();
+$stmt_verificar_identidad->close();
+
+if ($identidad_existente > 0) {
+    echo '<script>alert("Ya existe un cliente con este documento de identidad. Por favor, elige otro.");</script>';
+    exit;
+}
+
 
 // Insertar datos en la tabla
 $sql = "INSERT INTO clientes (identidad, num_identidad, nombre, telefono, correo, direccion, fecha) 
@@ -40,7 +67,6 @@ $sql = "INSERT INTO clientes (identidad, num_identidad, nombre, telefono, correo
 
 if ($conn2->query($sql) === TRUE) {
     echo "<script>alert('Datos insertados correctamente');</script>";
-
 } else {
     echo "Error al insertar datos: " . $conn2->error;
 }
@@ -66,7 +92,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST["contrasena"];
     $verificarContrasena = $_POST["verificarContrasena"];
     $estadoMatricula = $_POST["estado_matricula"];
-    
+    $eps = $_POST["eps"];
+    $lugarnacimiento = $_POST["lugar_nacimiento"];
+    $fechaexpedicion = $_POST["fecha_expedicion"];
+    $lugarexpedicion = $_POST["lugar_expedicion"];
+
+
 
     // Validaciones básicas (puedes agregar más según tus necesidades)
     if (empty($nombre) || empty($apellido) || empty($fechaNacimiento) || empty($genero) || empty($grupoId) || empty($documento_identidad) || empty($direccion) || empty($telefono) || empty($tipo_documento) || empty($correo) || empty($contrasena) || empty($verificarContrasena) || empty($estadoMatricula)) {
@@ -113,8 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // $hashedContrasena = hashPassword($contrasena);
 
         // Preparar y ejecutar la consulta de inserción
-        $sql = "INSERT INTO estudiantes (nombre, apellido, fecha_nacimiento, genero, grupo_id, documento_identidad, contrasena, estado_matricula, direccion, telefono, tipo_documento, correo) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO estudiantes (nombre, apellido, fecha_nacimiento, genero, grupo_id, documento_identidad, contrasena, estado_matricula, direccion, telefono, tipo_documento, correo,lugar_nacimiento,fecha_expedicion,eps,lugar_expedicion) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
 
         // Verificar si la conexión está abierta antes de preparar la consulta
         if (!$conexion->connect_error) {
@@ -123,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt) {
                 // Asociar los parámetros
-                $stmt->bind_param("ssssiiisssss", $nombre, $apellido, $fechaNacimiento, $genero, $grupoId, $documento_identidad, $hashedContrasena, $estadoMatricula, $direccion, $telefono, $tipo_documento, $correo);
+                $stmt->bind_param("ssssiiisssssssss", $nombre, $apellido, $fechaNacimiento, $genero, $grupoId, $documento_identidad, $hashedContrasena, $estadoMatricula, $direccion, $telefono, $tipo_documento, $correo, $lugarnacimiento, $fechaexpedicion, $eps,$lugarexpedicion);
 
                 // Ejecutar la sentencia
                 if ($stmt->execute()) {
@@ -143,6 +174,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-?>
-
-

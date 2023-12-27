@@ -9,9 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $codigo_materia = $_POST["codigo_materia"];
     $id_docente = $_POST["id_docente"];
     $id_grupo = $_POST["id_grupo"];
+    $fecha_inicio = $_POST["fecha_inicio"];
+    $fecha_final = $_POST["fecha_final"];
+    $estado = $_POST["estado"];
 
     // Prepara la consulta SQL para insertar la materia
-    $sql = "INSERT INTO materias (nombre_materia, codigo_materia, id_docente , id_grupo) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO materias (nombre_materia, codigo_materia, id_docente , id_grupo,fecha_inicio,fecha_final,estado) VALUES (?, ?, ?, ?,?,?,?)";
 
     // Verifica si la conexión está abierta antes de preparar la consulta
     if (!$conexion->connect_error) {
@@ -20,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt) {
             // Asocia los parámetros
-            $stmt->bind_param("ssii", $nombre_materia, $codigo_materia, $id_docente, $id_grupo);
+            $stmt->bind_param("ssiisss", $nombre_materia, $codigo_materia, $id_docente, $id_grupo,$fecha_inicio,$fecha_final, $estado);
 
             // Ejecuta la sentencia
             if ($stmt->execute()) {

@@ -2,6 +2,29 @@
 include_once("./header.php");
 include("../bd.php");
 
+// Verifica si ya hay una sesión activa
+session_start();
+if (isset($_SESSION['nombre_usuario'])) {
+    // Verifica si el usuario es un administrador
+    if ($_SESSION['docente'] == 'docente') {
+        // Si el usuario es un administrador, rediríjalo al index.php
+        $message = 'Docente';
+    } else {
+        // Si el usuario no es un administrador, rediríjalo a la página correspondiente según el tipo de usuario
+        if ($_SESSION['estudiante'] === "estudiante") {
+            header('Location: index_estudiantes.php');
+            exit();
+        } elseif ($_SESSION['admin'] === "admin") {
+            header("Location: index.php");
+            exit();
+        }
+    }
+} else {
+    // Si no hay una sesión activa, redirigir al usuario a la página de inicio de sesión
+    header('Location: login.php');
+    exit();
+}
+
 // Variables
 $grupos = array();
 $estudiantes = array();
@@ -52,18 +75,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["grupo_id"])) {
 }
 
 // Consultar y listar los grupos disponibles en la base de datos
-$sql_grupos = "SELECT id, nombre_grupo FROM grupos";
-$result_grupos = $conexion->query($sql_grupos);
+$sql_grupos = "SELECT id, nombre_grupo FROM grupos WHERE id_docente = ?";
+$stmt_grupos = $conexion->prepare($sql_grupos);
 
-if ($result_grupos) {
-    while ($row = $result_grupos->fetch_assoc()) {
+if ($stmt_grupos) {
+    $stmt_grupos->bind_param("i", $_SESSION['id_docente']);
+    $stmt_grupos->execute();
+    $stmt_grupos->bind_result($id_grupo, $nombre_grupo);
+
+    while ($stmt_grupos->fetch()) {
         $grupos[] = array(
-            'id' => $row['id'],
-            'nombre' => $row['nombre_grupo']
+            'id' => $id_grupo,
+            'nombre' => $nombre_grupo
         );
     }
-    $result_grupos->free();
+
+    $stmt_grupos->close();
 }
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verifica que los datos se están recibiendo correctamente
     if (isset($_POST['notas'])) {

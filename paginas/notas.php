@@ -81,8 +81,11 @@ if (isset($_SESSION['nombre_usuario'])) {
                                                                 echo $_SESSION['nombre_usuario'];
                                                                 ?></strong></p>
                             <?php if (isset($message)) : ?>
-                                <p class="designattion mb-0" style="color: red;"><?php echo $message; // mensaje de administrador  
-                                                                                    ?></p>
+                                <p class="designattion mb-0" style="background-color: #fef08a;
+    color: black;
+    padding: 2px;
+    border-radius: 10px; border: solid black 1px"><?php echo $message; // mensaje de administrador  
+                                                    ?></p>
                             <?php endif; ?>
                         </div>
                     </a>
@@ -239,19 +242,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["grupo_id"])) {
     }
 }
 
-// Consultar y listar los grupos disponibles en la base de datos
-$sql_grupos = "SELECT id, nombre_grupo FROM grupos";
+// Consultar y listar los grupos disponibles en la base de datos junto con el nombre_a de gestion_a y el nombre del docente
+$sql_grupos = "SELECT g.id, g.id_año, g.nombre_grupo, g.grupo, a.nombre_a, d.nombre AS nombre_docente 
+               FROM grupos g
+               JOIN gestion_a a ON g.id_año = a.id
+               JOIN docentes d ON g.id_docente = d.id";
+
 $result_grupos = $conexion->query($sql_grupos);
 
 if ($result_grupos) {
     while ($row = $result_grupos->fetch_assoc()) {
         $grupos[] = array(
             'id' => $row['id'],
-            'nombre' => $row['nombre_grupo']
+            'id_año' => $row['id_año'],
+            'nombre' => $row['nombre_grupo'],
+            'grupo' => $row['grupo'], // Asegúrate de agregar este campo
+            'nombre_a' => $row['nombre_a'],
+            'nombre_docente' => $row['nombre_docente']
         );
     }
     $result_grupos->free();
 }
+
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verifica que los datos se están recibiendo correctamente
     if (isset($_POST['notas'])) {
@@ -343,6 +356,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         error_log("No se encontraron datos de notas en la solicitud POST");
     }
 }
+
 ?>
 
 
@@ -351,17 +365,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="container">
             <h2 class="mt-5">Notas de Estudiantes</h2>
             <form action="notas.php" method="POST" id="seleccionGrupoForm"> <!-- Cambiado a un nuevo ID -->
-                <div class="form-group">
-                    <label for="grupo_id">Selecciona un grupo:</label>
-                    <select class="form-control" name="grupo_id">
-                        <option value="" disabled selected>Elige un grupo</option>
-                        <?php
-                        foreach ($grupos as $grupo) {
-                            echo "<option value='" . $grupo['id'] . "'>" . $grupo['nombre'] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
+            <div class="form-group">
+    <label for="grupo_id">Selecciona un grupo:</label>
+    <select class="form-control" name="grupo_id">
+        <option value="" disabled selected>Elige un grupo</option>
+        <?php
+        foreach ($grupos as $grupo) {
+            echo "<option value='" . $grupo['id'] . "'>" . $grupo['nombre'] . " - Grupo " . $grupo['grupo'] . " - " . $grupo['nombre_a'] . ' - ' . $grupo['nombre_docente'] . "</option>";
+        }
+        ?>
+    </select>
+</div>
+
                 <br>
                 <button type="submit" class="btn btn-primary">Mostrar Estudiantes y Materias</button>
             </form>

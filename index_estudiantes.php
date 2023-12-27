@@ -87,8 +87,11 @@ if (isset($_SESSION['nombre_usuario'])) {
                                                   echo $_SESSION['nombre_usuario'];
                                                   ?></strong></p>
                 <?php if (isset($message)) : ?>
-                  <p class="designattion mb-0" style="color: red;"><?php echo $message; // mensaje de administrador  
-                                                                    ?></p>
+                  <p class="designattion mb-0" style="background-color: #fef08a;
+    color: black;
+    padding: 2px;
+    border-radius: 10px; border: solid black 1px"><?php echo $message; // mensaje de administrador  
+                                                  ?></p>
                 <?php endif; ?>
               </div>
             </a>
@@ -105,6 +108,7 @@ if (isset($_SESSION['nombre_usuario'])) {
         </nav>
       </div>
     </header>
+    <!--end header -->
     <!--end header -->
 
 

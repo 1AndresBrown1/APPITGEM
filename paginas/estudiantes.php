@@ -84,8 +84,11 @@ if (isset($_SESSION['nombre_usuario'])) {
                                                                 echo $_SESSION['nombre_usuario'];
                                                                 ?></strong></p>
                             <?php if (isset($message)) : ?>
-                                <p class="designattion mb-0" style="color: red;"><?php echo $message; // mensaje de administrador  
-                                                                                    ?></p>
+                                <p class="designattion mb-0" style="background-color: #fef08a;
+    color: black;
+    padding: 2px;
+    border-radius: 10px; border: solid black 1px"><?php echo $message; // mensaje de administrador  
+                                                    ?></p>
                             <?php endif; ?>
                         </div>
                     </a>
@@ -249,7 +252,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                         </div>
                     </div>
 
-                 
+
                     <div class="col">
                         <div style="background: #20425a;" class="card radius-10 p-2">
                             <div class="card-body">
@@ -270,23 +273,36 @@ if (isset($_SESSION['nombre_usuario'])) {
                 <!--end row-->
 
                 <div id="formulario1" style="background-color: #eff6ff !important;" class="cardcustom p-4 mt-4">
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-1">
                         <div class="col mb-4">
                             <div class="container">
                                 <form action="procesar_registro_estudiante.php" method="POST">
                                     <h1 style="font-weight: bold;" class="my-4">Registro de Estudiantes</h1>
 
+                                    <p style="background-color: #e5e7eb;" class="fw-semibold fs-5 mb-4 rounded p-2 text-center">Datos personales </p>
+                                    <br>
                                     <div class="row mb-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 mt-2">
                                             <div class="form-group">
-                                                <label for="nombre">Nombre:</label>
-                                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+
+                                                <!-- <input type="text" class="form-control" id="nombre" name="nombre" required> -->
+
+                                                <div class="input-group flex-nowrap">
+                                                    <i style="font-size: 27px;" class="fa-solid fa-user input-group-text"></i>
+                                                    <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Nombre:" aria-label="Username" aria-describedby="addon-wrapping" required>
+                                                </div>
+
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 mt-2">
                                             <div class="form-group">
-                                                <label for="apellido">Apellido:</label>
-                                                <input type="text" class="form-control" id="apellido" name="apellido" required>
+                                                <!-- <label for="apellido">Apellido:</label>
+                                                <input type="text" class="form-control" id="apellido" name="apellido" required> -->
+
+                                                <div class="input-group flex-nowrap">
+                                                    <i style="font-size: 27px;" class="fa-solid fa-user input-group-text"></i>
+                                                    <input id="apellido" name="apellido" type="text" class="form-control" placeholder="Apellido:" aria-label="Username" aria-describedby="addon-wrapping" required>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -294,12 +310,97 @@ if (isset($_SESSION['nombre_usuario'])) {
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <!-- <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                                                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required> -->
                                                 <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-                                                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                                                <div class="input-group flex-nowrap">
+                                                    <i style="font-size: 27px;" class="fa-solid fa-calendar-days input-group-text"></i>
+                                                    <input id="fecha_nacimiento" name="fecha_nacimiento" id="apellido" name="apellido" type="date" class="form-control" aria-describedby="addon-wrapping" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <!-- <label for="lugar_nacimiento">Lugar de Nacimiento:</label>
+                                                <input type="text" class="form-control" id="lugar_nacimiento" name="lugar_nacimiento" required> -->
+                                                <label for="lugar_nacimiento">Lugar de nacimiento:</label>
+
+                                                <div class="input-group flex-nowrap">
+                                                    <i style="font-size: 27px;" class="fa-solid fa-earth-americas input-group-text"></i>
+                                                    <input id="lugar_nacimiento" name="lugar_nacimiento" type="text" class="form-control" placeholder="Lugar de nacimiento:" aria-label="Username" aria-describedby="addon-wrapping" required>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <!-- <div class="form-group">
+                                                <label for="tipo_documento">Tipo de Documento:</label>
+                                                <select class="form-control" id="tipo_documento" name="tipo_documento" required>
+                                                    <option value="">Selecciona un tipo de documento</option>
+                                                    <option value="DNI">Tarjeta de identidad</option>
+                                                    <option value="Cedula">Cedula</option>
+                                                    <option value="Pasaporte">Pasaporte</option>
+                                                </select>
+                                            </div> -->
+
+
+                                            <div class="input-group mb-3">
+                                                <i style="font-size: 27px;" class="fa-solid fa-id-card input-group-text"></i>
+
+                                                <select id="tipo_documento" name="tipo_documento" class="form-select" required>
+                                                    <option selected>Selecciona un tipo de documento..</option>
+                                                    <option value="DNI">Tarjeta de identidad</option>
+                                                    <option value="Cedula">Cedula</option>
+                                                    <option value="Pasaporte">Pasaporte</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
+                                                <label for="documento_identidad">Documento de Identidad:</label>
+                                                <input type="number" class="form-control" id="documento_identidad" name="documento_identidad" required>
+                                            </div> -->
+
+                                            <div class="input-group flex-nowrap">
+                                                <i style="font-size: 27px;" class="fa-solid fa-id-card input-group-text"></i>
+                                                <input placeholder="Numero de documento" id="documento_identidad" name="documento_identidad" id="apellido" name="apellido" type="number" class="form-control" aria-describedby="addon-wrapping" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+
+                                        <div class="col-md-6">
+                                            <!-- <div class="form-group">
+                                                <label for="fecha_expedicion">Fecha de Expedición:</label>
+                                                <input type="date" class="form-control" id="fecha_expedicion" name="fecha_expedicion" required>
+                                            </div> -->
+
+                                            <label for="fecha_nacimiento">Fecha de expedición:</label>
+                                            <div class="input-group flex-nowrap">
+                                                <i style="font-size: 27px;" class="fa-solid fa-calendar-days input-group-text"></i>
+                                                <input id="fecha_expedicion" name="fecha_expedicion" type="date" class="form-control" aria-describedby="addon-wrapping" required>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6">
+
+                                            <label for="fecha_expedicion">Expedida en:</label>
+
+                                            <div class="input-group flex-nowrap">
+                                                <i style="font-size: 27px;" class="fa-solid fa-earth-americas input-group-text"></i>
+                                                <input id="lugar_expedicion" name="lugar_expedicion" type="text" class="form-control" placeholder="Lugar de Expedición:" aria-label="Username" aria-describedby="addon-wrapping" required>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6 mt-3">
+                                            <!-- <div class="form-group">
                                                 <label for="genero">Género:</label>
                                                 <select class="form-control" id="genero" name="genero" required>
                                                     <option value="">Selecciona un género</option>
@@ -307,10 +408,57 @@ if (isset($_SESSION['nombre_usuario'])) {
                                                     <option value="Femenino">Femenino</option>
                                                     <option value="Otro">Otro</option>
                                                 </select>
+                                            </div> -->
+
+
+                                            <div class="input-group">
+                                                <i style="font-size: 27px;" class="fa-solid fa-venus-mars input-group-text"></i>
+
+                                                <select id="genero" name="genero" class="form-select" required>
+                                                    <option value="">Selecciona un género</option>
+                                                    <option value="Masculino">Masculino</option>
+                                                    <option value="Femenino">Femenino</option>
+                                                    <option value="Otro">Otro</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <!-- <div class="form-group">
+                                                <label for="direccion">Dirección:</label>
+                                                <input type="text" class="form-control" id="direccion" name="direccion" required>
+                                            </div> -->
+
+
+                                            <div class="input-group flex-nowrap">
+                                                <i style="font-size: 27px;" class="fa-solid fa-map-location-dot input-group-text"></i>
+                                                <input id="direccion" name="direccion" type="text" class="form-control" placeholder="Direccion:" aria-label="Username" aria-describedby="addon-wrapping" required>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <!-- <div class="form-group">
+                                                <label for="telefono">Teléfono:</label>
+                                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                                            </div> -->
+
+
+                                            <div class="input-group flex-nowrap">
+                                                <i style="font-size: 27px;" class="fa-solid fa-phone input-group-text"></i>
+                                                <input id="telefono" name="telefono" type="text" class="form-control" placeholder="Telefono:" aria-label="Username" aria-describedby="addon-wrapping" required>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <br>
+                                    <p style="background-color: #e5e7eb;" class="fw-semibold fs-5 mt-4 rounded p-2 text-center">Datos academicos </p>
+
+                                    <br>
                                     <div class="form-group mb-3">
                                         <label for="grupo">Grupo de Estudios:</label>
                                         <select class="form-control" id="grupo" name="grupo" required>
@@ -318,12 +466,12 @@ if (isset($_SESSION['nombre_usuario'])) {
                                             include("../bd.php"); // Incluye el archivo de conexión a la base de datos
 
                                             // Realiza una consulta para obtener los grupos
-                                            $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, a.nombre_a FROM grupos g INNER JOIN gestion_a a ON g.id_año = a.id";
+                                            $sql = "SELECT g.id AS grupo_id, g.nombre_grupo, g.grupo, a.nombre_a FROM grupos g INNER JOIN gestion_a a ON g.id_año = a.id";
                                             $result = $conexion->query($sql);
 
                                             if ($result) {
                                                 while ($row = $result->fetch_assoc()) {
-                                                    echo "<option value='" . $row['grupo_id'] . "'>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</option>";
+                                                    echo "<option value='" . $row['grupo_id'] . "'>" . $row['nombre_grupo'] . " - Grupo " . $row['grupo'] . " (" . $row['nombre_a'] . ")</option>";
                                                 }
 
                                                 $result->free();
@@ -331,51 +479,25 @@ if (isset($_SESSION['nombre_usuario'])) {
                                                 echo "<option value=''>No hay grupos disponibles</option>";
                                             }
                                             ?>
+
                                         </select>
                                     </div>
 
-
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="tipo_documento">Tipo de Documento:</label>
-                                                <select class="form-control" id="tipo_documento" name="tipo_documento" required>
-                                                    <option value="">Selecciona un tipo de documento</option>
-                                                    <option value="DNI">DNI</option>
-                                                    <option value="Pasaporte">Pasaporte</option>
-                                                    <!-- Add more options as needed -->
+                                                <label for="eps">EPS:</label>
+                                                <select class="form-control" id="eps" name="eps" required>
+                                                    <option value="">Selecciona una EPS</option>
+                                                    <option value="EPS1">EPS1</option>
+                                                    <option value="EPS2">EPS2</option>
+                                                    <!-- Agrega más opciones según sea necesario -->
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="documento_identidad">Documento de Identidad:</label>
-                                                <input type="number" class="form-control" id="documento_identidad" name="documento_identidad" required>
-                                            </div>
-                                        </div>
+                                        <!-- Agrega más campos aquí si es necesario -->
+
                                     </div>
-
-
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="direccion">Dirección:</label>
-                                                <input type="text" class="form-control" id="direccion" name="direccion" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="telefono">Teléfono:</label>
-                                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
-
 
 
                                     <div class="form-group mb-3">
@@ -413,9 +535,9 @@ if (isset($_SESSION['nombre_usuario'])) {
                             </div>
                         </div>
 
-                        <div class="col mb-4 ps-5 d-flex align-items-center">
+                        <!-- <div class="col mb-4 ps-5 d-flex align-items-center">
                             <img width="500" class="img-fluid" src="../assets/images/pagina/2undraw_certificate_re_yadi.svg" alt="">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -430,18 +552,19 @@ if (isset($_SESSION['nombre_usuario'])) {
                         <select style="width: 50%;" class="form-select form-select-lg" name="filtro_grupo" id="filtro_grupo">
                             <option value="">Todos los Grupos</option>
                             <?php
-                            // Consulta para obtener los nombres de los grupos
-                            $sql_grupos = "SELECT id, nombre_grupo FROM grupos";
-                            $result_grupos = $conexion->query($sql_grupos);
+// Consulta para obtener los nombres de los grupos
+$sql_grupos = "SELECT id, nombre_grupo, grupo FROM grupos";
+$result_grupos = $conexion->query($sql_grupos);
 
-                            if ($result_grupos) {
-                                while ($row_grupo = $result_grupos->fetch_assoc()) {
-                                    $selected = ($_GET['filtro_grupo'] == $row_grupo['id']) ? 'selected' : '';
-                                    echo "<option value='" . $row_grupo['id'] . "' $selected>" . $row_grupo['nombre_grupo'] . "</option>";
-                                }
-                                $result_grupos->free();
-                            }
-                            ?>
+if ($result_grupos) {
+    while ($row_grupo = $result_grupos->fetch_assoc()) {
+        $selected = ($_GET['filtro_grupo'] == $row_grupo['id']) ? 'selected' : '';
+        echo "<option value='" . $row_grupo['id'] . "' $selected>" . $row_grupo['nombre_grupo'] . " - Grupo " . $row_grupo['grupo'] . "</option>";
+    }
+    $result_grupos->free();
+}
+?>
+
                         </select>
                         <button class="btn btn-primary mt-3" type="submit">Filtrar</button>
                     </form>
@@ -465,10 +588,10 @@ if (isset($_SESSION['nombre_usuario'])) {
                             $filtro_sql = ($filtro_grupo != '') ? " WHERE g.id = $filtro_grupo" : '';
 
                             // Consulta para obtener los datos de los estudiantes y sus grupos con el filtro aplicado
-                            $sql = "SELECT e.id, e.nombre, e.apellido, e.fecha_nacimiento, e.genero, g.nombre_grupo, a.nombre_a 
-                FROM estudiantes e
-                INNER JOIN grupos g ON e.grupo_id = g.id
-                INNER JOIN gestion_a a ON g.id_año = a.id" . $filtro_sql;
+                            $sql = "SELECT e.id, e.nombre, e.apellido, e.fecha_nacimiento, e.genero, g.nombre_grupo, g.grupo, a.nombre_a 
+        FROM estudiantes e
+        INNER JOIN grupos g ON e.grupo_id = g.id
+        INNER JOIN gestion_a a ON g.id_año = a.id" . $filtro_sql;
 
                             $result = $conexion->query($sql);
 
@@ -481,11 +604,11 @@ if (isset($_SESSION['nombre_usuario'])) {
                                     echo "<td>" . $row['apellido'] . "</td>";
                                     echo "<td>" . $row['fecha_nacimiento'] . "</td>";
                                     echo "<td>" . $row['genero'] . "</td>";
-                                    echo "<td>" . $row['nombre_grupo'] . " (" . $row['nombre_a'] . ")</td>";
+                                    echo "<td>" . $row['nombre_grupo'] . " - Grupo " . $row['grupo'] . " (" . $row['nombre_a'] . ")</td>";
                                     echo "<td>
-                        <a href='editar_estudiante.php?id=" . $row['id'] . "'>Editar</a> | 
-                        <a href='eliminar_estudiante.php?id=" . $row['id'] . "'>Eliminar</a>
-                    </td>";
+            <a href='editar_estudiante.php?id=" . $row['id'] . "'>Editar</a> | 
+            <a href='eliminar_estudiante.php?id=" . $row['id'] . "'>Eliminar</a>
+        </td>";
                                     echo "</tr>";
                                     $i++;
                                 }
@@ -494,13 +617,14 @@ if (isset($_SESSION['nombre_usuario'])) {
                                 echo '<tr><td colspan="7">No hay datos de estudiantes disponibles.</td></tr>';
                             }
                             ?>
+
                         </tbody>
                     </table>
                 </div>
 
                 <br><br><br>
 
-              
+
 
                 <footer class="page-footer">
                     <p class="mb-0">Copyright © 2021. All right reserved.</p>

@@ -121,8 +121,11 @@
                                                                     echo $_SESSION['nombre_usuario'];
                                                                     ?></strong></p>
                                 <?php if (isset($message)) : ?>
-                                    <p class="designattion mb-0" style="color: red;"><?php echo $message; // mensaje de administrador  
-                                                                                        ?></p>
+                                    <p class="designattion mb-0" style="background-color: #fef08a;
+    color: black;
+    padding: 2px;
+    border-radius: 10px; border: solid black 1px"><?php echo $message; // mensaje de administrador  
+                                                    ?></p>
                                 <?php endif; ?>
                             </div>
                         </a>
@@ -269,26 +272,87 @@
                     <!-- OPCIONES -->
 
                     <div id="formulario1" style="background-color: #eff6ff !important;" class="cardcustom p-4 mt-4">
-                        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-1">
                             <div class="col mb-4">
                                 <div class="">
                                     <div class="container">
                                         <form action="procesar_registro_docente.php" method="POST">
                                             <h1 style="font-weight: bold;" class="my-4">Registro de Docentes</h1>
+                                            <p style="background-color: #e5e7eb;" class="fw-semibold fs-5 mb-4 rounded p-2 text-center">Datos personales </p>
+                                            <br>
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group mb-3">
-                                                        <label for="nombre">Nombre:</label>
-                                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+
+
+
+                                                        <div class="input-group flex-nowrap">
+                                                            <i style="font-size: 27px;" class="fa-solid fa-user input-group-text"></i>
+                                                            <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Nombre:" aria-label="Username" aria-describedby="addon-wrapping" required>
+                                                        </div>
+
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group mb-3">
-                                                        <label for="apellido">Apellido:</label>
-                                                        <input type="text" class="form-control" id="apellido" name="apellido" required>
+
+
+                                                <div class="col-md-6 mt-2">
+                                                    <div class="form-group">
+                                                        <!-- <label for="apellido">Apellido:</label>
+                                                <input type="text" class="form-control" id="apellido" name="apellido" required> -->
+
+                                                        <div class="input-group flex-nowrap">
+                                                            <i style="font-size: 27px;" class="fa-solid fa-user input-group-text"></i>
+                                                            <input id="apellido" name="apellido" type="text" class="form-control" placeholder="Apellido:" aria-label="Username" aria-describedby="addon-wrapping" required>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <!-- <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                                                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required> -->
+                                                <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                                                <div class="input-group flex-nowrap">
+                                                    <i style="font-size: 27px;" class="fa-solid fa-calendar-days input-group-text"></i>
+                                                    <input id="fecha_nacimiento" name="fecha_nacimiento" id="apellido" name="apellido" type="date" class="form-control" aria-describedby="addon-wrapping" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <!-- <lab+el for="lugar_nacimiento">Lugar de Nacimiento:</label>
+                                                <input type="text" class="form-control" id="lugar_nacimiento" name="lugar_nacimiento" required> -->
+                                                <label for="lugar_nacimiento">Lugar de nacimiento:</label>
+
+                                                <div class="input-group flex-nowrap">
+                                                    <i style="font-size: 27px;" class="fa-solid fa-earth-americas input-group-text"></i>
+                                                    <input id="lugar_nacimiento" name="lugar_nacimiento" type="text" class="form-control" placeholder="Lugar de nacimiento:" aria-label="Username" aria-describedby="addon-wrapping" required>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                      <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="eps">EPS:</label>
+                                                <select class="form-control" id="eps" name="eps" required>
+                                                    <option value="">Selecciona una EPS</option>
+                                                    <option value="EPS1">EPS1</option>
+                                                    <option value="EPS2">EPS2</option>
+                                                    <!-- Agrega más opciones según sea necesario -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Agrega más campos aquí si es necesario -->
+
+                                    </div>
+                                            
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-3">
@@ -331,6 +395,13 @@
 
                                                 <div class="col-md-6">
                                                     <div class="form-group mb-3">
+                                                        <label for="telefono">Telefono:</label>
+                                                        <input type="number" class="form-control" id="telefono" name="telefono" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-3">
                                                         <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
                                                         <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
                                                     </div>
@@ -356,16 +427,16 @@
 
                                 </div>
                             </div>
-                            <div class="col mb-4 ps-5 d-flex align-items-center">
+                            <!-- <div class="col mb-4 ps-5 d-flex align-items-center">
                                 <img width="425" class="img-fluid" src="../assets/images/pagina/undraw_certificate_re_yadi.svg" alt="">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
                     <!--end row-->
                     <div style="display: none; background-color: #eff6ff !important;" id="formulario2" class="cardcustom p-4 mt-4 table-responsive">
                         <h1 style="font-weight: bold;" class="my-4">Editar Docente</h1>
-                        <table style="max-width: 100%;" class="table table-striped table-borderless table-sm">
+                        <table style="max-width: 100%;" class="table table-striped table-bordered table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -374,9 +445,8 @@
                                     <th scope="col">Tipo de Documento</th>
                                     <th scope="col">Documento de Identidad</th>
                                     <th scope="col">Dirección</th>
-                                    <th scope="col">Título</th>
+                                    <th scope="col">Telefono</th>
                                     <th scope="col">Correo Electrónico</th>
-                                    <th scope="col">Fecha de Nacimiento</th>
                                     <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
@@ -398,9 +468,8 @@
                                         echo "<td>" . $row['tipo_documento'] . "</td>";
                                         echo "<td>" . $row['documento_identidad'] . "</td>";
                                         echo "<td>" . $row['direccion'] . "</td>";
-                                        echo "<td>" . $row['titulo'] . "</td>";
+                                        echo "<td>" . $row['telefono'] . "</td>";
                                         echo "<td>" . $row['email'] . "</td>";
-                                        echo "<td>" . $row['fecha_nacimiento'] . "</td>";
                                         echo "<td>
                                     <a href='editar_docente.php?id=" . $row['id'] . "'>Editar</a> 
                                 </td>";
