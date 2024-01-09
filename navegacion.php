@@ -1,9 +1,11 @@
+<!-- NOMBRE DE LA PAGINA -->
 <title>ITGEM</title>
+
 <?php
+// Conexion a la base de datos
 session_start();
 require 'bd.php';
 
-include_once "./navegacion.php";
 // error_reporting(0);
 // Verifica si ya hay una sesión activa
 if (isset($_SESSION['nombre_usuario'])) {
@@ -28,8 +30,12 @@ if (isset($_SESSION['nombre_usuario'])) {
 }
 ?>
 
+<!-- INICIA LA PAGINA -->
 <!DOCTYPE html>
 <html lang="en">
+
+
+<!-- HEADER -->
 
 <head>
     <meta charset="UTF-8">
@@ -38,7 +44,7 @@ if (isset($_SESSION['nombre_usuario'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-    <link rel="icon" href="./assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" type="image/png" />
+    <link rel="icon" href="./assets/images/login-images/logo-grande.svg" type="image/png" />
     <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
     <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
     <link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
@@ -58,27 +64,30 @@ if (isset($_SESSION['nombre_usuario'])) {
     <link rel="stylesheet" href="assets/css/header-colors.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+<!-- HEADER -->
+
+<!-- Body -->
 
 <body>
     <!--start header -->
     <header>
-        <div class="topbar d-flex align-items-center">
+        <div class="topbar d-flex align-items-center border-bottom">
             <nav class="navbar navbar-expand">
                 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
                 </div>
                 <div class="search-bar flex-grow-1">
                     <div class="position-relative">
                         <br>
-                        <h2 style="color:#3a0035;     font-weight: 600;"> <?php
+                        <h2 class="text-capitalize fw-bold" style="color:#3a0035;     font-weight: 600;"> <?php
                                                                             echo $_SESSION['nombre_usuario'];
                                                                             ?></h2>
                     </div>
                 </div>
                 <div class="user-box dropdown">
-                    <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+                    <a style="    padding: .5rem 1rem 1rem 2rem;" class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="assets/images/login-images/logo-grande.svg" class="user-img" alt="user avatar">
                         <div class="user-info ps-3">
-                            <p class="user-name mb-0 p-1"><strong><?php
+                            <p class="user-name mb-0 p-1 text-capitalize"><strong><?php
                                                                     echo $_SESSION['nombre_usuario'];
                                                                     ?></strong></p>
                             <?php if (isset($message)) : ?>
@@ -104,11 +113,11 @@ if (isset($_SESSION['nombre_usuario'])) {
     <!--wrapper-->
     <div class="wrapper">
         <!--sidebar wrapper -->
-        <div style="background: white;" class="sidebar-wrapper" data-simplebar="true">
-            <div class="sidebar-header">
+        <div style="background: white;" class="sidebar-wrapper border-end" data-simplebar="true">
+            <div class="sidebar-header border-end">
                 <div>
                     <br>
-                    <img src="./assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" class="logo-icon" alt="logo icon">
+                    <img src="./assets/images/login-images/logo-grande.svg" class="logo-icon" alt="logo icon">
                 </div>
                 <div>
                     <br>

@@ -1,3 +1,5 @@
+<!-- NOMBRE DE LA PAGINA -->
+<title>Docente</title>  
 <?php
 session_start();
 require 'bd.php';
@@ -39,7 +41,7 @@ if (isset($_SESSION['nombre_usuario'])) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--favicon-->
-  <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+  <link rel="icon" href="assets/images/login-images/logo-grande.svg" type="image/png" />
   <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
   <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
   <link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
@@ -72,7 +74,7 @@ if (isset($_SESSION['nombre_usuario'])) {
       <div class="sidebar-header">
         <div>
           <br>
-          <img src="./assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" class="logo-icon" alt="logo icon">
+          <img src="./assets/images/login-images/logo-grande.svg" class="logo-icon" alt="logo icon">
         </div>
         <div>
           <br>
@@ -152,7 +154,7 @@ if (isset($_SESSION['nombre_usuario'])) {
           </div>
           <div class="user-box dropdown">
             <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+              <img src="assets/images/login-images/logo-grande.svg" class="user-img" alt="user avatar">
               <div class="user-info ps-3">
                 <p class="user-name mb-0"><strong><?php
                                                   echo $_SESSION['nombre_usuario'];
@@ -184,6 +186,8 @@ if (isset($_SESSION['nombre_usuario'])) {
     <!--start page wrapper -->
     <div class="page-wrapper">
       <div class="page-content">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
+
         <div class="col">
           <div style="background: #20425a;" class="card radius-10 p-2">
             <div class="card-body">
@@ -215,6 +219,7 @@ if (isset($_SESSION['nombre_usuario'])) {
           </div>
         </div>
       </div>
+    </div>
     </div>
     <!--end row-->
 

@@ -1,4 +1,6 @@
 <title>ITGEM - ESTUDIANTES</title>
+<link rel="icon" href="../assets/images/login-images/logo-grande.svg" type="image/png" />
+
 <?php
 session_start();
 require '../bd.php';
@@ -40,7 +42,7 @@ if (isset($_SESSION['nombre_usuario'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-    <link rel="icon" href="../assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" type="image/png" />
+    <link rel="icon" href="../assets/images/login-images/logo-grande.svg" type="image/png" />
     <link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
     <link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
     <link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
@@ -64,25 +66,25 @@ if (isset($_SESSION['nombre_usuario'])) {
 <body>
     <!--start header -->
     <header>
-        <div class="topbar d-flex align-items-center">
+        <div class="topbar d-flex align-items-center border-bottom">
             <nav class="navbar navbar-expand">
                 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
                 </div>
                 <div class="search-bar flex-grow-1">
                     <div class="position-relative">
                         <br>
-                        <h2 style="color:#3a0035;     font-weight: 600;"> <?php
+                        <h2 class="text-capitalize" style="color:#3a0035;     font-weight: 600;"> <?php
                                                                             echo $_SESSION['nombre_usuario'];
                                                                             ?></h2>
                     </div>
                 </div>
                 <div class="user-box dropdown">
-                    <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="../assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+                    <a style="    padding: .5rem 1rem 1rem 2rem;" class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../assets/images/login-images/logo-grande.svg" class="user-img" alt="user avatar">
                         <div class="user-info ps-3">
-                            <p class="user-name mb-0"><strong><?php
-                                                                echo $_SESSION['nombre_usuario'];
-                                                                ?></strong></p>
+                            <p class="user-name mb-0 p-1 text-capitalize"><strong><?php
+                                                                    echo $_SESSION['nombre_usuario'];
+                                                                    ?></strong></p>
                             <?php if (isset($message)) : ?>
                                 <p class="designattion mb-0" style="background-color: #fef08a;
     color: black;
@@ -93,18 +95,15 @@ if (isset($_SESSION['nombre_usuario'])) {
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
-                        </li>
-                        <li>
-                            <div class="dropdown-divider mb-0"></div>
-                        </li>
-                        <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+
+                        <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Cerrar Seccion</span></a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
+    <!--end header -->
     <!--end header -->
 
     <!--wrapper-->
@@ -114,7 +113,7 @@ if (isset($_SESSION['nombre_usuario'])) {
             <div class="sidebar-header">
                 <div>
                     <br>
-                    <img src="../assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" class="logo-icon" alt="logo icon">
+                    <img src="../assets/images/login-images/logo-grande.svg" class="logo-icon" alt="logo icon">
                 </div>
                 <div>
                     <br>
@@ -245,7 +244,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                                         <a style="color: #fee6ff;" href="#" id="mostrarFormulario1" class="text-blue-500 hover:underline">Click aqui</a>
                                     </div>
                                     <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
-                                        <i class='bx bxs-cart'></i>
+                                    <i class="fa-solid fa-plus"></i>
                                     </div>
                                 </div>
                             </div>
@@ -262,8 +261,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                                         <a style="color: #fee6ff;" href="./matriculas.php" class="text-blue-500 hover:underline">Click aqui</a>
                                     </div>
                                     <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
-                                        <i class='bx bxs-bar-chart-alt-2'></i>
-                                    </div>
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -272,7 +270,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                 </div>
                 <!--end row-->
 
-                <div id="formulario1" style="background-color: #eff6ff !important;" class="cardcustom p-4 mt-4">
+                <div id="formulario1" style="background-color: #eff6ff !important; border-radius:20px;" class="cardcustom p-4 mt-4 border">
                     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-1">
                         <div class="col mb-4">
                             <div class="container">
@@ -299,10 +297,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                                                 <!-- <label for="apellido">Apellido:</label>
                                                 <input type="text" class="form-control" id="apellido" name="apellido" required> -->
 
-                                                <div class="input-group flex-nowrap">
-                                                    <i style="font-size: 27px;" class="fa-solid fa-user input-group-text"></i>
-                                                    <input id="apellido" name="apellido" type="text" class="form-control" placeholder="Apellido:" aria-label="Username" aria-describedby="addon-wrapping" required>
-                                                </div>
+                                    
                                             </div>
                                         </div>
                                     </div>
@@ -455,6 +450,15 @@ if (isset($_SESSION['nombre_usuario'])) {
                                         </div>
                                     </div>
 
+
+                                    <br>
+                                    <p style="background-color: #e5e7eb;" class="fw-semibold fs-5 mt-4 rounded p-2 text-center">Datos del acudiente </p>
+
+                                    <br>
+
+
+
+
                                     <br>
                                     <p style="background-color: #e5e7eb;" class="fw-semibold fs-5 mt-4 rounded p-2 text-center">Datos academicos </p>
 
@@ -543,7 +547,7 @@ if (isset($_SESSION['nombre_usuario'])) {
 
 
 
-                <div id="formulario2" style="background-color: #eff6ff !important;" class="cardcustom p-4 mt-4">
+                <div id="formulario2" style="background-color: #eff6ff !important; border-radius:20px;" class="cardcustom p-4 mt-4 border">
                     <h2 style="font-weight: bold;" class="my-4">Editar Estudiantes</h2>
 
                     <!-- Agrega un formulario para filtrar por grupo -->
@@ -552,18 +556,18 @@ if (isset($_SESSION['nombre_usuario'])) {
                         <select style="width: 50%;" class="form-select form-select-lg" name="filtro_grupo" id="filtro_grupo">
                             <option value="">Todos los Grupos</option>
                             <?php
-// Consulta para obtener los nombres de los grupos
-$sql_grupos = "SELECT id, nombre_grupo, grupo FROM grupos";
-$result_grupos = $conexion->query($sql_grupos);
+                            // Consulta para obtener los nombres de los grupos
+                            $sql_grupos = "SELECT id, nombre_grupo, grupo FROM grupos";
+                            $result_grupos = $conexion->query($sql_grupos);
 
-if ($result_grupos) {
-    while ($row_grupo = $result_grupos->fetch_assoc()) {
-        $selected = ($_GET['filtro_grupo'] == $row_grupo['id']) ? 'selected' : '';
-        echo "<option value='" . $row_grupo['id'] . "' $selected>" . $row_grupo['nombre_grupo'] . " - Grupo " . $row_grupo['grupo'] . "</option>";
-    }
-    $result_grupos->free();
-}
-?>
+                            if ($result_grupos) {
+                                while ($row_grupo = $result_grupos->fetch_assoc()) {
+                                    $selected = ($_GET['filtro_grupo'] == $row_grupo['id']) ? 'selected' : '';
+                                    echo "<option value='" . $row_grupo['id'] . "' $selected>" . $row_grupo['nombre_grupo'] . " - Grupo " . $row_grupo['grupo'] . "</option>";
+                                }
+                                $result_grupos->free();
+                            }
+                            ?>
 
                         </select>
                         <button class="btn btn-primary mt-3" type="submit">Filtrar</button>
@@ -574,7 +578,6 @@ if ($result_grupos) {
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre</th>
-                                <th scope="col">Apellido</th>
                                 <th scope="col">Fecha de Nacimiento</th>
                                 <th scope="col">Género</th>
                                 <th scope="col">Grupo de Estudios</th>
@@ -601,7 +604,7 @@ if ($result_grupos) {
                                     echo "<tr>";
                                     echo "<th scope='row'>$i</th>";
                                     echo "<td>" . $row['nombre'] . "</td>";
-                                    echo "<td>" . $row['apellido'] . "</td>";
+
                                     echo "<td>" . $row['fecha_nacimiento'] . "</td>";
                                     echo "<td>" . $row['genero'] . "</td>";
                                     echo "<td>" . $row['nombre_grupo'] . " - Grupo " . $row['grupo'] . " (" . $row['nombre_a'] . ")</td>";

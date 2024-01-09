@@ -71,116 +71,117 @@ include_once "./navegacion.php";
     </div>
     <!--end row-->
     <!-- 1. OPCIONS PAGE BTN-->
-    
-  <div class="page-content">
-    <div style="background-color: white; border-radius:20px;" class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
-      <div class="col p-4 d-flex justify-content-center">
 
-        <?php
-        // Consulta para obtener la cantidad de grupos por docente
-        $sqlGruposPorDocente = "SELECT d.nombre AS docente, COUNT(g.id) AS cantidad_grupos
+    <div class="page-content">
+      <div style="background-color: white; border-radius:20px;" class="row row-cols-1 row-cols-md-2 row-cols-xl-2 border">
+        <div class="col p-4 d-flex justify-content-center">
+
+          <?php
+          // Consulta para obtener la cantidad de grupos por docente
+          $sqlGruposPorDocente = "SELECT d.nombre AS docente, COUNT(g.id) AS cantidad_grupos
                         FROM grupos g
                         INNER JOIN docentes d ON g.id_docente = d.id
                         GROUP BY d.nombre";
-        $resultGruposPorDocente = $conexion->query($sqlGruposPorDocente);
+          $resultGruposPorDocente = $conexion->query($sqlGruposPorDocente);
 
-        // Inicializamos un array para almacenar los datos
-        $gruposPorDocente = [];
+          // Inicializamos un array para almacenar los datos
+          $gruposPorDocente = [];
 
-        if ($resultGruposPorDocente) {
-          while ($rowGruposPorDocente = $resultGruposPorDocente->fetch_assoc()) {
-            $gruposPorDocente[] = [
-              'docente' => $rowGruposPorDocente['docente'],
-              'cantidad_grupos' => $rowGruposPorDocente['cantidad_grupos'],
-            ];
+          if ($resultGruposPorDocente) {
+            while ($rowGruposPorDocente = $resultGruposPorDocente->fetch_assoc()) {
+              $gruposPorDocente[] = [
+                'docente' => $rowGruposPorDocente['docente'],
+                'cantidad_grupos' => $rowGruposPorDocente['cantidad_grupos'],
+              ];
+            }
+            $resultGruposPorDocente->free();
           }
-          $resultGruposPorDocente->free();
-        }
-        ?>
-        <!-- Agrega el elemento canvas para el gráfico -->
-        <canvas id="gruposPorDocenteChart" width="400" height="200"></canvas>
+          ?>
+          <!-- Agrega el elemento canvas para el gráfico -->
+          <canvas id="gruposPorDocenteChart" width="400" height="200"></canvas>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-          document.addEventListener('DOMContentLoaded', function() {
-            var ctx = document.getElementById('gruposPorDocenteChart').getContext('2d');
-            var data = <?php echo json_encode($gruposPorDocente); ?>;
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              var ctx = document.getElementById('gruposPorDocenteChart').getContext('2d');
+              var data = <?php echo json_encode($gruposPorDocente); ?>;
 
-            var labels = data.map(function(item) {
-              return item.docente;
+              var labels = data.map(function(item) {
+                return item.docente;
+              });
+
+              var counts = data.map(function(item) {
+                return item.cantidad_grupos;
+              });
+
+              var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: labels,
+                  datasets: [{
+                    label: 'Cantidad de Grupos por Docente',
+                    data: counts,
+                    backgroundColor: '#172554',
+                    borderColor: '#172554',
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
             });
+          </script>
 
-            var counts = data.map(function(item) {
-              return item.cantidad_grupos;
-            });
 
-            var chart = new Chart(ctx, {
-              type: 'bar',
+        </div>
+        <div style="height: 65vh;" class="col p-4 d-flex justify-content-center">
+          <?php
+          // Consulta para obtener la cantidad de mujeres y hombres
+          $sqlGender = "SELECT genero, COUNT(*) as count FROM estudiantes GROUP BY genero";
+          $resultGender = $conexion->query($sqlGender);
+
+          $genderData = [];
+          $genderLabels = [];
+
+          if ($resultGender && $resultGender->num_rows > 0) {
+            while ($rowGender = $resultGender->fetch_assoc()) {
+              $genderLabels[] = $rowGender['genero'];
+              $genderData[] = $rowGender['count'];
+            }
+            $resultGender->free();
+          }
+          ?>
+          <!-- Agrega este elemento canvas donde deseas renderizar el nuevo gráfico -->
+
+          <canvas id="genderChart"></canvas>
+          
+
+          <script>
+            // Código JavaScript para renderizar el gráfico de anillo para la distribución de género
+            var ctxGender = document.getElementById('genderChart').getContext('2d');
+            var genderChart = new Chart(ctxGender, {
+              type: 'doughnut',
               data: {
-                labels: labels,
+                labels: <?php echo json_encode($genderLabels); ?>,
                 datasets: [{
-                  label: 'Cantidad de Grupos por Docente',
-                  data: counts,
-                  backgroundColor: '#172554',
-                  borderColor: '#172554',
-                  borderWidth: 1
+                  data: <?php echo json_encode($genderData); ?>,
+                  backgroundColor: ['#fef08a', '#20425a'], // Puedes personalizar los colores
                 }]
               },
               options: {
-                scales: {
-                  y: {
-                    beginAtZero: true
-                  }
+                title: {
+                  display: true,
+                  text: 'Distribución de Género de Estudiantes'
                 }
               }
             });
-          });
-        </script>
+          </script>
 
-
+        </div>
       </div>
-      <div style="height: 65vh;" class="col p-4 d-flex justify-content-center">
-        <?php
-        // Consulta para obtener la cantidad de mujeres y hombres
-        $sqlGender = "SELECT genero, COUNT(*) as count FROM estudiantes GROUP BY genero";
-        $resultGender = $conexion->query($sqlGender);
-
-        $genderData = [];
-        $genderLabels = [];
-
-        if ($resultGender && $resultGender->num_rows > 0) {
-          while ($rowGender = $resultGender->fetch_assoc()) {
-            $genderLabels[] = $rowGender['genero'];
-            $genderData[] = $rowGender['count'];
-          }
-          $resultGender->free();
-        }
-        ?>
-        <!-- Agrega este elemento canvas donde deseas renderizar el nuevo gráfico -->
-
-        <canvas id="genderChart"></canvas>
-
-        <script>
-          // Código JavaScript para renderizar el gráfico de anillo para la distribución de género
-          var ctxGender = document.getElementById('genderChart').getContext('2d');
-          var genderChart = new Chart(ctxGender, {
-            type: 'doughnut',
-            data: {
-              labels: <?php echo json_encode($genderLabels); ?>,
-              datasets: [{
-                data: <?php echo json_encode($genderData); ?>,
-                backgroundColor: ['#fef08a', '#20425a'], // Puedes personalizar los colores
-              }]
-            },
-            options: {
-              title: {
-                display: true,
-                text: 'Distribución de Género de Estudiantes'
-              }
-            }
-          });
-        </script>
-
-      </div>
-    </div>
     </div>

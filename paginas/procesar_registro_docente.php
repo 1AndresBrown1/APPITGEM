@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha_nacimiento = $_POST['fecha_nacimiento'];
     $lugar_nacimiento = $_POST['lugar_nacimiento'];
     $eps = $_POST['eps'];
+    $genero = $_POST['genero'];
     $contrasena = $_POST['contrasena'];
     $verificarContrasena = $_POST['verificarContrasena'];
 
@@ -68,14 +69,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Contraseña verificada con éxito.<br>";
 
                 // Preparar y ejecutar la consulta de inserción con consulta preparada
-                $sql = "INSERT INTO docentes (nombre, apellido, tipo_documento, documento_identidad, direccion, titulo, email, fecha_nacimiento, contrasena, telefono, lugar_nacimiento, eps) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO docentes (nombre, apellido, tipo_documento, documento_identidad, direccion, titulo, email, fecha_nacimiento, contrasena, telefono, lugar_nacimiento, eps,genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
                 
                 $stmt = $conexion->prepare($sql);
 
                 if (!$stmt) {
                     echo "Error en la preparación de la consulta: " . $conexion->error;
                 } else {
-                    $stmt->bind_param("ssssssssssss", $nombre, $apellido, $tipo_documento, $documento_identidad, $direccion, $titulo, $email, $fecha_nacimiento, $password_hash, $telefono, $lugar_nacimiento, $eps);
+                    $stmt->bind_param("sssssssssssss", $nombre, $apellido, $tipo_documento, $documento_identidad, $direccion, $titulo, $email, $fecha_nacimiento, $password_hash, $telefono, $lugar_nacimiento, $eps,$genero);
                     
                     if ($stmt->execute()) {
                         echo "Registro exitoso";

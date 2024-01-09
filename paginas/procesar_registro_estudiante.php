@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Validaciones básicas (puedes agregar más según tus necesidades)
-    if (empty($nombre) || empty($apellido) || empty($fechaNacimiento) || empty($genero) || empty($grupoId) || empty($documento_identidad) || empty($direccion) || empty($telefono) || empty($tipo_documento) || empty($correo) || empty($contrasena) || empty($verificarContrasena) || empty($estadoMatricula)) {
+    if (empty($nombre)  || empty($fechaNacimiento) || empty($genero) || empty($grupoId) || empty($documento_identidad) || empty($direccion) || empty($telefono) || empty($tipo_documento) || empty($correo) || empty($contrasena) || empty($verificarContrasena) || empty($estadoMatricula)) {
         echo '<div class="alert alert-danger" role="alert">Todos los campos son obligatorios.</div>';
         exit;
     }
@@ -144,8 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // $hashedContrasena = hashPassword($contrasena);
 
         // Preparar y ejecutar la consulta de inserción
-        $sql = "INSERT INTO estudiantes (nombre, apellido, fecha_nacimiento, genero, grupo_id, documento_identidad, contrasena, estado_matricula, direccion, telefono, tipo_documento, correo,lugar_nacimiento,fecha_expedicion,eps,lugar_expedicion) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
+        $sql = "INSERT INTO estudiantes (nombre,  fecha_nacimiento, genero, grupo_id, documento_identidad, contrasena, estado_matricula, direccion, telefono, tipo_documento, correo,lugar_nacimiento,fecha_expedicion,eps,lugar_expedicion) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 
         // Verificar si la conexión está abierta antes de preparar la consulta
         if (!$conexion->connect_error) {
@@ -154,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt) {
                 // Asociar los parámetros
-                $stmt->bind_param("ssssiiisssssssss", $nombre, $apellido, $fechaNacimiento, $genero, $grupoId, $documento_identidad, $hashedContrasena, $estadoMatricula, $direccion, $telefono, $tipo_documento, $correo, $lugarnacimiento, $fechaexpedicion, $eps,$lugarexpedicion);
+                $stmt->bind_param("sssiiisssssssss", $nombre,  $fechaNacimiento, $genero, $grupoId, $documento_identidad, $hashedContrasena, $estadoMatricula, $direccion, $telefono, $tipo_documento, $correo, $lugarnacimiento, $fechaexpedicion, $eps,$lugarexpedicion);
 
                 // Ejecutar la sentencia
                 if ($stmt->execute()) {

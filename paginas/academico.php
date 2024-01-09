@@ -36,7 +36,7 @@ if (isset($_SESSION['nombre_usuario'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-    <link rel="icon" href="../assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" type="image/png" />
+    <link rel="icon" href="../assets/images/login-images/logo-grande.svg" type="image/png" />
     <link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
     <link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
     <link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
@@ -60,25 +60,25 @@ if (isset($_SESSION['nombre_usuario'])) {
 <body>
     <!--start header -->
     <header>
-        <div class="topbar d-flex align-items-center">
+        <div class="topbar d-flex align-items-center border-bottom">
             <nav class="navbar navbar-expand">
                 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
                 </div>
                 <div class="search-bar flex-grow-1">
                     <div class="position-relative">
                         <br>
-                        <h2 style="color:#3a0035;     font-weight: 600;"> <?php
-                                                                            echo $_SESSION['nombre_usuario'];
-                                                                            ?></h2>
+                        <h2 class="text-capitalize" style="color:#3a0035;     font-weight: 600;"> <?php
+                                                                                                    echo $_SESSION['nombre_usuario'];
+                                                                                                    ?></h2>
                     </div>
                 </div>
                 <div class="user-box dropdown">
-                    <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="../assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+                    <a style="    padding: .5rem 1rem 1rem 2rem;" class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../assets/images/login-images/logo-grande.svg" class="user-img" alt="user avatar">
                         <div class="user-info ps-3">
-                            <p class="user-name mb-0"><strong><?php
-                                                                echo $_SESSION['nombre_usuario'];
-                                                                ?></strong></p>
+                            <p class="user-name mb-0 p-1 text-capitalize"><strong><?php
+                                                                                    echo $_SESSION['nombre_usuario'];
+                                                                                    ?></strong></p>
                             <?php if (isset($message)) : ?>
                                 <p class="designattion mb-0" style="background-color: #fef08a;
     color: black;
@@ -89,18 +89,15 @@ if (isset($_SESSION['nombre_usuario'])) {
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
-                        </li>
-                        <li>
-                            <div class="dropdown-divider mb-0"></div>
-                        </li>
-                        <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+
+                        <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Cerrar Seccion</span></a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
+    <!--end header -->
     <!--end header -->
 
     <!--wrapper-->
@@ -110,7 +107,7 @@ if (isset($_SESSION['nombre_usuario'])) {
             <div class="sidebar-header">
                 <div>
                     <br>
-                    <img src="../assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" class="logo-icon" alt="logo icon">
+                    <img src="../assets/images/login-images/logo-grande.svg" class="logo-icon" alt="logo icon">
                 </div>
                 <div>
                     <br>
@@ -632,7 +629,7 @@ if (isset($_SESSION['nombre_usuario'])) {
 
                                 <!-- Segunda Columna -->
                                 <div class="col-md-6">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mt-4">
                                         <label class="input-group-text" for="grupo">Grupo</label>
                                         <select id="grupo" name="grupo" class="form-select">
                                             <option selected>Choose...</option>
@@ -648,7 +645,7 @@ if (isset($_SESSION['nombre_usuario'])) {
 
                             <div class="row">
                                 <!-- Tercera Columna -->
-                                <div class="col-md-6">
+                                <div class="col-md-6 mt-3">
                                     <div class="form-group">
                                         <label for="id_año">Año Académico:</label>
                                         <select class="form-control" id="id_año" name="id_año" required>
@@ -671,28 +668,30 @@ if (isset($_SESSION['nombre_usuario'])) {
                                 </div>
 
                                 <!-- Cuarta Columna -->
-                                <div class="col-md-6">
+                                <div class="col-md-6 mt-3">
                                     <div class="form-group">
                                         <label for="id_docente">Docente:</label>
                                         <select class="form-control" id="id_docente" name="id_docente" required>
                                             <?php
                                             // Conecta a la base de datos y recupera los docentes
                                             include("../bd.php");
-                                            $sql = "SELECT id, nombre FROM docentes";
+
+                                            $sql = "SELECT id, nombre, apellido FROM docentes"; // Agrega el campo 'apellido' a la consulta
                                             $result = $conexion->query($sql);
 
                                             if ($result) {
                                                 while ($row = $result->fetch_assoc()) {
-                                                    echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
+                                                    echo '<option value="' . $row['id'] . '">' . $row['nombre'] . ' ' . $row['apellido'] . '</option>';
                                                 }
                                             }
                                             ?>
+
                                         </select>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row mt-4">
                                 <!-- Quinta Columna (Botón de Enviar) -->
                                 <div class="col-md-12">
                                     <button type="submit" class="btn btn-primary">Registrar Grupo</button>

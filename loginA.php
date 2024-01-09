@@ -59,8 +59,8 @@ if (!empty($_POST['name']) && !empty($_POST['contrasena'])) {
 
 <body>
   <section style="background-color: white !important;" class="mt-1 d-flex justify-content-center text-center cardcustom">
-    <div><a href="./loginA.php"><img width="150" class="mt-4 img-fluid" src="./assets/images/Logo Elotes Ilustrado Amarillo y Verde.png" alt=""></a>
-      <p class="text-center mt-4 fw-bolder p-custom">Bienvenido de nuevo, inicia sección para acceder</p>
+    <div><a href="./loginA.php"><img width="150" class="mt-4 img-fluid" src="./assets/images/login-images/logo.svg" alt=""></a>
+      <p class="text-center mt-4 fw-bolder p-custom">Administrador</p>
       <p style="font-size: 14px !important;" class="p-custom mt-3">Por favor ingresa tus credenciales de inicio de sección para poder acceder a la plataforma de gestión de notas APPITGEM</p>
 
       <!-- Formulario de inicio de sección -->

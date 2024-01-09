@@ -116,10 +116,10 @@ if ($stmt) {
                     <label for="nombre">Nombre:</label>
                     <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="apellido">Apellido:</label>
-                    <input type="text" class="form-control" id="apellido" name="apellido" value="<?php echo $apellido; ?>" required>
-                </div>
+                    <input type="text" class="form-control" id="apellido" name="apellido" value="<?php echo $apellido; ?>" >
+                </div> -->
                 <div class="form-group">
                     <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
                     <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo $fechaNacimiento; ?>" required>
@@ -184,3 +184,4 @@ if ($stmt) {
         </div>
     </div>
 </div>
+<br><br><br>

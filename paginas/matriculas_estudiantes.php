@@ -229,13 +229,14 @@ if (isset($_SESSION['nombre_usuario'])) {
                     if (!file_exists($directorio_estudiante)) {
                         mkdir($directorio_estudiante, 0777, true);
                     }
-
                     // Mapear los nombres de archivos permitidos
                     $nombres_archivos_permitidos = array(
                         'cedula',
                         'diploma',
                         'eps',
-                        'recibo'
+                        'recibo',
+                        'fichamatricula', // Nuevo campo
+                        'acudientes'  // Nuevo campo
                     );
 
                     // Iterar sobre los archivos
@@ -249,6 +250,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                             move_uploaded_file($_FILES[$nombre_archivo]['tmp_name'], $nombre_archivo_completo);
                         }
                     }
+
 
                     // Mensaje de éxito
                     $mensaje_exito = "Documentos guardados exitosamente.";
@@ -266,17 +268,17 @@ if (isset($_SESSION['nombre_usuario'])) {
 
 
 
-            // Limpiar los campos del formulario después de procesar el formulario
+            // Limpiar los campos del formulario después de procesar el formulario y redirigir a "matriculas.php"
             echo "<script>
-            setTimeout(function() {
-                document.getElementById('cedula').value = '';
-                document.getElementById('diploma').value = '';
-                document.getElementById('eps').value = '';
-                document.getElementById('recibo').value = '';
-                // Recargar la página después de 2 segundos
-                window.location.href = window.location.href;
-            }, 2000); // 2000 milisegundos = 2 segundos
-          </script>";
+setTimeout(function() {
+    document.getElementById('cedula').value = '';
+    document.getElementById('diploma').value = '';
+    document.getElementById('eps').value = '';
+    document.getElementById('recibo').value = '';
+    // Redirigir a la página 'matriculas.php' después de 2 segundos
+    window.location.href = 'matriculas.php';
+}, 2000); // 2000 milisegundos = 2 segundos
+</script>";
         }
         ?>
 
@@ -332,6 +334,25 @@ if (isset($_SESSION['nombre_usuario'])) {
                                     </div>
                                 </div>
                             </div>
+                            <!-- ... Código existente ... -->
+
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="fichamatricula">Ficha de matricula (PDF):</label>
+                                        <input type="file" name="fichamatricula" id="fichamatricula" accept=".pdf" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="acudientes">Documentos del acudiente(PDF):</label>
+                                        <input type="file" name="acudientes" id="acudientes" accept=".pdf" required class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ... Código existente ... -->
+
                             <div class="row mt-3">
                                 <div class="col-md-12">
                                     <button type="submit" class="btn btn-primary">Guardar Documentos</button>
