@@ -161,7 +161,7 @@ if ($stmt) {
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label for="contrasena">Contraseña:</label>
-                            <input type="password" class="form-control" id="contrasena" name="contrasena" value="<?php echo $contrasena; ?>" >
+                            <input  autocomplete="off" type="password" class="form-control" id="contrasena" name="contrasena" value="" >
                         </div>
                     </div>
                     <!-- <div class="col-md-6">
@@ -171,6 +171,16 @@ if ($stmt) {
                         </div>
                     </div> -->
                 </div>
+
+                <?php
+if (isset($_POST["estado_matricula"])) {
+    $estadoMatricula = $_POST["estado_matricula"];
+} else {
+    // Si no está definida, proporciona un valor predeterminado o maneja la situación según tus necesidades
+    $estadoMatricula = ''; // Puedes asignar un valor predeterminado o dejarlo vacío
+}
+                ?>
+                
                 <div class="form-group">
                     <label for="estado_matricula">Estado de Matrícula:</label>
                     <select class="form-control" id="estado_matricula" name="estado_matricula" required>

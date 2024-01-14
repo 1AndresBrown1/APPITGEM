@@ -17,7 +17,8 @@ function cargarNotasEstudiante($identificacion, $conn)
     // Almacena las notas en las variables de sesión necesarias
     // Ejemplo:
     $sql = "SELECT * FROM notas INNER JOIN materias ON notas.materia_id = materias.id
-            WHERE estudiante_id = (SELECT id FROM estudiantes WHERE documento_identidad = '$identificacion')";
+            WHERE estudiante_id = (SELECT id FROM estudiantes WHERE documento_identidad = '$identificacion' LIMIT 1
+)";
     $result = mysqli_query($conn, $sql);
 
     if ($result && mysqli_num_rows($result) > 0) {

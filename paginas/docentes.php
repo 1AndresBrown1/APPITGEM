@@ -132,7 +132,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
 
-                            <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Cerrar Seccion</span></a>
+                            <li><a class="dropdown-item" href="../logout.php"><i class='bx bx-log-out-circle'></i><span>Cerrar Seccion</span></a>
                             </li>
                         </ul>
                     </div>
@@ -164,7 +164,7 @@
                         <a href="../index.php">
                             <div class="parent-icon"><i class='bx bx-home-circle'></i>
                             </div>
-                            <div class="menu-title">Dashboard</div>
+                            <div class="menu-title">Inicio</div>
                         </a>
                     </li>
                     <li>
@@ -189,14 +189,14 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../paginas/notas.php">
+                        <a href="../paginas/academico.php">
                             <div class="parent-icon"><i class="fa-solid fa-book"></i>
                             </div>
                             <div class="menu-title">Academico</div>
                         </a>
                     </li>
                     <li>
-                        <a href="../paginas/notas.php">
+                        <a href="../cartera/index.php" target="_blank">
                             <div class="parent-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i>
                             </div>
                             <div class="menu-title">Cartera</div>
@@ -206,7 +206,7 @@
                         <hr>
                     </li>
                     <li>
-                        <a href="../paginas/notas.php">
+                        <a href="../logout.php">
                             <div class="parent-icon"><i class="fa-solid fa-right-from-bracket"></i>
                             </div>
                             <div class="menu-title">Cerrar Seccion</div>

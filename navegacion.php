@@ -132,7 +132,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                     <a href="./index.php">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>
                         </div>
-                        <div class="menu-title">Dashboard</div>
+                        <div class="menu-title">Inicio</div>
                     </a>
                 </li>
                 <li>
@@ -174,7 +174,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                     <hr>
                 </li>
                 <li>
-                    <a href="./paginas/notas.php">
+                    <a href="./logout.php">
                         <div class="parent-icon"><i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <div class="menu-title">Cerrar Seccion</div>

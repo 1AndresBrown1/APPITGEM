@@ -75,18 +75,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["grupo_id"])) {
 }
 
 // Consultar y listar los grupos disponibles en la base de datos
-$sql_grupos = "SELECT id, nombre_grupo FROM grupos WHERE id_docente = ?";
+$sql_grupos = "SELECT id, nombre_grupo, grupo FROM grupos WHERE id_docente = ?";
 $stmt_grupos = $conexion->prepare($sql_grupos);
 
 if ($stmt_grupos) {
     $stmt_grupos->bind_param("i", $_SESSION['id_docente']);
     $stmt_grupos->execute();
-    $stmt_grupos->bind_result($id_grupo, $nombre_grupo);
+    $stmt_grupos->bind_result($id_grupo, $nombre_grupo,$grupo);
 
     while ($stmt_grupos->fetch()) {
         $grupos[] = array(
             'id' => $id_grupo,
-            'nombre' => $nombre_grupo
+            'nombre' => $nombre_grupo,
+            'grupo' => $grupo
         );
     }
 
@@ -198,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <option value="" disabled selected>Elige un grupo</option>
                         <?php
                         foreach ($grupos as $grupo) {
-                            echo "<option value='" . $grupo['id'] . "'>" . $grupo['nombre'] . "</option>";
+                            echo "<option value='" . $grupo['id'] . "'>" . $grupo['nombre'] . " - Grupo " . $grupo['grupo'] . "</option>";
                         }
                         ?>
                     </select>

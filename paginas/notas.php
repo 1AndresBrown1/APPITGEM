@@ -92,7 +92,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
 
-                        <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Cerrar Seccion</span></a>
+                        <li><a class="dropdown-item" href="../logout.php"><i class='bx bx-log-out-circle'></i><span>Cerrar Seccion</span></a>
                         </li>
                     </ul>
                 </div>

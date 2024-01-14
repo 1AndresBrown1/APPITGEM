@@ -90,7 +90,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
 
-                        <li><a class="dropdown-item" href="./logout.php"><i class='bx bx-log-out-circle'></i><span>Cerrar Seccion</span></a>
+                        <li><a class="dropdown-item" href="../logout.php"><i class='bx bx-log-out-circle'></i><span>Cerrar Seccion</span></a>
                         </li>
                     </ul>
                 </div>
@@ -420,7 +420,7 @@ if (isset($_SESSION['nombre_usuario'])) {
 
 
                 <div id="formulario2" class="container" style="display: none;">
-                    <h2 class="my-4">Registro de Materias</h2>
+                    <h2 class="my-4">Registro de Modulos</h2>
                     <form action="procesar_registro_materia.php" method="POST">
                         <div class="row">
                             <!-- Primera Columna -->
@@ -436,7 +436,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                                 <div class="form-group">
                                     <label for="codigo_materia">Código de la Materia:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="codigo_materia" name="codigo_materia" required>
+                                        <input type="text" class="form-control desa" id="codigo_materia" name="codigo_materia" required>
                                         <button class="btn btn-secondary" type="button" onclick="generarCodigo()">Generar Código</button>
                                     </div>
                                 </div>
@@ -475,15 +475,16 @@ if (isset($_SESSION['nombre_usuario'])) {
                                         <?php
                                         // Conecta a la base de datos y recupera los docentes
                                         include("../bd.php");
-                                        $sql_docentes = "SELECT id, nombre FROM docentes";
+                                        $sql_docentes = "SELECT id, nombre, apellido FROM docentes"; // Añadido el campo 'apellido'
                                         $result_docentes = $conexion->query($sql_docentes);
 
                                         if ($result_docentes) {
                                             while ($row_docente = $result_docentes->fetch_assoc()) {
-                                                echo '<option value="' . $row_docente['id'] . '">' . $row_docente['nombre'] . '</option>';
+                                                echo '<option value="' . $row_docente['id'] . '">' . $row_docente['nombre'] . ' ' . $row_docente['apellido'] . '</option>'; // Agregado el campo 'apellido'
                                             }
                                         }
                                         ?>
+
                                     </select>
                                 </div>
                             </div>
@@ -526,25 +527,34 @@ if (isset($_SESSION['nombre_usuario'])) {
                         <button type="submit" class="btn btn-primary">Registrar Materia</button>
                     </form>
 
-
                     <script>
-                        function generarCodigo() {
-                            // Obtener el valor del campo "Nombre de la Materia"
-                            var nombreMateria = document.getElementById("nombre_materia").value;
+    // Obtener el último número generado desde el almacenamiento local
+    var ultimoNumeroGenerado = localStorage.getItem("ultimoNumeroGenerado") || 0;
 
-                            // Validar si se ingresó un nombre de materia
-                            if (nombreMateria.trim() !== "") {
-                                // Crear el código combinando el nombre de la materia y un número aleatorio
-                                var numeroAleatorio = Math.floor(Math.random() * 1000);
-                                var codigoGenerado = nombreMateria.toUpperCase() + ":" + numeroAleatorio;
+    function generarCodigo() {
+        // Obtener el valor del campo "Nombre de la Materia"
+        var nombreMateria = document.getElementById("nombre_materia").value;
 
-                                // Actualizar el valor del campo de entrada
-                                document.getElementById("codigo_materia").value = codigoGenerado;
-                            } else {
-                                alert("Ingrese un nombre de materia antes de generar el código.");
-                            }
-                        }
-                    </script>
+        // Validar si se ingresó un nombre de materia
+        if (nombreMateria.trim() !== "") {
+            // Incrementar el contador antes de generar el código
+            ultimoNumeroGenerado++;
+
+            // Crear el código combinando el nombre de la materia y el número ascendente
+            var codigoGenerado = nombreMateria.toUpperCase() + ":" + ultimoNumeroGenerado;
+
+            // Actualizar el valor del campo de entrada
+            document.getElementById("codigo_materia").value = codigoGenerado;
+
+            // Guardar el último número generado en el almacenamiento local
+            localStorage.setItem("ultimoNumeroGenerado", ultimoNumeroGenerado);
+        } else {
+            alert("Ingrese un nombre de materia antes de generar el código.");
+        }
+    }
+</script>
+
+
 
 
                     <br><br>
@@ -565,7 +575,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT m.id AS materia_id, m.codigo_materia, m.nombre_materia, m.id_docente, m.fecha_inicio, m.fecha_final, m.estado, g.nombre_grupo, g.grupo, a.nombre_a, d.nombre
+                            $sql = "SELECT m.id AS materia_id, m.codigo_materia, m.nombre_materia, m.id_docente, m.fecha_inicio, m.fecha_final, m.estado, g.nombre_grupo, g.grupo, a.nombre_a, d.nombre, d.apellido
         FROM materias m 
         INNER JOIN grupos g ON m.id_grupo = g.id
         INNER JOIN gestion_a a ON g.id_año = a.id
@@ -580,7 +590,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                                     echo "<td>" . $row['codigo_materia'] . "</td>";
                                     echo "<td>" . $row['nombre_materia'] . "</td>";
                                     echo "<td>" . $row['nombre_grupo'] . " - Grupo " . $row['grupo'] . "</td>";
-                                    echo "<td>" . $row['nombre'] . "</td>"; // Aquí se muestra el nombre completo del docente
+                                    echo "<td>" . $row['nombre'] . " " . $row['apellido'] . "</td>"; // Modificado para incluir el apellido
                                     echo "<td>" . $row['fecha_inicio'] . "</td>";
                                     echo "<td>" . $row['fecha_final'] . "</td>";
                                     echo "<td>" . $row['nombre_a'] . "</td>";
@@ -594,6 +604,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                                 echo '<tr><td colspan="10">No hay datos de materias disponibles.</td></tr>';
                             }
                             ?>
+
                         </tbody>
                     </table>
 

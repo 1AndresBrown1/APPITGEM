@@ -6,6 +6,13 @@ include("../bd.php");
 // --->
 
 
+
+
+
+
+
+
+
 // Conectar a la base de datos (reemplaza los valores con los de tu configuración)
 $servername = "localhost";
 $username = "root";
@@ -96,6 +103,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lugarnacimiento = $_POST["lugar_nacimiento"];
     $fechaexpedicion = $_POST["fecha_expedicion"];
     $lugarexpedicion = $_POST["lugar_expedicion"];
+    $nombre_acudiente = $_POST["nombre_acudiente"];
+    $tipo_documento_acudiente = $_POST["tipo_documento_acudiente"];
+    $documento_identidad_acudiente = $_POST["documento_identidad_acudiente"];
+
 
 
 
@@ -144,8 +155,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // $hashedContrasena = hashPassword($contrasena);
 
         // Preparar y ejecutar la consulta de inserción
-        $sql = "INSERT INTO estudiantes (nombre,  fecha_nacimiento, genero, grupo_id, documento_identidad, contrasena, estado_matricula, direccion, telefono, tipo_documento, correo,lugar_nacimiento,fecha_expedicion,eps,lugar_expedicion) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+        $sql = "INSERT INTO estudiantes (nombre,  fecha_nacimiento, genero, grupo_id, documento_identidad, contrasena, estado_matricula, direccion, telefono, tipo_documento, correo,lugar_nacimiento,fecha_expedicion,eps,lugar_expedicion,nombre_acudiente,tipo_documento_acudiente,documento_identidad_acudiente) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)";
 
         // Verificar si la conexión está abierta antes de preparar la consulta
         if (!$conexion->connect_error) {
@@ -154,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt) {
                 // Asociar los parámetros
-                $stmt->bind_param("sssiiisssssssss", $nombre,  $fechaNacimiento, $genero, $grupoId, $documento_identidad, $hashedContrasena, $estadoMatricula, $direccion, $telefono, $tipo_documento, $correo, $lugarnacimiento, $fechaexpedicion, $eps,$lugarexpedicion);
+                $stmt->bind_param("sssiiissssssssssss", $nombre,  $fechaNacimiento, $genero, $grupoId, $documento_identidad, $hashedContrasena, $estadoMatricula, $direccion, $telefono, $tipo_documento, $correo, $lugarnacimiento, $fechaexpedicion, $eps,$lugarexpedicion,$nombre_acudiente,$tipo_documento_acudiente,$documento_identidad_acudiente);
 
                 // Ejecutar la sentencia
                 if ($stmt->execute()) {
