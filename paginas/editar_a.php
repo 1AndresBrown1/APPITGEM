@@ -1,6 +1,6 @@
 <?php
-include_once("./header.php");
-include("../bd.php");
+include './navegacion.php';
+include '../App/conexion.php';
 
 // Verifica si se ha enviado el formulario de edición
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Ejecuta la sentencia
             if ($stmt->execute()) {
                 // Redirige a la página de academico.php u otra página
-                echo '<script>window.location.href = "./academico.php";</script>';
+                echo '<script>window.location.href = "./crear_a.php";</script>';
                 exit;
             } else {
                 echo '<div class="alert alert-danger" role="alert">Error al actualizar el año académico: ' . $stmt->error . '</div>';
@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
 
 // Recupera el año académico a editar (puedes hacerlo a través de $_GET o una consulta a la base de datos)
 $id_a_editar = $_GET["id"];
@@ -62,21 +63,18 @@ if ($stmt) {
 }
 ?>
 
-<!-- A continuación, muestra un formulario para editar el año académico con los datos actuales -->
-<div class="page-wrapper">
-    <div class="page-content">
-        <div class="container">
-            <h2>Editar Año Académico</h2>
-            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
-                <input type="hidden" name="id" value="<?php echo $id; ?>"> <!-- Campo oculto para pasar el ID -->
-                <div class="form-group">
-                    <label for="nombre_a">Nombre del Año Académico:</label>
-                    <input type="text" class="form-control" id="nombre_a" name="nombre_a" value="<?php echo $nombre_a; ?>" required>
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            </form>
-        </div>
-    </div>
-</div>
 
+
+
+
+<div class="espacecustom mt-4 rounded p-4 ">
+    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+        <input type="hidden" name="id" value="<?php echo $id; ?>"> <!-- Campo oculto para pasar el ID -->
+        <div class="form-group">
+            <label for="nombre_a">Nombre del Año Académico:</label>
+            <input type="text" class="form-control" id="nombre_a" name="nombre_a" value="<?php echo $nombre_a; ?>" required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+</div>

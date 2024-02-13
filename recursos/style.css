@@ -1,0 +1,45 @@
+body {
+   background-color: rgb(241, 241, 241);
+   font-family: 'Inter', sans-serif;
+}
+
+.espacecustom {
+    margin: auto;
+    width: 80%;
+    background-color: white;
+    border-radius: 20px !important;
+}
+
+.circle-number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #007BFF; /* Puedes cambiar el color según tu preferencia */
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.p-custom{
+    padding: 55px !important;
+}
+
+@media screen and (max-width: 872px){
+    
+    .espacecustom {
+    margin: auto;
+    width: 98%;
+    background-color: white;
+    border-radius: 20px !important;
+}
+    
+    .p-custom{
+        padding: 20px !important;
+    }
+    
+    
+
+}
