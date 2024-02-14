@@ -4,9 +4,9 @@ ini_set('display_errors', 1);
 
 // Define las credenciales de la base de datos
 $nombre_de_host = "localhost";
-$nombre_de_usuario = "santand1_santand1";
-$contraseña = "AndresBrown11@";
-$nombre_de_base_de_datos = "santand1_itgem";
+$nombre_de_usuario = "root";
+$contraseña = "";
+$nombre_de_base_de_datos = "academico";
 
 // Crea una conexión a la base de datos
 
