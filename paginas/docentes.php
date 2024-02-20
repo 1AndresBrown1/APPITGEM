@@ -6,7 +6,7 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
 
         <div class="col">
-            <h2 class="fw-bolder ms-2">Crear docente nuevo:</h2>
+            <h2  class="fw-bolder ms-2">Crear docente nuevo:</h2>
 
             <div style="background: none !important; margin-top: 40px !important;" class=" mt-4 rounded ">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">

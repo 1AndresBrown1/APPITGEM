@@ -1,13 +1,31 @@
 <?php
 require "./navegacion_docentes.php";
 
-
-
-
 // Variables
 $grupos = array();
 $estudiantes = array();
 $materias = array();
+
+// Consultar y listar los grupos disponibles en la base de datos para el docente actual
+$sql_grupos = "SELECT id, nombre_grupo, grupo FROM grupos WHERE id_docente = ?";
+$stmt_grupos = $conexion->prepare($sql_grupos);
+
+if ($stmt_grupos) {
+    $stmt_grupos->bind_param("i", $_SESSION['id_docente']);
+    $stmt_grupos->execute();
+    $stmt_grupos->bind_result($id_grupo, $nombre_grupo, $grupo);
+
+    while ($stmt_grupos->fetch()) {
+        $grupos[] = array(
+            'id' => $id_grupo,
+            'nombre' => $nombre_grupo,
+            'grupo' => $grupo
+        );
+    }
+
+    $stmt_grupos->close();
+}
+
 
 // Verificar si se ha enviado el formulario de selección de grupo
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["grupo_id"])) {
@@ -51,27 +69,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["grupo_id"])) {
 
         $stmt_materias->close();
     }
-}
 
-// Consultar y listar los grupos disponibles en la base de datos
-$sql_grupos = "SELECT id, nombre_grupo, grupo FROM grupos WHERE id_docente = ?";
-$stmt_grupos = $conexion->prepare($sql_grupos);
 
-if ($stmt_grupos) {
-    $stmt_grupos->bind_param("i", $_SESSION['id_docente']);
-    $stmt_grupos->execute();
-    $stmt_grupos->bind_result($id_grupo, $nombre_grupo,$grupo);
+    // Consulta SQL para obtener las materias asociadas a ese grupo
+    $sql_materias = "SELECT id, nombre_materia FROM materias WHERE id_grupo = ?";
+    $stmt_materias = $conexion->prepare($sql_materias);
 
-    while ($stmt_grupos->fetch()) {
-        $grupos[] = array(
-            'id' => $id_grupo,
-            'nombre' => $nombre_grupo,
-            'grupo' => $grupo
-        );
+    if ($stmt_materias) {
+        $stmt_materias->bind_param("i", $grupo_id);
+        $stmt_materias->execute();
+        $stmt_materias->bind_result($id_materia, $nombre_materia);
+
+        while ($stmt_materias->fetch()) {
+            $materias[] = array(
+                'id' => $id_materia,
+                'nombre' => $nombre_materia
+            );
+        }
+
+        $stmt_materias->close();
     }
-
-    $stmt_grupos->close();
 }
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verifica que los datos se están recibiendo correctamente
@@ -112,7 +131,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         error_log("No se encontraron datos de notas en la solicitud POST");
     }
 }
-function obtenerNotaExistente($estudianteId, $materiaId) {
+function obtenerNotaExistente($estudianteId, $materiaId)
+{
     include("./conexion.php");
     $sql_nota_existente = "SELECT nota FROM notas WHERE estudiante_id = ? AND materia_id = ?";
     $stmt_nota_existente = $conexion->prepare($sql_nota_existente);
@@ -165,126 +185,123 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+<!-- Formulario de selección de grupo -->
 <div class="espacecustom p-4 mt-4 border p-custom">
     <h3 class="fw-bolder ms-2">Calificar Nota Final:</h3>
 
-    <form action="notas.php" method="POST" id="seleccionGrupoForm"> <!-- Cambiado a un nuevo ID -->
-                <div class="form-group">
-                    <label for="grupo_id">Selecciona un grupo:</label>
-                    <select class="form-control w-50" name="grupo_id">
-                        <option value="" disabled selected>Elige un grupo</option>
-                        <?php
-                        foreach ($grupos as $grupo) {
-                            echo "<option value='" . $grupo['id'] . "'>" . $grupo['nombre'] . " - Grupo " . $grupo['grupo'] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary">Mostrar Estudiantes y Materias</button>
-            </form>
+    <form action="notas.php" method="POST" id="seleccionGrupoForm">
+        <div class="form-group">
+            <label for="grupo_id">Selecciona un grupo:</label>
+            <select class="form-control w-50" name="grupo_id">
+                <option value="" disabled selected>Elige un grupo</option>
+                <?php foreach ($grupos as $grupo): ?>
+                    <option value="<?= $grupo['id'] ?>"><?= $grupo['nombre'] ?> - Grupo <?= $grupo['grupo'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Mostrar Estudiantes y Materias</button>
+    </form>
 
-            <!-- Mostrar la lista de estudiantes asociados al grupo seleccionado -->
-            <?php
-    if (!empty($estudiantes) && !empty($materias)) {
-        echo "<h3 class='mt-4'>Estudiantes asociados al grupo seleccionado:</h3>";
-        echo "<form id='notasForm'>"; 
-        echo "<div class='table-responsive'>";  // Agregamos la clase 'table-responsive'
-        echo "<table class='table mt-4'>";
-        echo "<thead class='thead-dark'>";
-        echo "<tr>";
-        echo "<th>Estudiante</th>";
-        foreach ($materias as $materia) {
-            echo "<th>{$materia['nombre']}</th>";
+    <!-- Mostrar la lista de estudiantes asociados al grupo seleccionado -->
+    <?php if (!empty($estudiantes) && !empty($materias)): ?>
+        <h3 class="mt-4">Estudiantes asociados al grupo seleccionado:</h3>
+        <form id="notasForm">
+            <div class="table-responsive">
+                <table class="table mt-4">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Estudiante</th>
+                            <?php foreach ($materias as $materia): ?>
+                                <th><?= $materia['nombre'] ?></th>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($estudiantes as $estudiante): ?>
+                            <tr>
+                                <td><?= $estudiante['nombre'] ?> <?= $estudiante['apellido'] ?></td>
+                                <?php foreach ($materias as $materia): ?>
+                                    <td>
+                                        <?php
+                                        $notaActual = obtenerNotaExistente($estudiante['id'], $materia['id']);
+                                        $notaMostrar = $notaActual !== null ? $notaActual : '';
+                                        ?>
+                                        <input type="number" name="nota[<?= $estudiante['id'] ?>][<?= $materia['id'] ?>]" step="0.1" class="nota-input" value="<?= $notaMostrar ?>">
+                                    </td>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Guardar Notas</button>
+        </form>
+    <?php endif; ?>
+</div>
+
+
+    <script>
+        const notasForm = document.getElementById('notasForm');
+
+        if (notasForm) {
+            notasForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(notasForm);
+                const notasData = {};
+
+                for (let pair of formData.entries()) {
+                    const [key, value] = pair;
+                    const parts = key.split('['); // Separar en partes
+                    const estudianteId = parts[1].split(']')[0]; // Obtener el ID del estudiante
+                    const materiaId = parts[2].split(']')[0]; // Obtener el ID de la materia
+                    if (!notasData[estudianteId]) {
+                        notasData[estudianteId] = {};
+                    }
+                    notasData[estudianteId][materiaId] = value;
+                }
+
+                // Obtener los nombres de los estudiantes y las materias
+                const nombres = {};
+                const estudiantes = <?= json_encode($estudiantes) ?>;
+                const materias = <?= json_encode($materias) ?>;
+                estudiantes.forEach(estudiante => {
+                    nombres[estudiante.id] = estudiante.nombre + ' ' + estudiante.apellido;
+                });
+
+                const materiaNombres = {};
+                materias.forEach(materia => {
+                    materiaNombres[materia.id] = materia.nombre;
+                });
+
+                // Mostrar alerta con los datos que se enviarán
+                const datosAMostrar = {};
+                for (const estudianteId in notasData) {
+                    const notasEstudiante = notasData[estudianteId];
+                    const nombreEstudiante = nombres[estudianteId];
+                    datosAMostrar[nombreEstudiante] = {};
+                    for (const materiaId in notasEstudiante) {
+                        const nota = notasEstudiante[materiaId];
+                        const nombreMateria = materiaNombres[materiaId];
+                        datosAMostrar[nombreEstudiante][nombreMateria] = nota;
+                    }
+                }
+
+                //alert("Datos a enviar: " + JSON.stringify(datosAMostrar));
+                alert("Datos registrados con exito " + "Datos a enviar: " + JSON.stringify(datosAMostrar));
+                try {
+                    const response = await fetch('procesar_notas.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(notasData)
+                    });
+                    const data = await response.json();
+                    console.log(data); // Verifica la respuesta desde procesar_notas.php
+                } catch (error) {
+                    console.error('Error al enviar los datos', error);
+                }
+            });
         }
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
-        foreach ($estudiantes as $estudiante) {
-            echo "<tr>";
-            echo "<td>{$estudiante['nombre']} {$estudiante['apellido']}</td>";
-            
-            foreach ($materias as $materia) {
-                echo "<td>";
-                $notaActual = obtenerNotaExistente($estudiante['id'], $materia['id']); // Función para obtener la nota previamente registrada
-                $notaMostrar = $notaActual !== null ? $notaActual : ''; // Si no existe una nota, muestra un campo vacío
-                echo "<input id='nota' type='number' name='nota[{$estudiante['id']}][{$materia['id']}]' step='0.1' class='nota-input' value='{$notaMostrar}'>";
-                echo "</td>";
-            }
-            
-            echo "</tr>";
-        }
-        echo "</tbody>";
-        echo "</table>";
-        echo "</div>";  // Cerramos el div con la clase 'table-responsive'
-        echo "<button type='submit' class='btn btn-primary mt-4'>Guardar Notas</button>";
-        echo "</form>";
-    }
-?>
-
-
-<script>
-  const notasForm = document.getElementById('notasForm');
-
-  if (notasForm) {
-    notasForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(notasForm);
-      const notasData = {};
-
-      for (let pair of formData.entries()) {
-        const [key, value] = pair;
-        const parts = key.split('['); // Separar en partes
-        const estudianteId = parts[1].split(']')[0]; // Obtener el ID del estudiante
-        const materiaId = parts[2].split(']')[0]; // Obtener el ID de la materia
-        if (!notasData[estudianteId]) {
-          notasData[estudianteId] = {};
-        }
-        notasData[estudianteId][materiaId] = value;
-      }
-
-      // Obtener los nombres de los estudiantes y las materias
-      const nombres = {};
-      const estudiantes = <?= json_encode($estudiantes) ?>;
-      const materias = <?= json_encode($materias) ?>;
-      estudiantes.forEach(estudiante => {
-        nombres[estudiante.id] = estudiante.nombre + ' ' + estudiante.apellido;
-      });
-
-      const materiaNombres = {};
-      materias.forEach(materia => {
-        materiaNombres[materia.id] = materia.nombre;
-      });
-
-      // Mostrar alerta con los datos que se enviarán
-      const datosAMostrar = {};
-      for (const estudianteId in notasData) {
-        const notasEstudiante = notasData[estudianteId];
-        const nombreEstudiante = nombres[estudianteId];
-        datosAMostrar[nombreEstudiante] = {};
-        for (const materiaId in notasEstudiante) {
-          const nota = notasEstudiante[materiaId];
-          const nombreMateria = materiaNombres[materiaId];
-          datosAMostrar[nombreEstudiante][nombreMateria] = nota;
-        }
-      }
-
-      //alert("Datos a enviar: " + JSON.stringify(datosAMostrar));
-      alert("Datos registrados con exito " + "Datos a enviar: " + JSON.stringify(datosAMostrar));
-      try {
-        const response = await fetch('procesar_notas.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(notasData)
-        });
-        const data = await response.json();
-        console.log(data); // Verifica la respuesta desde procesar_notas.php
-      } catch (error) {
-        console.error('Error al enviar los datos', error);
-      }
-    });
-  }
-</script>
-  
+    </script>
