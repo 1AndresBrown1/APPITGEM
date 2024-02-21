@@ -1,10 +1,10 @@
 <?php
 include '../App/conexion.php';
 
-function insertarEstudiante($nombre, $fecha_nacimiento, $lugar_nacimiento, $tipo_documento, $documento_identidad, $fecha_expedicion, $lugar_expedicion, $genero, $direccion, $telefono, $nombre_acudiente, $tipo_documento_acudiente, $documento_identidad_acudiente, $eps, $correo, $conexion)
+function insertarEstudiante($grupo_id,$nombre, $fecha_nacimiento, $lugar_nacimiento, $tipo_documento, $documento_identidad, $fecha_expedicion, $lugar_expedicion, $genero, $direccion, $telefono, $nombre_acudiente, $tipo_documento_acudiente, $documento_identidad_acudiente, $eps, $correo, $conexion)
 {
-    $sql = "INSERT INTO estudiantes (nombre,fecha_nacimiento,lugar_nacimiento,tipo_documento,documento_identidad,fecha_expedicion,lugar_expedicion,genero,direccion,telefono,nombre_acudiente,tipo_documento_acudiente,documento_identidad_acudiente,eps,correo)
-    VALUES ('$nombre', '$fecha_nacimiento', '$lugar_nacimiento', '$tipo_documento', '$documento_identidad', '$fecha_expedicion', '$lugar_expedicion', '$genero', '$direccion', '$telefono', '$nombre_acudiente', '$tipo_documento_acudiente', '$documento_identidad_acudiente', '$eps', '$correo')";
+    $sql = "INSERT INTO estudiantes (nombre,fecha_nacimiento,lugar_nacimiento,tipo_documento,documento_identidad,fecha_expedicion,lugar_expedicion,genero,direccion,telefono,nombre_acudiente,tipo_documento_acudiente,documento_identidad_acudiente,eps,correo,grupo_id)
+    VALUES ('$nombre', '$fecha_nacimiento', '$lugar_nacimiento', '$tipo_documento', '$documento_identidad', '$fecha_expedicion', '$lugar_expedicion', '$genero', '$direccion', '$telefono', '$nombre_acudiente', '$tipo_documento_acudiente', '$documento_identidad_acudiente', '$eps', '$correo','$grupo_id')";
 
     if ($conexion->query($sql) === TRUE) {
         echo "<script>alert('Nuevo estudiante insertado correctamente.'); window.location.href = '../App/estudiantes.php';</script>";
@@ -47,6 +47,8 @@ $tipo_documento_acudiente = $_POST["tipo_documento_acudiente"];
 $documento_identidad_acudiente = $_POST["documento_identidad_acudiente"];
 $eps = $_POST["eps"];
 $correo = $_POST["correo"];
+$grupo_id = $_POST["grupo_id"];
 
-insertarEstudiante($nombre, $fecha_nacimiento, $lugar_nacimiento, $tipo_documento, $documento_identidad, $fecha_expedicion, $lugar_expedicion, $genero, $direccion, $telefono, $nombre_acudiente, $tipo_documento_acudiente, $documento_identidad_acudiente, $eps, $correo, $conexion);
+
+insertarEstudiante($grupo_id,$nombre, $fecha_nacimiento, $lugar_nacimiento, $tipo_documento, $documento_identidad, $fecha_expedicion, $lugar_expedicion, $genero, $direccion, $telefono, $nombre_acudiente, $tipo_documento_acudiente, $documento_identidad_acudiente, $eps, $correo, $conexion);
 }

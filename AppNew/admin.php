@@ -67,6 +67,28 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante' || $_SES
 
 <body>
 
+    <div style="background: none !important; font-size: 20px;" class="espacecustom mt-4">
+
+        <?php
+        // Definir un array asociativo para mapear los roles a los colores de los badges
+        $colores_roles = array(
+            'admin' => 'danger',
+            'docente' => 'primary',
+            'estudiante' => 'success'
+            // Agrega aquí más roles y colores si es necesario
+        );
+
+        // Obtener el rol del usuario actual desde la sesión
+        $rol_usuario = $_SESSION['rol'];
+
+        // Verificar si el rol del usuario está definido en el array de colores
+        $badge_color = isset($colores_roles[$rol_usuario]) ? $colores_roles[$rol_usuario] : 'secondary';
+
+        // Mostrar el rol del usuario en el badge
+        echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($rol_usuario) . '</span>';
+        echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($nombre_administrador) . " " . ucfirst($apellido_administrador) .  '</span>'; ?>
+    </div>
+
     <div class="espacecustom mt-4 border">
         <!--  -->
         <nav class="navbar navbar-expand-lg" aria-label="Offcanvas navbar large">
@@ -110,28 +132,28 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante' || $_SES
 
 
     <div style="background: none !important; margin-top: 50px !important;" class="espacecustom mt-4 rounded ">
-    <h1>Bienvenido, <?php echo $nombre_administrador . " " . $apellido_administrador; ?>!</h1>
+        <h1>Bienvenido, <?php echo $nombre_administrador . " " . $apellido_administrador; ?>!</h1>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
 
-        <div class="col">
-            <h2 class="fw-bolder">Control académico simplificado:</h2>
-            <p style="width: 92%;" class="mt-4">Gestiona de manera eficiente y potencia tu experiencia académica con
-                nuestra aplicación avanzada de gestión educativa. Desde el seguimiento detallado del progreso
-                individual hasta la facilitación de la colaboración entre alumnos, profesores y administradores</p>
-            <br>
+            <div class="col">
+                <h2 class="fw-bolder">Control académico simplificado:</h2>
+                <p style="width: 92%;" class="mt-4">Gestiona de manera eficiente y potencia tu experiencia académica con
+                    nuestra aplicación avanzada de gestión educativa. Desde el seguimiento detallado del progreso
+                    individual hasta la facilitación de la colaboración entre alumnos, profesores y administradores</p>
+                <br>
 
 
-        </div>
-
-        <div class="col">
-            <div class="col mb-4 d-flex justify-content-center">
-                <img width="350" class="img" src="./recursos/img/img1.svg" alt="">
             </div>
-        </div>
 
+            <div class="col">
+                <div class="col mb-4 d-flex justify-content-center">
+                    <img width="350" class="img" src="./recursos/img/img1.svg" alt="">
+                </div>
+            </div>
+
+        </div>
     </div>
-</div>
 
 
     <script src="./recursos/bootstrap/js/bootstrap.bundle.js"></script>

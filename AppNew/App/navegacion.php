@@ -46,7 +46,7 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante') {
         <!--  -->
         <nav class="navbar navbar-expand-lg" aria-label="Offcanvas navbar large">
             <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="#">
+                <a class="navbar-brand d-flex align-items-center" href="../index.php">
                     <img src="../recursos/img/logo-grande.svg" alt="Logo" width="60" height="60" class="d-inline-block align-text-top">
                     <span style="font-size: 24px; color: rgb(44, 44, 44);" class="ms-2 fw-bolder">Sistema
                         Académico</span>
@@ -67,32 +67,28 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante') {
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active fw-medium" aria-current="page" href="#">Inicio</a>
+                                <a class="nav-link active fw-medium" aria-current="page" href="../index.php">Inicio</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link active fw-medium" aria-current="page" href="./cartera/index.php">Cartera</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a class="nav-link" href="../App/docentes.php">Docentes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./paginas/estudiantes.php">Estudiantes</a>
+                                <a class="nav-link" href="../App/estudiantes.php">Estudiantes</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="./paginas/notas.php">Notas</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="./paginas/academico.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Academico
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="./paginas/crear_a.php">Gestion de Años</a></li>
-                                    <li><a class="dropdown-item" href="./paginas/grupos.php">Grupos</a></li>
-                                    <li><a class="dropdown-item" href="./paginas/modulos.php">Modulos</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="./paginas/academico.php">Academico</a></li>
+                                    <li><a class="dropdown-item" href="./grupos.php">Grupos</a></li>
+                                    <li><a class="dropdown-item" href="./modulos.php">Modulos</a></li>
+                                   
                                 </ul>
                             </li>
                         </ul>

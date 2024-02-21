@@ -4,10 +4,44 @@ include_once './navegacion.php';
 
 <div id="formulario1" class="espacecustom p-4 border p-custom mt-5">
     <h2 class="fw-bolder ms-2">Registro de Estudiantes:</h2>
-    <span style="font-size: 15px;" class="badge text-bg-info ms-2 mt-3">Datos personales</span>
 
     <form action="../Funciones/funcion_crear_estudiante.php" method="POST">
         <br>
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <i style="font-size: 27px;" class="fa-solid fa-id-card input-group-text"></i>
+                <label class="input-group-text" for="grupo">Selecciona un grupo</label>
+
+                <?php
+                    // Aquí debes establecer la conexión a tu base de datos
+
+                    // Consulta SQL para obtener todos los grupos
+                    $sql = "SELECT id, CONCAT(nombre_grupo, ' ', 'Grupo ', seccion) AS nombre_completo FROM grupos";
+
+                    // Ejecutar la consulta
+                    $resultado = $conexion->query($sql);
+
+                    // Comprobar si se encontraron grupos
+                    if ($resultado->num_rows > 0) {
+                        // Mostrar un select con los grupos
+                        echo '<select id="grupo_id" name="grupo_id" class="form-select">';
+                        echo '<option selected>grupos...</option>';
+                        // Iterar sobre los resultados y mostrar cada grupo como una opción en el select
+                        while ($row = $resultado->fetch_assoc()) {
+                            echo '<option value="' . $row['id'] . '">' . $row['nombre_completo'] . '</option>';
+                        }
+                        echo '</select>';
+                    } else {
+                        echo "No se encontraron grupos disponibles.";
+                    }
+
+                    // Cerrar la conexión
+                    ?>
+
+            </div>
+        </div>
+        <span style="font-size: 15px;" class="badge text-bg-info ms-2 mb-3 mt-3">Datos personales</span>
+
         <div class="row mb-3">
             <div class="col-md-6 mt-2">
                 <div class="form-group">

@@ -11,18 +11,35 @@ if (!isset($_SESSION['id_usuario'])) {
     exit; // Detener la ejecución del script después de redirigir
 }
 
+// Obtener el ID de usuario de la sesión
+$id_usuario = $_SESSION['id_usuario'];
+
+// Consultar el nombre y apellido del administrador correspondiente al usuario actual
+$sql = "SELECT administradores.nombre, administradores.apellido 
+        FROM administradores 
+        INNER JOIN usuarios ON administradores.usuario_id = usuarios.id 
+        WHERE usuarios.id = $id_usuario";
+
+$resultado = $conexion->query($sql);
+
+// Verificar si se encontró el administrador correspondiente
+if ($resultado->num_rows > 0) {
+    $fila = $resultado->fetch_assoc();
+    $nombre_administrador = $fila['nombre'];
+    $apellido_administrador = $fila['apellido'];
+} else {
+    $nombre_administrador = "Administrador no encontrado";
+    $apellido_administrador = "";
+}
+
 // Verificar si el usuario tiene el rol de 'docente'
 if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante' || $_SESSION['rol'] === 'admin') {
     // El usuario tiene el rol de 'docente', redirigirlo a otra página, como 'otra_pagina.php'
     header("Location: error.php");
     exit; // Detener la ejecución del script después de redirigir
 }
-// El usuario ha iniciado sesión y no es 'docente', puedes continuar con el contenido de la página
-
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,7 +61,33 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante' || $_SES
 
 <body>
 
+    <div style="background: none !important; font-size: 20px;" class="espacecustom mt-4">
+
+        <?php
+        // Definir un array asociativo para mapear los roles a los colores de los badges
+        $colores_roles = array(
+            'admin' => 'danger',
+            'docente' => 'primary',
+            'estudiante' => 'success'
+            // Agrega aquí más roles y colores si es necesario
+        );
+
+        // Obtener el rol del usuario actual desde la sesión
+        $rol_usuario = $_SESSION['rol'];
+
+        // Verificar si el rol del usuario está definido en el array de colores
+        $badge_color = isset($colores_roles[$rol_usuario]) ? $colores_roles[$rol_usuario] : 'secondary';
+
+        // Mostrar el rol del usuario en el badge
+        echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($rol_usuario) . '</span>';
+        echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($nombre_administrador) . " " . ucfirst($apellido_administrador) .  '</span>';
+
+        ?>
+    </div>
+
     <div class="espacecustom mt-4 border">
+
+
         <!--  -->
         <nav class="navbar navbar-expand-lg" aria-label="Offcanvas navbar large">
             <div class="container-fluid">
@@ -69,32 +112,27 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante' || $_SES
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active fw-medium" aria-current="page" href="#">Inicio</a>
+                                <a class="nav-link active fw-medium" aria-current="page" href="./index.php">Inicio</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link active fw-medium" aria-current="page" href="./cartera/index.php">Cartera</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a class="nav-link" href="./App/docentes.php">Docentes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./paginas/estudiantes.php">Estudiantes</a>
+                                <a class="nav-link" href="./App/estudiantes.php">Estudiantes</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="./paginas/notas.php">Notas</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="./paginas/academico.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Academico
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="./paginas/crear_a.php">Gestion de Años</a></li>
-                                    <li><a class="dropdown-item" href="./paginas/grupos.php">Grupos</a></li>
-                                    <li><a class="dropdown-item" href="./paginas/modulos.php">Modulos</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="./paginas/academico.php">Academico</a></li>
+                                    <li><a class="dropdown-item" href="./App/grupos.php">Grupos</a></li>
+                                    <li><a class="dropdown-item" href="./App/modulos.php">Modulos</a></li>
                                 </ul>
                             </li>
                         </ul>

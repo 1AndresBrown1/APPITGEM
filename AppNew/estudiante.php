@@ -1,6 +1,10 @@
 <?php
+include_once './App/conexion.php';
+
 // Iniciar la sesión
 session_start();
+
+$id_usuario = $_SESSION['id_usuario'];
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['id_usuario'])) {
@@ -8,6 +12,23 @@ if (!isset($_SESSION['id_usuario'])) {
     header("Location: login.php");
     exit; // Detener la ejecución del script después de redirigir
 }
+
+// Consultar el nombre y apellido del administrador correspondiente al usuario actual
+$sql = "SELECT estudiantes.nombre
+        FROM estudiantes 
+        INNER JOIN usuarios ON estudiantes.usuario_id = usuarios.id 
+        WHERE usuarios.id = $id_usuario";
+
+$resultado = $conexion->query($sql);
+
+// Verificar si se encontró el administrador correspondiente
+if ($resultado->num_rows > 0) {
+    $fila = $resultado->fetch_assoc();
+    $nombre_administrador = $fila['nombre'];
+} else {
+    $nombre_administrador = "Administrador no encontrado";
+}
+
 
 // Verificar si el usuario tiene el rol de 'docente'
 if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'root') {
@@ -40,7 +61,31 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION[
 </head>
 
 <body>
-  
+
+
+    <div style="background: none !important; font-size: 20px;" class="espacecustom mt-4">
+
+        <?php
+        // Definir un array asociativo para mapear los roles a los colores de los badges
+        $colores_roles = array(
+            'admin' => 'danger',
+            'docente' => 'primary',
+            'estudiante' => 'success'
+            // Agrega aquí más roles y colores si es necesario
+        );
+
+        // Obtener el rol del usuario actual desde la sesión
+        $rol_usuario = $_SESSION['rol'];
+
+        // Verificar si el rol del usuario está definido en el array de colores
+        $badge_color = isset($colores_roles[$rol_usuario]) ? $colores_roles[$rol_usuario] : 'secondary';
+
+        // Mostrar el rol del usuario en el badge
+        // Mostrar el rol del usuario en el badge
+        echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($rol_usuario) . '</span>';
+        echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($nombre_administrador) . '</span>'; ?>
+    </div>
+
     <div class="espacecustom mt-4 border">
         <!--  -->
         <nav class="navbar navbar-expand-lg" aria-label="Offcanvas navbar large">
@@ -68,32 +113,7 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION[
                             <li class="nav-item">
                                 <a class="nav-link active fw-medium" aria-current="page" href="#">Inicio</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active fw-medium" aria-current="page" href="./cartera/index.php">Cartera</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="./paginas/docentes.php">Docentes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="./paginas/estudiantes.php">Estudiantes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="./paginas/notas.php">Notas</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="./paginas/academico.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Academico
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="./paginas/crear_a.php">Gestion de Años</a></li>
-                                    <li><a class="dropdown-item" href="./paginas/grupos.php">Grupos</a></li>
-                                    <li><a class="dropdown-item" href="./paginas/modulos.php">Modulos</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="./paginas/academico.php">Academico</a></li>
-                                </ul>
-                            </li>
+
                         </ul>
                         <a href="./logout.php">
                             <button class="btn btn-dark" type="submit">Cerrar Sección</button>
@@ -106,7 +126,21 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION[
     </div>
     <!--  -->
 
-
+    <div style="background: none !important; margin-top: 50px !important;" class="espacecustom mt-4 rounded ">
+        <h1>Bienvenido, <?php echo $nombre_administrador; ?>!</h1>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
+            <div class="col">
+                <h2 class="fw-bolder">Control académico simplificado:</h2>
+                <p style="width: 92%;" class="mt-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem et accusantium a repudiandae quis beatae distinctio labore sit maiores excepturi.</p>
+                <br>
+            </div>
+            <div class="col">
+                <div class="col mb-4 d-flex justify-content-center">
+                    <img width="350" class="img" src="./recursos/img/img1.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="./recursos/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
 
