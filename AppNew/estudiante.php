@@ -29,6 +29,16 @@ if ($resultado->num_rows > 0) {
     $nombre_administrador = "Administrador no encontrado";
 }
 
+// Consultar las materias del grupo del estudiante
+$sql_materias_grupo = "SELECT m.id AS id_materia, m.nombre_materia
+                       FROM materias m
+                       INNER JOIN grupos g ON m.grupo_asignado = g.id
+                       INNER JOIN estudiantes e ON g.id = e.grupo_id
+                       WHERE e.usuario_id = $id_usuario";
+
+$resultado_materias_grupo = $conexion->query($sql_materias_grupo);
+
+
 
 // Verificar si el usuario tiene el rol de 'docente'
 if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'root') {
@@ -141,6 +151,56 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION[
             </div>
         </div>
     </div>
+
+
+
+
+    <div style="margin-top: 50px !important;" class="p-4 espacecustom mt-4 rounded ">
+        <h2>Tabla de Notas</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Consultar y mostrar las notas de las materias del grupo del estudiante
+                    $sql_notas_estudiante = "SELECT m.nombre_materia, n.nota
+                                         FROM notas n
+                                         INNER JOIN materias m ON n.id_materia = m.id
+                                         INNER JOIN estudiantes e ON n.id_estudiante = e.id
+                                         WHERE e.usuario_id = $id_usuario";
+
+                    $resultado_notas_estudiante = $conexion->query($sql_notas_estudiante);
+
+                    while ($row_nota_estudiante = $resultado_notas_estudiante->fetch_assoc()) {
+                        $nota = $row_nota_estudiante['nota'];
+                        $clase_css = ($nota >= 4.5 && $nota <= 5) ? 'fondo-verde' : ''; // Agregar clase CSS condicionalmente
+                        echo '<tr>';
+                        echo '<td>' . $row_nota_estudiante['nombre_materia'] . '</td>';
+                        echo '<td class="' . $clase_css . '">' . $nota . '</td>'; // Aplicar la clase CSS condicional
+                        echo '</tr>';
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <style>
+        .fondo-verde {
+            background-color: #c9ffd5 !important;
+            /* Cambia el color de fondo a verde */
+        }
+    </style>
+
+<br>
+<br>
+
+
     <script src="./recursos/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
 

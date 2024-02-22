@@ -136,7 +136,7 @@ if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'estudiante' || $_SESSI
 
         // Mostrar el rol del usuario en el badge
         echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($rol_usuario) . '</span>';
-        echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($nombre_administrador) . " " . ucfirst($apellido_administrador).  '</span>';
+        echo '<span class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($nombre_administrador) . " " . ucfirst($apellido_administrador) .  '</span>';
         ?>
     </div>
 
@@ -186,49 +186,68 @@ if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'estudiante' || $_SESSI
     <!--  -->
 
 
+    <?php
+    // Verificar si el formulario ha sido enviado
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Obtener las notas ingresadas y subirlas a la base de datos
+        foreach ($_POST as $key => $value) {
+            // Verificar si el campo es una nota (tiene el formato nota_<id_estudiante>_<id_materia>)
+            if (substr($key, 0, 5) == "nota_") {
+                // Obtener el ID del estudiante y de la materia desde el nombre del campo
+                $parts = explode("_", $key);
+                $id_estudiante = $parts[1];
+                $id_materia = $parts[2];
+                $nota = $value;
 
+                // Aquí deberías escribir el código para insertar la nota en la base de datos
+                // Puedes utilizar la conexión a la base de datos que ya tienes establecida
+                // Por ejemplo:
+                $sql_insertar_nota = "INSERT INTO notas (id_estudiante, id_materia, nota) VALUES ($id_estudiante, $id_materia, $nota)";
+                $conexion->query($sql_insertar_nota);
+                // Esto es solo un ejemplo, asegúrate de usar consultas preparadas para prevenir inyección SQL
 
-
-
-
+            }
+        }
+    }
+    ?>
 
     <div class="espacecustom p-4 mt-4">
-    <h2>Seleccionar Grupo:</h2>
-    <form action="#" method="POST" onsubmit="return validarSeleccionGrupo()">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
-        <div class="col mb-2">
-    <select class="form-select" name="grupo_materias" id="grupo_materias">
-        <option value="">Seleccionar Grupo...</option>
-        <?php
-        // Consulta SQL para obtener los grupos que el docente tiene materias asignadas
-        $sql_grupos = "SELECT DISTINCT g.id AS id_grupo, CONCAT(g.nombre_grupo, ' ', g.seccion) AS nombre_completo
+        <h2>Seleccionar Grupo:</h2>
+        <form action="#" method="POST" onsubmit="return validarSeleccionGrupo()">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
+                <div class="col mb-2">
+                    <select class="form-select" name="grupo_materias" id="grupo_materias">
+                        <option value="">Seleccionar Grupo...</option>
+                        <?php
+                        // Consulta SQL para obtener los grupos que el docente tiene materias asignadas
+                        $sql_grupos = "SELECT DISTINCT g.id AS id_grupo, CONCAT(g.nombre_grupo, ' ', g.seccion) AS nombre_completo
                        FROM grupos g
                        INNER JOIN materias m ON g.id = m.grupo_asignado
                        INNER JOIN docentes d ON m.docente_asignado = d.id
                        WHERE d.usuario_id = $id_usuario"; // Filtrar por el ID de usuario del docente
-        $resultado_grupos = $conexion->query($sql_grupos);
+                        $resultado_grupos = $conexion->query($sql_grupos);
 
-        // Iterar sobre los resultados de la consulta de grupos
-        while ($row_grupo = $resultado_grupos->fetch_assoc()) {
-            echo '<option value="' . $row_grupo['id_grupo'] . '">' . $row_grupo['nombre_completo'] . '</option>';
-        }
-        ?>
-    </select>
-</div>
-<div class="col mb-2">
-    <button type="submit" class="btn btn-primary">Mostrar Materias</button>
-</div>
+                        // Iterar sobre los resultados de la consulta de grupos
+                        while ($row_grupo = $resultado_grupos->fetch_assoc()) {
+                            echo '<option value="' . $row_grupo['id_grupo'] . '">' . $row_grupo['nombre_completo'] . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col mb-2">
+                    <button type="submit" class="btn btn-primary">Mostrar Materias</button>
+                </div>
 
-        </div>
-    </form>
+            </div>
+        </form>
 
-    <?php
-    // Verificar si se ha enviado un formulario con el grupo seleccionado
-    if (isset($_POST['grupo_materias'])) {
-        // Obtener el ID del grupo seleccionado
-        $id_grupo_seleccionado = $_POST['grupo_materias'];
-        // Consulta SQL para obtener las materias del grupo seleccionado
-        $sql_materias_grupo = "SELECT m.id AS id_materia, m.nombre_materia
+        <?php
+        // Verificar si se ha enviado un formulario con el grupo seleccionado
+        if (isset($_POST['grupo_materias'])) {
+            // Obtener el ID del grupo seleccionado
+            $id_grupo_seleccionado = $_POST['grupo_materias'];
+            // Consulta SQL para obtener las materias del grupo seleccionado
+            $sql_materias_grupo = "SELECT m.id AS id_materia, m.nombre_materia
                        FROM materias m
                        INNER JOIN grupos g ON m.grupo_asignado = g.id
                        INNER JOIN docentes d ON m.docente_asignado = d.id
@@ -236,82 +255,104 @@ if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'estudiante' || $_SESSI
                        AND d.id = $id_docente";
 
 
-        // Ejecutar la consulta solo si se ha seleccionado un grupo
-        if ($id_grupo_seleccionado != "") {
-            $resultado_materias_grupo = $conexion->query($sql_materias_grupo);
-            // Verificar si se encontraron materias para el grupo seleccionado
-            if ($resultado_materias_grupo->num_rows > 0) {
-                // Verificar si se ha enviado un formulario con el grupo seleccionado
-                if (isset($_POST['grupo_materias'])) {
-                    // Obtener el ID del grupo seleccionado
-                    $id_grupo_seleccionado = $_POST['grupo_materias'];
-                    // Consulta SQL para obtener el nombre del grupo seleccionado
-                    $sql_nombre_grupo = "SELECT CONCAT(nombre_grupo, ' ', seccion) AS nombre_completo FROM grupos WHERE id = $id_grupo_seleccionado";
-                    $resultado_nombre_grupo = $conexion->query($sql_nombre_grupo);
-                    // Obtener el nombre completo del grupo
-                    if ($row_nombre_grupo = $resultado_nombre_grupo->fetch_assoc()) {
-                        $nombre_grupo_seleccionado = $row_nombre_grupo['nombre_completo'];
-                    } else {
-                        $nombre_grupo_seleccionado = "Grupo no encontrado";
-                    }
-                    echo '<span style="font-size: 16px"; class="ms-1 mt-3 p-2 fw-normal badge bg-' . $badge_color . '">' . ucfirst($nombre_grupo_seleccionado) . '</span>';
-                }
-    ?>
-                <br>
-                <table class="table table-striped mt-4">
-                    <thead>
-                        <tr>
-                            <th>Nombre del Estudiante</th>
-                            <?php
-                            // Iterar sobre los resultados de la consulta de materias del grupo para mostrar los encabezados de las notas
-                            while ($row_materia = $resultado_materias_grupo->fetch_assoc()) {
-                                echo '<th>' . $row_materia['nombre_materia'] . '</th>';
-                            }
-                            ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        // Consulta SQL para obtener la lista de estudiantes del grupo seleccionado
-                        $sql_estudiantes_grupo = "SELECT * FROM estudiantes WHERE grupo_id = $id_grupo_seleccionado";
-                        $resultado_estudiantes_grupo = $conexion->query($sql_estudiantes_grupo);
-
-                        // Iterar sobre los resultados de la consulta de estudiantes del grupo
-                        while ($row_estudiante = $resultado_estudiantes_grupo->fetch_assoc()) {
-                            echo '<tr>';
-                            echo '<td>' . $row_estudiante['nombre'] . '</td>';
-
-                            // Iterar sobre los resultados de la consulta de materias del grupo para mostrar los inputs de notas
-                            $resultado_materias_grupo->data_seek(0); // Reiniciar el puntero del resultado de la consulta de materias
-                            while ($row_materia = $resultado_materias_grupo->fetch_assoc()) {
-                                echo '<td><input type="number" class="form-control" name="nota_' . $row_estudiante['id'] . '_' . $row_materia['id_materia'] . '"></td>';
-                            }
-
-                            echo '</tr>';
+            // Ejecutar la consulta solo si se ha seleccionado un grupo
+            if ($id_grupo_seleccionado != "") {
+                $resultado_materias_grupo = $conexion->query($sql_materias_grupo);
+                // Verificar si se encontraron materias para el grupo seleccionado
+                if ($resultado_materias_grupo->num_rows > 0) {
+                    // Verificar si se ha enviado un formulario con el grupo seleccionado
+                    if (isset($_POST['grupo_materias'])) {
+                        // Obtener el ID del grupo seleccionado
+                        $id_grupo_seleccionado = $_POST['grupo_materias'];
+                        // Consulta SQL para obtener el nombre del grupo seleccionado
+                        $sql_nombre_grupo = "SELECT CONCAT(nombre_grupo, ' ', seccion) AS nombre_completo FROM grupos WHERE id = $id_grupo_seleccionado";
+                        $resultado_nombre_grupo = $conexion->query($sql_nombre_grupo);
+                        // Obtener el nombre completo del grupo
+                        if ($row_nombre_grupo = $resultado_nombre_grupo->fetch_assoc()) {
+                            $nombre_grupo_seleccionado = $row_nombre_grupo['nombre_completo'];
+                        } else {
+                            $nombre_grupo_seleccionado = "Grupo no encontrado";
                         }
-                        ?>
-                    </tbody>
-                </table>
-    <?php
+                        echo '<span style="font-size: 16px"; class="ms-1 mt-3 p-2 fw-normal badge bg-' . $badge_color . '">' . ucfirst($nombre_grupo_seleccionado) . '</span>';
+                    }
+        ?>
+                    <br>
+                    <form action="../Funciones/actualizar_notas.php" method="POST">
+                        <table class="table table-striped mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Estudiante</th>
+                                    <?php
+                                    // Iterar sobre los resultados de la consulta de materias del grupo para mostrar los encabezados de las notas
+                                    while ($row_materia = $resultado_materias_grupo->fetch_assoc()) {
+                                        echo '<th>' . $row_materia['nombre_materia'] . '</th>';
+                                    }
+                                    ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                // Consulta SQL para obtener la lista de estudiantes del grupo seleccionado
+                                $sql_estudiantes_grupo = "SELECT * FROM estudiantes WHERE grupo_id = $id_grupo_seleccionado";
+                                $resultado_estudiantes_grupo = $conexion->query($sql_estudiantes_grupo);
+
+                                while ($row_estudiante = $resultado_estudiantes_grupo->fetch_assoc()) {
+                                    echo '<tr>';
+                                    echo '<td>' . $row_estudiante['nombre'] . '</td>';
+                                
+                                    // Iterar sobre los resultados de la consulta de materias del grupo para mostrar los campos de notas
+                                    $resultado_materias_grupo->data_seek(0); // Reiniciar el puntero del resultado de la consulta de materias
+                                    while ($row_materia = $resultado_materias_grupo->fetch_assoc()) {
+                                        $id_estudiante = $row_estudiante['id'];
+                                        $id_materia = $row_materia['id_materia'];
+                                        
+                                        // Consultar la nota correspondiente en la base de datos
+                                        $sql_nota = "SELECT nota FROM notas WHERE id_estudiante = $id_estudiante AND id_materia = $id_materia";
+                                        $resultado_nota = $conexion->query($sql_nota);
+                                        $row_nota = $resultado_nota->fetch_assoc();
+                                        $nota = isset($row_nota['nota']) ? $row_nota['nota'] : '';
+                                
+                                        // Mostrar el campo de nota con el valor correspondiente
+                                        echo '<td><input type="number" class="form-control" name="nota_' . $id_estudiante . '_' . $id_materia . '" value="' . $nota . '"></td>';
+                                    }
+                                
+                                    echo '</tr>';
+                                }
+                                
+                                ?>
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn btn-primary" onclick="mostrarAlerta()">Subir Notas</button>
+                    </form>
+        <?php
+                } else {
+                    // No se encontraron materias para el grupo seleccionado
+                    echo '<p>No se encontraron materias para este grupo.</p>';
+                }
             } else {
-                // No se encontraron materias para el grupo seleccionado
-                echo '<p>No se encontraron materias para este grupo.</p>';
+                // Mensaje para indicar que se debe seleccionar un grupo
+                echo '<p id="mensaje-seleccion">Por favor, selecciona un grupo.</p>';
             }
-        } else {
-            // Mensaje para indicar que se debe seleccionar un grupo
-            echo '<p id="mensaje-seleccion">Por favor, selecciona un grupo.</p>';
         }
-    }
-    ?>
-</div>
+        ?>
+    </div>
+    <script>
+        function validarSeleccionGrupo() {
+            var grupoSeleccionado = document.getElementById('grupo_materias').value;
+            if (grupoSeleccionado === "") {
+                alert("Por favor, selecciona un grupo primero.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+
+
 <script>
-    function validarSeleccionGrupo() {
-        var grupoSeleccionado = document.getElementById('grupo_materias').value;
-        if (grupoSeleccionado === "") {
-            alert("Por favor, selecciona un grupo primero.");
-            return false;
-        }
-        return true;
+    // Función para mostrar la alerta solo cuando se hace clic en el botón de "Subir Notas"
+    function mostrarAlerta() {
+        alert("¡Notas actualizadas exitosamente!");
     }
 </script>
 
@@ -319,7 +360,6 @@ if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'estudiante' || $_SESSI
 
 
 
-    
 
     <script src="../recursos/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
