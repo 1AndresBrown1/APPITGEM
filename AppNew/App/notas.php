@@ -313,7 +313,7 @@ if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'estudiante' || $_SESSI
                                         $nota = isset($row_nota['nota']) ? $row_nota['nota'] : '';
                                 
                                         // Mostrar el campo de nota con el valor correspondiente
-                                        echo '<td><input type="number" class="form-control" name="nota_' . $id_estudiante . '_' . $id_materia . '" value="' . $nota . '"></td>';
+                                        echo '<td><input type="text" class="form-control" name="nota_' . $id_estudiante . '_' . $id_materia . '" value="' . $nota . '"></td>';
                                     }
                                 
                                     echo '</tr>';

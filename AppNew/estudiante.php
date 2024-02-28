@@ -155,7 +155,7 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION[
 
 
 
-    <div style="margin-top: 50px !important;" class="p-4 espacecustom mt-4 rounded ">
+    <div class="container mt-5">
         <h2>Tabla de Notas</h2>
         <div class="table-responsive">
             <table class="table table-bordered">
@@ -178,7 +178,17 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION[
 
                     while ($row_nota_estudiante = $resultado_notas_estudiante->fetch_assoc()) {
                         $nota = $row_nota_estudiante['nota'];
-                        $clase_css = ($nota >= 4.5 && $nota <= 5) ? 'fondo-verde' : ''; // Agregar clase CSS condicionalmente
+                        $clase_css = '';
+
+                        // Determinar la clase CSS según el rango de notas
+                        if ($nota >= 4.5 && $nota <= 5) {
+                            $clase_css = 'fondo-verde';
+                        } elseif ($nota >= 3.8 && $nota <= 4.4) {
+                            $clase_css = 'fondo-amarillo';
+                        } elseif ($nota >= 1.0 && $nota <= 3.7) {
+                            $clase_css = 'fondo-rojo';
+                        }
+
                         echo '<tr>';
                         echo '<td>' . $row_nota_estudiante['nombre_materia'] . '</td>';
                         echo '<td class="' . $clase_css . '">' . $nota . '</td>'; // Aplicar la clase CSS condicional
@@ -190,15 +200,26 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'admin' || $_SESSION[
         </div>
     </div>
 
+
     <style>
         .fondo-verde {
             background-color: #c9ffd5 !important;
             /* Cambia el color de fondo a verde */
         }
+
+        .fondo-amarillo {
+            background-color: #fff59d !important;
+            /* Cambia el color de fondo a amarillo */
+        }
+
+        .fondo-rojo {
+            background-color: #ffb3b3 !important;
+            /* Rojo */
+        }
     </style>
 
-<br>
-<br>
+    <br>
+    <br>
 
 
     <script src="./recursos/bootstrap/js/bootstrap.bundle.js"></script>

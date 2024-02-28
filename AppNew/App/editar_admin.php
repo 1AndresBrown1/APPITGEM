@@ -1,4 +1,5 @@
-<?php require "navegacion.php";
+<?php require "sidebar.php";
+
 
 
 // Verificar si se ha enviado el formulario
@@ -73,8 +74,39 @@ if ($resultado->num_rows > 0) {
     // Mostrar el formulario de edición con los campos prellenados
 ?>
 
+<main>
+<div style="background: none !important;" class="espacecustom  rounded ">
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <?php
+                // Definir un array asociativo para mapear los roles a los colores de los badges
+                $colores_roles = array(
+                    'admin' => 'danger',
+                    'docente' => 'primary',
+                    'estudiante' => 'success'
+                    // Agrega aquí más roles y colores si es necesario
+                );
 
-    <div class="espacecustom p-4 border p-custom mt-5">
+                // Obtener el rol del usuario actual desde la sesión
+                $rol_usuario = $_SESSION['rol'];
+
+                // Verificar si el rol del usuario está definido en el array de colores
+                $badge_color = isset($colores_roles[$rol_usuario]) ? $colores_roles[$rol_usuario] : 'secondary';
+
+                // Mostrar el rol del usuario en el badge
+                echo '<span style="font-size: 16px;" class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($rol_usuario) . '</span>';
+                echo '<span style="font-size: 16px;" class="ms-1 badge bg-' . $badge_color . '">' . ucfirst($nombre_administrador) . " " . ucfirst($apellido_administrador) .  '</span>'; ?>
+
+            </li>
+        </ul>
+    </div>
+    <nav class="ms-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./administradores.php">Administradores</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Editar administrador</li>
+        </ol>
+    </nav>
+    <div style="border-radius: 20px; background-color: white;" class=" p-4 border p-custom mt-5">
         <h2 class="fw-bolder ms-2">Editar Registro de administradores:</h2>
         <span style="font-size: 15px;" class="badge text-bg-info ms-2 mt-3">Datos personales</span>
         <form action="" method="POST">
@@ -226,6 +258,7 @@ if ($resultado->num_rows > 0) {
             <button style="background-color: #2970a0; color: white;" type="submit" class="btn mt-4">Guardar cambios</button>
         </form>
     </div>
+</main>
     <?php
 } else {
     echo "No se encontró el administrador con el ID proporcionado.";
