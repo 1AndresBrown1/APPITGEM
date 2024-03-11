@@ -115,7 +115,7 @@
                             echo "<tr>";
                             echo "<td>" . $contador . "</td>";
                             echo "<td>" . $fila['nombre_grupo'] . "</td>";
-                            echo "<td>" . $fila['año_lectivo'] . "</td>";
+                            echo "<td>" . $fila['ano_lectivo'] . "</td>";
                             echo "<td>" . $fila['nivel_educativo'] . "</td>";
                             echo "<td>" . $fila['seccion'] . "</td>";
                             echo "<td>" . $fila['horario'] . "</td>";

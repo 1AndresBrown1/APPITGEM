@@ -278,50 +278,53 @@ if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'estudiante' || $_SESSI
         ?>
                     <br>
                     <form action="../Funciones/actualizar_notas.php" method="POST">
-                        <table class="table table-striped mt-4">
-                            <thead>
-                                <tr>
-                                    <th>Nombre del Estudiante</th>
+                        <div class="table-responsive mt-4">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre del Estudiante</th>
+                                        <?php
+                                        // Iterar sobre los resultados de la consulta de materias del grupo para mostrar los encabezados de las notas
+                                        while ($row_materia = $resultado_materias_grupo->fetch_assoc()) {
+                                            echo '<th>' . $row_materia['nombre_materia'] . '</th>';
+                                        }
+                                        ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     <?php
-                                    // Iterar sobre los resultados de la consulta de materias del grupo para mostrar los encabezados de las notas
-                                    while ($row_materia = $resultado_materias_grupo->fetch_assoc()) {
-                                        echo '<th>' . $row_materia['nombre_materia'] . '</th>';
-                                    }
-                                    ?>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                // Consulta SQL para obtener la lista de estudiantes del grupo seleccionado
-                                $sql_estudiantes_grupo = "SELECT * FROM estudiantes WHERE grupo_id = $id_grupo_seleccionado";
-                                $resultado_estudiantes_grupo = $conexion->query($sql_estudiantes_grupo);
+                                    // Consulta SQL para obtener la lista de estudiantes del grupo seleccionado
+                                    $sql_estudiantes_grupo = "SELECT * FROM estudiantes WHERE grupo_id = $id_grupo_seleccionado";
+                                    $resultado_estudiantes_grupo = $conexion->query($sql_estudiantes_grupo);
 
-                                while ($row_estudiante = $resultado_estudiantes_grupo->fetch_assoc()) {
-                                    echo '<tr>';
-                                    echo '<td>' . $row_estudiante['nombre'] . '</td>';
-                                
-                                    // Iterar sobre los resultados de la consulta de materias del grupo para mostrar los campos de notas
-                                    $resultado_materias_grupo->data_seek(0); // Reiniciar el puntero del resultado de la consulta de materias
-                                    while ($row_materia = $resultado_materias_grupo->fetch_assoc()) {
-                                        $id_estudiante = $row_estudiante['id'];
-                                        $id_materia = $row_materia['id_materia'];
-                                        
-                                        // Consultar la nota correspondiente en la base de datos
-                                        $sql_nota = "SELECT nota FROM notas WHERE id_estudiante = $id_estudiante AND id_materia = $id_materia";
-                                        $resultado_nota = $conexion->query($sql_nota);
-                                        $row_nota = $resultado_nota->fetch_assoc();
-                                        $nota = isset($row_nota['nota']) ? $row_nota['nota'] : '';
-                                
-                                        // Mostrar el campo de nota con el valor correspondiente
-                                        echo '<td><input type="text" class="form-control" name="nota_' . $id_estudiante . '_' . $id_materia . '" value="' . $nota . '"></td>';
+                                    while ($row_estudiante = $resultado_estudiantes_grupo->fetch_assoc()) {
+                                        echo '<tr>';
+                                        echo '<td>' . $row_estudiante['nombre'] . '</td>';
+
+                                        // Iterar sobre los resultados de la consulta de materias del grupo para mostrar los campos de notas
+                                        $resultado_materias_grupo->data_seek(0); // Reiniciar el puntero del resultado de la consulta de materias
+                                        while ($row_materia = $resultado_materias_grupo->fetch_assoc()) {
+                                            $id_estudiante = $row_estudiante['id'];
+                                            $id_materia = $row_materia['id_materia'];
+
+                                            // Consultar la nota correspondiente en la base de datos
+                                            $sql_nota = "SELECT nota FROM notas WHERE id_estudiante = $id_estudiante AND id_materia = $id_materia";
+                                            $resultado_nota = $conexion->query($sql_nota);
+                                            $row_nota = $resultado_nota->fetch_assoc();
+                                            $nota = isset($row_nota['nota']) ? $row_nota['nota'] : '0';
+
+                                            // Mostrar el campo de nota con el valor correspondiente
+                                            echo '<td><input min="1" max="5" step="0.1" type="number" class="form-control" name="nota_' . $id_estudiante . '_' . $id_materia . '" value="' . $nota . '"></td>';
+                                        }
+
+                                        echo '</tr>';
                                     }
-                                
-                                    echo '</tr>';
-                                }
-                                
-                                ?>
-                            </tbody>
-                        </table>
+
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <button type="submit" class="btn btn-primary" onclick="mostrarAlerta()">Subir Notas</button>
                     </form>
         <?php
@@ -349,12 +352,12 @@ if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'estudiante' || $_SESSI
 
 
 
-<script>
-    // Función para mostrar la alerta solo cuando se hace clic en el botón de "Subir Notas"
-    function mostrarAlerta() {
-        alert("¡Notas actualizadas exitosamente!");
-    }
-</script>
+    <script>
+        // Función para mostrar la alerta solo cuando se hace clic en el botón de "Subir Notas"
+        function mostrarAlerta() {
+            alert("¡Notas actualizadas exitosamente!");
+        }
+    </script>
 
 
 

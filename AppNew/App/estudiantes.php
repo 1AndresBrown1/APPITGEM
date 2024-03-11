@@ -135,8 +135,11 @@ require "../Funciones/contar.php"; ?>
                     // Incluir el archivo de conexión a la base de datos
                     include '../App/conexion.php';
 
-                    // Consulta SQL para seleccionar todos los administradores
-                    $sql = "SELECT * FROM estudiantes";
+                    $sql = "SELECT estudiantes.*, grupos.nombre_grupo, grupos.seccion 
+                    FROM estudiantes
+                    INNER JOIN grupos ON estudiantes.grupo_id = grupos.id";
+            
+
                     $resultado = $conexion->query($sql);
 
                     // Variable para la numeración de la tabla
@@ -153,7 +156,7 @@ require "../Funciones/contar.php"; ?>
                             echo "<td>" . $fila['telefono'] . "</td>";
                             echo "<td>" . $fila['eps'] . "</td>";
                             echo "<td>" . $fila['correo'] . "</td>";
-                            echo "<td>" . $fila['grupo_id'] . "</td>";
+                            echo "<td>" . $fila['nombre_grupo'] . ' ' . $fila['seccion'] ."</td>";
 
                             // Agregamos los botones de acciones (editar y eliminar)
                             echo "<td>";
@@ -244,13 +247,12 @@ require "../Funciones/contar.php"; ?>
                         }
                     });
                 </script>
-
             </div>
 
             <div style="height: 40vh;" class="col d-flex justify-content-center">
                 <?php
                 // Consulta para obtener la cantidad de estudiantes por lugar de nacimiento
-                $sqlBirthplace = "SELECT lugar_expedicion, COUNT(*) as count FROM estudiantes GROUP BY lugar_expedicion";
+                $sqlBirthplace = "SELECT direccion, COUNT(*) as count FROM estudiantes GROUP BY direccion";
                 $resultBirthplace = $conexion->query($sqlBirthplace);
 
                 $birthplaceData = [];
@@ -258,7 +260,7 @@ require "../Funciones/contar.php"; ?>
 
                 if ($resultBirthplace && $resultBirthplace->num_rows > 0) {
                     while ($rowBirthplace = $resultBirthplace->fetch_assoc()) {
-                        $birthplaceLabels[] = $rowBirthplace['lugar_expedicion'];
+                        $birthplaceLabels[] = $rowBirthplace['direccion'];
                         $birthplaceData[] = $rowBirthplace['count'];
                     }
                     $resultBirthplace->free();

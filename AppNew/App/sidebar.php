@@ -11,7 +11,7 @@ $id_usuario = $_SESSION['id_usuario'];
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['id_usuario'])) {
     // El usuario no ha iniciado sesión, redirigirlo a la página de inicio de sesión
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit; // Detener la ejecución del script después de redirigir
 }
 

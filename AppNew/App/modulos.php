@@ -115,94 +115,93 @@
     </div>
 
     <div class="mt-5">
-    <h2 class="fw-bolder ms-3 mt-5">Tabla de modulos</h2>
-    <span style="font-size: 15px;" class="badge text-bg-info ms-3 mb-4 ">Datos</span>
-    <div style="background-color: white; border-radius: 20px !important;" class="table-responsive  p-4">
-        <table id="tabla_administradores" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    <th>#</th> <!-- Agregamos una columna para la numeración -->
-                    <th>nombre_materia</th>
-                    <th>docente</th>
-                    <th>grupo</th>
-                    <th>fecha_inicio</th>
-                    <th>fecha_finalizacion</th>
-                    <th>estado</th> <!-- Agregamos una columna para las acciones -->
-                    <th>Acciones</th> <!-- Agregamos una columna para las acciones -->
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Incluir el archivo de conexión a la base de datos
-                include '../App/conexion.php';
+        <h2 class="fw-bolder ms-3 mt-5">Tabla de modulos</h2>
+        <span style="font-size: 15px;" class="badge text-bg-info ms-3 mb-4 ">Datos</span>
+        <div style="background-color: white; border-radius: 20px !important;" class="table-responsive  p-4">
+            <table id="tabla_administradores" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th> <!-- Agregamos una columna para la numeración -->
+                        <th>nombre_materia</th>
+                        <th>docente</th>
+                        <th>grupo</th>
+                        <th>fecha_inicio</th>
+                        <th>fecha_finalizacion</th>
+                        <th>estado</th> <!-- Agregamos una columna para las acciones -->
+                        <th>Acciones</th> <!-- Agregamos una columna para las acciones -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Incluir el archivo de conexión a la base de datos
+                    include '../App/conexion.php';
 
-                // Consulta SQL para seleccionar todos los administradores
-                $sql = "SELECT * FROM materias";
-                $resultado = $conexion->query($sql);
+                    // Consulta SQL para seleccionar todos los administradores
+                    // Consulta SQL para seleccionar todos los administradores
+                    $sql = "SELECT m.*, d.nombres AS nombre_docente, d.apellidos AS apellido_docente, g.nombre_grupo, g.seccion
+FROM materias m
+INNER JOIN docentes d ON m.docente_asignado = d.id
+INNER JOIN grupos g ON m.grupo_asignado = g.id";
+                    $resultado = $conexion->query($sql);
 
-                // Variable para la numeración de la tabla
-                $contador = 1;
+                    // Variable para la numeración de la tabla
+                    $contador = 1;
 
-                // Verificar si se encontraron resultados
-                if ($resultado->num_rows > 0) {
-                    // Iterar sobre los resultados y generar las filas de la tabla
-                    while ($fila = $resultado->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $contador . "</td>";
-                        echo "<td>" . $fila['nombre_materia'] . "</td>";
-                        echo "<td>" . $fila['docente_asignado'] . "</td>";
-                        echo "<td>" . $fila['grupo_asignado'] . "</td>";
-                        echo "<td>" . $fila['fecha_inicio'] . "</td>";
-                        echo "<td>" . $fila['fecha_finalizacion'] . "</td>";
-                        echo "<td>" . $fila['estado'] . "</td>";
-                        // Agregamos los botones de acciones (editar y eliminar)
-                        echo "<td>";
-                        echo "<a href='editar_modulo.php?id=" . $fila['id'] . "' class='btn btn-primary mb-2' style='width: 100px;'>Editar</a>";
-                        echo "</td>";
-                        echo "</tr>";
-                        $contador++;
+                    // Verificar si se encontraron resultados
+                    if ($resultado->num_rows > 0) {
+                        // Iterar sobre los resultados y generar las filas de la tabla
+                        while ($fila = $resultado->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . $contador . "</td>";
+                            echo "<td>" . $fila['nombre_materia'] . "</td>";
+                            echo "<td>" . $fila['nombre_docente'] . " " . $fila['apellido_docente'] . "</td>"; // Mostrar nombres y apellidos del docente
+                            echo "<td>" . $fila['nombre_grupo'] . ' '  . $fila['seccion'] . "</td>"; // Mostrar el nombre del grupo
+
+                            echo "<td>" . $fila['fecha_inicio'] . "</td>";
+                            echo "<td>" . $fila['fecha_finalizacion'] . "</td>";
+                            echo "<td>" . $fila['estado'] . "</td>";
+                            // Agregamos los botones de acciones (editar y eliminar)
+                            echo "<td>";
+                            echo "<a href='editar_modulo.php?id=" . $fila['id'] . "' class='btn btn-primary mb-2' style='width: 100px;'>Editar</a>";
+                            echo "</td>";
+                            echo "</tr>";
+                            $contador++;
+                        }
+                    } else {
+                        echo "<tr><td colspan='13'>No se encontraron administradores</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='13'>No se encontraron administradores</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<br>
-<br>
+    <br>
+    <br>
 
-<!-- JavaScript -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.7/js/responsive.bootstrap4.min.js"></script>
-<script>
-    // Inicializar DataTable
-    $(document).ready(function() {
-        $('#tabla_administradores').DataTable({
-            responsive: true,
-            searching: true, // Habilitar la función de búsqueda
-            rowReorder: {
-                selector: 'td:first-child'
-            },
-            columnDefs: [{
-                orderable: false,
-                targets: 0
-            }]
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.7/js/responsive.bootstrap4.min.js"></script>
+    <script>
+        // Inicializar DataTable
+        $(document).ready(function() {
+            $('#tabla_administradores').DataTable({
+                responsive: true,
+                searching: true, // Habilitar la función de búsqueda
+                rowReorder: {
+                    selector: 'td:first-child'
+                },
+                columnDefs: [{
+                    orderable: false,
+                    targets: 0
+                }]
+            });
         });
-    });
-</script>
+    </script>
 
-
-    <footer class="espacecustom mb-4 border p-3">
-        <center>
-            <p class="mb-0">Santander Valley Col Copyright © 2023. All rights reserved.</p>
-        </center>
-
-    </footer>
+   
 
 </main>
