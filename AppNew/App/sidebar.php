@@ -119,6 +119,18 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante') {
                         <span class="ms-3">Modulos</span>
                     </a>
                 </li>
+                <li class="mb-3">
+                    <a href="./App/notas_admin.php">
+                    <i class="fa-solid fa-notes-medical ms-2"></i>
+                        <span class="ms-3">Notas</span>
+                    </a>
+                </li>
+                <li class="mb-3">
+                    <a href="./App/notas_admin.php">
+                    <i class="fa-solid fa-dollar-sign ms-2"></i>
+                        <span class="ms-3">Cartera</span>
+                    </a>
+                </li>
             </ul>
         </nav>
 

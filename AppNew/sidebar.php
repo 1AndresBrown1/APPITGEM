@@ -122,8 +122,14 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante') {
                 </li>
                 <li class="mb-3">
                     <a href="./App/notas_admin.php">
-                        <i class="fa-solid fa-book ms-2"></i>
+                    <i class="fa-solid fa-notes-medical ms-2"></i>
                         <span class="ms-3">Notas</span>
+                    </a>
+                </li>
+                <li class="mb-3">
+                    <a href="./App/notas_admin.php">
+                    <i class="fa-solid fa-dollar-sign ms-2"></i>
+                        <span class="ms-3">Cartera</span>
                     </a>
                 </li>
             </ul>

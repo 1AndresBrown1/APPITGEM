@@ -1,7 +1,7 @@
 <?php
 include '../App/conexion.php';
 
-function insertarEstudiante($grupo_id, $nombre, $fecha_nacimiento, $lugar_nacimiento, $tipo_documento, $documento_identidad, $fecha_expedicion, $lugar_expedicion, $genero, $direccion, $telefono, $nombre_acudiente, $tipo_documento_acudiente, $documento_identidad_acudiente, $eps, $correo, $conexion)
+function insertarEstudiante($grupo_id,  $nombre, $fecha_nacimiento, $lugar_nacimiento, $tipo_documento, $documento_identidad, $fecha_expedicion, $lugar_expedicion, $genero, $direccion, $telefono, $nombre_acudiente, $tipo_documento_acudiente, $documento_identidad_acudiente, $eps, $correo,  $conexion)
 {
     // Verificar si ya existe un estudiante con el mismo nombre, documento de identidad o correo
     $sql_verificacion = "SELECT * FROM estudiantes WHERE nombre = '$nombre' OR documento_identidad = '$documento_identidad' OR correo = '$correo'";
@@ -17,6 +17,28 @@ function insertarEstudiante($grupo_id, $nombre, $fecha_nacimiento, $lugar_nacimi
 
         if ($conexion->query($sql) === TRUE) {
             echo "<script>alert('Nuevo estudiante insertado correctamente.'); window.location.href = '../App/estudiantes.php';</script>";
+
+
+            // 
+            // Ahora procedemos a insertar en la segunda base de datos
+            $segunda_conexion = new mysqli("localhost", "root", "", "santand1_carteraitgem.sql");
+            if ($segunda_conexion->connect_error) {
+                die("Error de conexión a la base de datos santand1_carteraitgem: " . $segunda_conexion->connect_error);
+            }
+
+            // Inserción en la segunda base de datos
+            $sql_insertar_segunda = "INSERT INTO clientes (identidad,num_identidad,nombre,telefono,correo,direccion,fecha)
+    VALUES ('$tipo_documento','$documento_identidad','$nombre', '$telefono','$correo','$grupo_id','$fecha_nacimiento')";
+
+            if ($segunda_conexion->query($sql_insertar_segunda) === TRUE) {
+                echo "<script>alert('Nuevo estudiante insertado correctamente en la base de datos santand1_carteraitgem.');</script>";
+            } else {
+                echo "Error al insertar estudiante en la base de datos santand1_carteraitgem: " . $segunda_conexion->error;
+            }
+
+            // Cerrar la conexión a la segunda base de datos
+            $segunda_conexion->close();
+            // 
 
             $id_usuario = $conexion->insert_id;
             $nombreUsuario = $documento_identidad;

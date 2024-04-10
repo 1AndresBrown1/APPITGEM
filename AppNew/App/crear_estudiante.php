@@ -47,8 +47,6 @@ include_once './sidebar.php';
                     <label class="input-group-text" for="grupo">Selecciona un grupo</label>
 
                     <?php
-                    // Aquí debes establecer la conexión a tu base de datos
-
                     // Consulta SQL para obtener todos los grupos
                     $sql = "SELECT id, CONCAT(nombre_grupo, ' ', 'Grupo ', seccion) AS nombre_completo FROM grupos";
 
@@ -58,7 +56,7 @@ include_once './sidebar.php';
                     // Comprobar si se encontraron grupos
                     if ($resultado->num_rows > 0) {
                         // Mostrar un select con los grupos
-                        echo '<select id="grupo_id" name="grupo_id" class="form-select">';
+                        echo '<select id="grupo_id" name="grupo_id" class="form-select" onchange="updateInputValue(this)">';
                         echo '<option selected>grupos...</option>';
                         // Iterar sobre los resultados y mostrar cada grupo como una opción en el select
                         while ($row = $resultado->fetch_assoc()) {
@@ -68,11 +66,23 @@ include_once './sidebar.php';
                     } else {
                         echo "No se encontraron grupos disponibles.";
                     }
-
-                    // Cerrar la conexión
                     ?>
 
                 </div>
+
+                <script>
+                    function updateInputValue(select) {
+                        var selectedOption = select.options[select.selectedIndex].text;
+                        document.getElementById("grupo_seleccionado").value = selectedOption;
+                    }
+                </script>
+
+
+                <div class="input-group mb-3">
+                    <input type="text" id="grupo_seleccionado" class="form-control" readonly>
+                </div>
+
+
             </div>
             <span style="font-size: 15px;" class="badge text-bg-info ms-2 mb-3 mt-3">Datos personales</span>
 
