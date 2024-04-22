@@ -4,7 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['id'])) {
         $id = $_GET['id'];
         $nombre_grupo = $_POST["nombre_grupo"];
-        $año_lectivo = $_POST["año_lectivo"];
+        $ano_lectivo = $_POST["ano_lectivo"];
         $nivel_educativo = $_POST["nivel_educativo"];
         $seccion = $_POST["seccion"];
         $horario = $_POST["horario"];
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $sql = "UPDATE grupos SET
         nombre_grupo = '$nombre_grupo',
-        año_lectivo = '$año_lectivo',
+        ano_lectivo = '$ano_lectivo',
         nivel_educativo = '$nivel_educativo',
         seccion = '$seccion',
         horario = '$horario',
@@ -96,8 +96,8 @@ if ($resultado->num_rows > 0) {
                     <!-- Segunda Columna -->
                     <div class="col-md-6">
                         <div class="input-group mt-4">
-                            <label class="input-group-text" for="año_lectivo">Año lectivo</label>
-                            <input value="<?php echo $fila['año_lectivo']; ?>" type="text" class="form-control" id="año_lectivo" name="año_lectivo" required>
+                            <label class="input-group-text" for="ano_lectivo">Año lectivo</label>
+                            <input value="<?php echo $fila['ano_lectivo']; ?>" type="text" class="form-control" id="ano_lectivo" name="ano_lectivo" required>
                         </div>
                     </div>
                 </div>

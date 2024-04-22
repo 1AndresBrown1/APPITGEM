@@ -122,4 +122,4 @@ include_once './sidebar.php';
             </div>
         </form>
     </div>
-</main>
+</main> 

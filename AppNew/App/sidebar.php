@@ -1,4 +1,3 @@
-
 <?php
 include_once './conexion.php';
 
@@ -62,9 +61,7 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
 </head>
 
 <body>
@@ -72,15 +69,12 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante') {
         <ion-icon name="menu-outline"></ion-icon>
         <ion-icon name="close-outline"></ion-icon>
     </div>
-
     <div class="barra-lateral">
         <div class="mb-5 mt-4">
             <div class="nombre-pagina">
                 <img src="../recursos/img/logo-grande.svg" width="100px" class="mt-4" alt="">
             </div>
-
         </div>
-
         <nav class="navegacion">
             <ul style="padding: 0px !important;">
                 <li class="mb-3">
@@ -120,14 +114,14 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante') {
                     </a>
                 </li>
                 <li class="mb-3">
-                    <a href="./App/notas_admin.php">
-                    <i class="fa-solid fa-notes-medical ms-2"></i>
+                    <a href="./notas_admin.php">
+                        <i class="fa-solid fa-notes-medical ms-2"></i>
                         <span class="ms-3">Notas</span>
                     </a>
                 </li>
                 <li class="mb-3">
-                    <a href="./App/notas_admin.php">
-                    <i class="fa-solid fa-dollar-sign ms-2"></i>
+                    <a target="_blank" href="../cartera/index.php">
+                        <i class="fa-solid fa-dollar-sign ms-2"></i>
                         <span class="ms-3">Cartera</span>
                     </a>
                 </li>

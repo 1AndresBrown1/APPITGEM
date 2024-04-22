@@ -127,7 +127,7 @@ if ($_SESSION['rol'] === 'docente' || $_SESSION['rol'] === 'estudiante') {
                     </a>
                 </li>
                 <li class="mb-3">
-                    <a href="./App/notas_admin.php">
+                    <a href="./cartera/index.php">
                     <i class="fa-solid fa-dollar-sign ms-2"></i>
                         <span class="ms-3">Cartera</span>
                     </a>
